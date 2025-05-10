@@ -1,31 +1,37 @@
 const translations = {
-  sv: {
-    overviewTitle: "Översikt",
-    walletTitle: "Plånbok",
-    leaderboardTitle: "Topplista",
-    settingsTitle: "Inställningar",
-    connectWallet: "Anslut Plånbok",
-    darkMode: "Mörkt läge"
-  },
   en: {
-    overviewTitle: "Overview",
-    walletTitle: "Wallet",
-    leaderboardTitle: "Leaderboard",
-    settingsTitle: "Settings",
+    title: "WarpSocial",
+    liveGas: "Live Gas",
+    currentGas: "Loading...",
+    topUsers: "Top Users",
+    walletHeader: "Your Wallet",
     connectWallet: "Connect Wallet",
-    darkMode: "Dark Mode"
+    settingsTitle: "Settings",
+    darkLabel: "Dark Mode",
+    languageLabel: "Language"
+  },
+  sv: {
+    title: "WarpSocial",
+    liveGas: "Live Gaspris",
+    currentGas: "Laddar...",
+    topUsers: "Toppanvändare",
+    walletHeader: "Din Plånbok",
+    connectWallet: "Anslut Plånbok",
+    settingsTitle: "Inställningar",
+    darkLabel: "Mörkt Läge",
+    languageLabel: "Språk"
   }
 };
 
-function applyLanguage(lang) {
-  document.querySelectorAll("[data-key]").forEach(el => {
-    const key = el.getAttribute("data-key");
-    if (translations[lang][key]) el.textContent = translations[lang][key];
-  });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  const langSelect = document.getElementById("languageSelect");
-  applyLanguage(langSelect.value);
-  langSelect.addEventListener("change", e => applyLanguage(e.target.value));
+  const select = document.getElementById("languageSelect");
+  const applyLang = lang => {
+    const t = translations[lang];
+    for (const key in t) {
+      const el = document.getElementById(key);
+      if (el) el.textContent = t[key];
+    }
+  };
+  select.addEventListener("change", () => applyLang(select.value));
+  applyLang(select.value);
 });
