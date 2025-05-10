@@ -1,303 +1,51 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarpAI | Live Gas Tracker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <!-- Farcaster Frame Meta Tags -->
-  <meta property="fc:frame" content="vNext">
-  <meta property="fc:frame:image" content="https://your-domain.com/api/og-image">
-  <meta property="fc:frame:post_url" content="https://your-domain.com/api/frame">
-  <style>
-    :root {
-      --bg: #0F172A;
-      --surface: #1E293B;
-      --accent: #00FFC3;
-      --text: #F8FAFC;
-      --border: #2D3748;
-      --green: #10B981;
-      --yellow: #F59E0B;
-      --red: #EF4444;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 20px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-    }
-
-    .container {
-      width: 375px;
-      position: relative;
-    }
-
-    /* Wallet Modal */
-    .wallet-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.9);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .wallet-modal.active {
-      display: flex;
-    }
-
-    .wallet-content {
-      background: var(--surface);
-      padding: 25px;
-      border-radius: 16px;
-      width: 300px;
-      text-align: center;
-    }
-
-    .wallet-option {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 15px;
-      margin: 12px 0;
-      background: var(--bg);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .wallet-option:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,255,195,0.1);
-    }
-
-    /* Gas Meter */
-    .gas-meter-container {
-      height: 250px;
-      margin: 40px 0;
-      position: relative;
-    }
-
-    .gas-track {
-      width: 40px;
-      height: 100%;
-      background: linear-gradient(var(--green), var(--yellow), var(--red));
-      border-radius: 20px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    .gas-needle {
-      width: 50px;
-      height: 3px;
-      background: var(--text);
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      transition: bottom 0.5s cubic-bezier(0.33,1,0.68,1);
-    }
-
-    .gas-info {
-      text-align: center;
-      margin-top: 30px;
-    }
-
-    .gas-price {
-      font-size: 1.5em;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    /* Wallet Status */
-    .wallet-status {
-      margin-top: 25px;
-      padding: 15px;
-      background: var(--surface);
-      border-radius: 12px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WarpAI — Onchain Activity</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <!-- Wallet Selector Modal -->
-    <div class="wallet-modal" id="walletModal">
-      <div class="wallet-content">
-        <h2>Välj Plånbok</h2>
-        <div class="wallet-option" onclick="connectWallet('metamask')">
-          <img src="metamask.svg" width="32" alt="">
-          MetaMask
-        </div>
-        <div class="wallet-option" onclick="connectWallet('coinbase')">
-          <img src="coinbase.svg" width="32" alt="">
-          Coinbase Wallet
-        </div>
-        <button class="wallet-option" onclick="hideWalletModal()">
-          Avbryt
-        </button>
+  <div class="warp-container">
+    <header>
+      <div class="branding">
+        <span class="logo">🌀</span>
+        <h1>WarpAI</h1>
+        <div id="shortAddress" class="short-address">Not connected</div>
+      </div>
+      <button class="settings-btn">⚙️</button>
+    </header>
+
+    <button class="connect-btn" onclick="connectWallet()">🔌 Connect Wallet</button>
+
+    <div class="divider">OR</div>
+
+    <div class="address-check">
+      <input type="text" id="walletInput" placeholder="Enter any 0x address to check" />
+      <button onclick="checkAddress()">🔍 Check Address</button>
+    </div>
+
+    <div class="grid-cards">
+      <div class="card">
+        <p class="card-title">⛽ Gas Efficiency</p>
+        <p class="card-value" id="efficiency">Efficiency: 0%</p>
+      </div>
+      <div class="card">
+        <p class="card-title">🪙 WarpAI Coins</p>
+        <p class="card-value" id="warpCoins">20</p>
+        <button class="claim-btn" onclick="claimAddress()">Claim</button>
       </div>
     </div>
 
-    <!-- Gas Meter -->
-    <div class="gas-meter-container">
-      <div class="gas-track">
-        <div class="gas-needle" id="gasNeedle"></div>
-      </div>
-      <div class="gas-info">
-        <div id="currentGas">Laddar...</div>
-        <div id="gasTime"></div>
-      </div>
-    </div>
-
-    <!-- Controls -->
-    <button onclick="showWalletModal()" style="width:100%;padding:15px;">
-      🟢 Anslut Plånbok
-    </button>
-    
-    <div class="wallet-status" id="walletStatus">
-      Ej ansluten
+    <div class="activity-section">
+      <h2>⚡ Recent Activity</h2>
+      <ul id="activityList">
+        <li>No activity loaded yet.</li>
+      </ul>
     </div>
   </div>
 
-  <script>
-    let currentGas = 0;
-    let walletAddress = null;
-    let gasUpdateInterval;
-
-    // Visa wallet modal
-    function showWalletModal() {
-      document.getElementById('walletModal').classList.add('active');
-    }
-
-    // Dölj wallet modal
-    function hideWalletModal() {
-      document.getElementById('walletModal').classList.remove('active');
-    }
-
-    // Wallet connection
-    async function connectWallet(type) {
-      try {
-        if (type === 'metamask') {
-          if (!window.ethereum) throw new Error('Installera MetaMask');
-          const accounts = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-            params: [{
-              chainId: '0x2105' // Base Chain
-            }]
-          });
-          walletAddress = accounts[0];
-        }
-        
-        if (type === 'coinbase') {
-          if (!window.coinbaseWalletExtension) throw new Error('Installera Coinbase Wallet');
-          const accounts = await window.coinbaseWalletExtension.request({
-            method: 'eth_requestAccounts'
-          });
-          walletAddress = accounts[0];
-        }
-
-        updateUI();
-        startGasUpdates();
-        hideWalletModal();
-      } catch (error) {
-        alert(`Error: ${error.message}`);
-      }
-    }
-
-    // Uppdatera gasnål
-    function updateGasNeedle(gwei) {
-      const maxGwei = 150;
-      const percentage = Math.min((gwei / maxGwei) * 100, 100);
-      const needle = document.getElementById('gasNeedle');
-      
-      needle.style.bottom = `${percentage}%`;
-      
-      // Uppdatera färg
-      let color;
-      if (gwei < 30) color = var(--green);
-      else if (gwei < 80) color = var(--yellow);
-      else color = var(--red);
-      
-      document.getElementById('gasTrack').style.background = 
-        `linear-gradient(${color} ${percentage}%, ${var(--surface)} ${percentage}%)`;
-    }
-
-    // Hämta gaspriser
-    async function fetchGasPrice() {
-      try {
-        const response = await fetch('https://api.blocknative.com/gasprices/blockprices', {
-          headers: {
-            'Authorization': 'YOUR_BLOCKNATIVE_API_KEY'
-          }
-        });
-        const data = await response.json();
-        
-        currentGas = data.blockPrices[0].estimatedPrices[0].price;
-        
-        document.getElementById('currentGas').textContent = `${currentGas} Gwei`;
-        document.getElementById('gasTime').textContent = new Date().toLocaleTimeString();
-        updateGasNeedle(currentGas);
-        
-      } catch (error) {
-        console.error('Gas fetch error:', error);
-      }
-    }
-
-    // Starta uppdateringar
-    function startGasUpdates() {
-      if (gasUpdateInterval) clearInterval(gasUpdateInterval);
-      fetchGasPrice();
-      gasUpdateInterval = setInterval(fetchGasPrice, 1000);
-    }
-
-    // Uppdatera UI
-    function updateUI() {
-      const statusElement = document.getElementById('walletStatus');
-      if (walletAddress) {
-        statusElement.innerHTML = `
-          🟢 Ansluten till:<br>
-          <small>${walletAddress.slice(0,6)}...${walletAddress.slice(-4)}</small>
-          <button onclick="disconnectWallet()" style="margin-top:10px;">
-            Koppla från
-          </button>
-        `;
-      } else {
-        statusElement.textContent = '🔴 Ej ansluten';
-      }
-    }
-
-    // Koppla från
-    function disconnectWallet() {
-      walletAddress = null;
-      clearInterval(gasUpdateInterval);
-      updateUI();
-      document.getElementById('currentGas').textContent = '0 Gwei';
-      updateGasNeedle(0);
-    }
-
-    // Hantera klick utanför modal
-    window.onclick = function(event) {
-      if (event.target.classList.contains('wallet-modal')) {
-        hideWalletModal();
-      }
-    }
-
-    // Initiera
-    document.addEventListener('DOMContentLoaded', () => {
-      if (localStorage.getItem('walletAddress')) {
-        walletAddress = localStorage.getItem('walletAddress');
-        updateUI();
-        startGasUpdates();
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
