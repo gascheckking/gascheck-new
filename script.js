@@ -1,4 +1,4 @@
-// === GASPRIS MED NYCKEL DIREKT (FIXAD) ===
+// === GASPRIS MED NYCKEL DIREKT ===
 async function updateGas() {
   try {
     const res = await fetch('https://api.owlracle.info/v3/eth/gas?apikey=b9bee1f4421d4eebb170067dc3e2e579');
@@ -11,19 +11,35 @@ async function updateGas() {
   }
 }
 
-updateGas();
-setInterval(updateGas, 30000);
+// === WALLET-ACTIVITY (BASE) ===
+async function loadWalletActivity() {
+  const address = '0x541F9BE2e71DA6349dfA665Bb022C5DBA77A58d0';
+  const url = `https://api.basescan.org/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=5&sort=desc`;
 
-// === WALLET-ACTIVITY (placeholder) ===
-function loadWalletActivity() {
   const activityDiv = document.getElementById('wallet-activity');
-  activityDiv.innerHTML = `
-    <p>Senaste transaktioner kommer visas här.</p>
-    <ul>
-      <li>✔️ Exempel: Du mintade 1 token på Zora</li>
-      <li>✔️ Exempel: Du sålde 1 coin på Base</li>
-    </ul>
-  `;
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.status === "1") {
+      const txs = data.result.map(tx => {
+        const valueEth = (Number(tx.value) / 1e18).toFixed(4);
+        return `<li>↳ ${valueEth} ETH to ${tx.to.slice(0, 8)}... (${tx.timeStamp})</li>`;
+      }).join("");
+
+      activityDiv.innerHTML = `
+        <p>Senaste Base-transaktioner:</p>
+        <ul>${txs}</ul>
+      `;
+    } else {
+      activityDiv.innerHTML = `<p>Inga transaktioner hittades.</p>`;
+    }
+  } catch (e) {
+    activityDiv.innerHTML = `<p>Kunde inte ladda wallet-data.</p>`;
+  }
 }
 
+updateGas();
+setInterval(updateGas, 30000);
 loadWalletActivity();
