@@ -1,385 +1,123 @@
-:root {
-  /* Dark Theme */
-  --bg: #0a0a0a;
-  --surface: #1a1a1a;
-  --accent: #00ffc3;
-  --text: #f1f1f1;
-  --border: #2d2d2d;
-  --success: #5cff6c;
-  --warning: #ffd966;
-  --danger: #ff4b4b;
-}
+// ========== KONFIGURATION ========== //
+const CONFIG = {
+  baseScanAPI: "https://api.basescan.org/api",
+  apiKey: "YOUR_BASESCAN_API_KEY", // Ersätt med din riktiga API-nyckel
+  warpAICoinContract: "0x8ab57bdfc4e900b62f309bfaa6e1802755330ca6"
+};
 
-/* Light Theme */
-.light-theme {
-  --bg: #f5f5f5;
-  --surface: #ffffff;
-  --text: #333333;
-  --border: #e0e0e0;
-}
+// ========== APP STATE ========== //
+let currentAddress = null;
+let isConnected = false;
+let userData = {
+  coins: 0,
+  transactions: [],
+  gasEfficiency: 0
+};
 
-/* Base Styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.5;
-  padding: 0;
-  margin: 0;
-}
-
-.app-container {
-  max-width: 375px;
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-}
-
-/* Header */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  margin-bottom: 16px;
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-h1 {
-  font-size: 1.5rem;
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.warp-logo {
-  font-size: 1.3em;
-}
-
-.wallet-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
-  padding: 6px 10px;
-  border-radius: 20px;
-  background: rgba(0, 255, 195, 0.1);
-}
-
-.wallet-disconnected {
-  opacity: 0.7;
-}
-
-.wallet-connected {
-  color: var(--accent);
-}
-
-.icon-btn {
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-/* Connect Section */
-.connect-section {
-  margin-bottom: 16px;
-}
-
-.connect-btn {
-  background: var(--accent);
-  color: #000;
-  border: none;
-  padding: 14px;
-  width: 100%;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 1rem;
-  transition: all 0.2s;
-}
-
-.connect-btn:hover {
-  opacity: 0.9;
-}
-
-.or-divider {
-  text-align: center;
-  margin: 12px 0;
-  position: relative;
-  color: #777;
-  font-size: 0.9rem;
-}
-
-.or-divider::before,
-.or-divider::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 40%;
-  height: 1px;
-  background: var(--border);
-}
-
-.or-divider::before {
-  left: 0;
-}
-
-.or-divider::after {
-  right: 0;
-}
-
-/* Input Card */
-.input-card {
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
-  border: 1px solid var(--border);
-}
-
-input[type="text"] {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  margin-bottom: 12px;
-  font-family: 'Inter', sans-serif;
-}
-
-.btn {
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.btn.primary {
-  background: var(--accent);
-  color: #000;
-}
-
-.btn.secondary {
-  background: var(--surface);
-  border: 1px solid var(--accent);
-  color: var(--accent);
-}
-
-.btn:hover {
-  opacity: 0.9;
-}
-
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.stat-card {
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 16px;
-  border: 1px solid var(--border);
-}
-
-.stat-card h3 {
-  font-size: 1rem;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.gas-meter {
-  height: 100px;
-  background: linear-gradient(to top, var(--success), var(--warning), var(--danger));
-  border-radius: 8px;
-  margin: 8px 0;
-  position: relative;
-}
-
-.gas-label {
-  text-align: center;
-  font-weight: 600;
-  margin-top: 8px;
-  font-size: 0.9rem;
-}
-
-.coin-display {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--accent);
-  text-align: center;
-  margin: 12px 0;
-}
-
-.small-btn {
-  padding: 8px 12px;
-  font-size: 0.8rem;
-  margin-top: 8px;
-  width: 100%;
-}
-
-/* Activity Card */
-.activity-card {
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 16px;
-  border: 1px solid var(--border);
-  margin-bottom: 16px;
-}
-
-.activity-card h3 {
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.activity-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.activity-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.activity-type {
-  font-weight: 600;
-}
-
-.activity-amount {
-  font-family: 'Courier New', monospace;
-}
-
-.positive {
-  color: var(--success);
-}
-
-.negative {
-  color: var(--danger);
-}
-
-/* Bottom Navigation */
-.bottom-nav {
-  display: flex;
-  justify-content: space-around;
-  padding: 12px 0;
-  background: var(--surface);
-  border-radius: 12px;
-  margin-top: auto;
-}
-
-.nav-btn {
-  background: none;
-  border: none;
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  opacity: 0.5;
-}
-
-.nav-btn.active {
-  opacity: 1;
-  color: var(--accent);
-}
-
-/* Modal */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
-
-.modal-content {
-  background: var(--surface);
-  padding: 24px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 350px;
-}
-
-.setting-item {
-  margin-bottom: 16px;
-}
-
-.setting-item label {
-  display: block;
-  margin-bottom: 8px;
-}
-
-.setting-item select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-/* Utility Classes */
-.hidden {
-  display: none !important;
-}
-
-/* Responsivitet */
-@media (max-width: 400px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
+// ========== DOM ELEMENT ========== //
+const elements = {
+  // Header
+  walletStatus: document.getElementById('wallet-status'),
   
-  .header-left {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
+  // Connect
+  connectBtn: document.getElementById('connect-wallet'),
   
-  .wallet-status {
-    font-size: 0.8rem;
+  // Input
+  walletInput: document.getElementById('wallet-input'),
+  checkBtn: document.getElementById('check-btn'),
+  
+  // Overview
+  gasMeter: document.getElementById('gas-meter'),
+  gasLabel: document.getElementById('gas-label'),
+  coinDisplay: document.getElementById('coin-display'),
+  claimCoinsBtn: document.getElementById('claim-coins-btn'),
+  activityList: document.getElementById('activity-list'),
+  
+  // Navigation
+  navBtns: document.querySelectorAll('.nav-btn'),
+  tabContents: document.querySelectorAll('.tab-content'),
+  
+  // Settings
+  settingsBtn: document.getElementById('settings-btn'),
+  settingsModal: document.getElementById('settings-modal'),
+  closeSettings: document.getElementById('close-settings'),
+  themeSelect: document.getElementById('theme-select')
+};
+
+// ========== WALLET CONNECTION ========== //
+
+async function connectWallet() {
+  if (window.ethereum) {
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      currentAddress = accounts[0];
+      isConnected = true;
+      updateWalletStatus();
+      fetchWalletData(currentAddress);
+    } catch (error) {
+      console.error("Wallet connection error:", error);
+      alert("Wallet connection failed");
+    }
+  } else {
+    alert("Please install MetaMask or another Web3 wallet!");
   }
 }
+
+function updateWalletStatus() {
+  if (isConnected && currentAddress) {
+    const shortAddress = `${currentAddress.substring(0, 6)}...${currentAddress.substring(38)}`;
+    elements.walletStatus.innerHTML = `
+      <i class="fas fa-wallet"></i>
+      <span>${shortAddress}</span>
+    `;
+    elements.walletStatus.classList.add('wallet-connected');
+    elements.walletStatus.classList.remove('wallet-disconnected');
+  } else {
+    elements.walletStatus.innerHTML = `
+      <i class="fas fa-wallet"></i>
+      <span>Not connected</span>
+    `;
+    elements.walletStatus.classList.remove('wallet-connected');
+    elements.walletStatus.classList.add('wallet-disconnected');
+  }
+}
+
+// ========== DATA FETCHING ========== //
+
+async function fetchWalletData(address) {
+  try {
+    // Simulera laddning
+    elements.activityList.innerHTML = '<div class="loading">Loading data...</div>';
+    
+    // Hämta transaktioner från BaseScan
+    const txResponse = await fetch(
+      `${CONFIG.baseScanAPI}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=desc&apikey=${CONFIG.apiKey}`
+    );
+    
+    const txData = await txResponse.json();
+    
+    if (txData.status === "1") {
+      userData.transactions = txData.result.slice(0, 5).map(tx => ({
+        hash: tx.hash,
+        type: getTxType(tx),
+        amount: tx.value / 1e18,
+        timestamp: new Date(tx.timeStamp * 1000).toLocaleDateString(),
+        gasUsed: tx.gasUsed
+      }));
+      
+      // Beräkna gas efficiency
+      const totalGas = userData.transactions.reduce((sum, tx) => sum + parseInt(tx.gasUsed), 0);
+      userData.gasEfficiency = Math.max(0, 100 - Math.min(100, totalGas / 100000));
+      
+      // Uppdatera UI
+      updateUI();
+    } else {
+      throw new Error("No transactions found");
+    }
+  } catch (error) {
+    console.error("Error fetching wallet data:", error);
+    elements.activityList.innerHTML = '<div class="error">Could not load transactions</div>';
+  }
+}
+
+function getTxType
