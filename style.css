@@ -63,3 +63,40 @@ h1 {
 #wallet-activity ul {
   padding-left: 1.2rem;
 }
+
+.overview-card {
+  background: #1E293B;
+  border: 1px solid #2D3748;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.overview-card h2 {
+  margin-bottom: 0.5rem;
+  color: #00FFC3;
+}
+
+.overview-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.overview-card ul li {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.streak-circle {
+  width: 60px;
+  height: 60px;
+  margin: 0.5rem auto;
+  border-radius: 50%;
+  background: #00FFC3;
+  color: #0F172A;
+  font-size: 1.8rem;
+  font-weight: bold;
+  line-height: 60px;
+}
