@@ -1,12 +1,65 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #1e1e1e;
+  margin: 0;
+  padding: 0;
+  background: #0F172A;
+  font-family: 'Inter', sans-serif;
   color: #fff;
+}
+
+.warp-container {
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 1rem;
   text-align: center;
-  padding: 2rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #00FFC3;
+}
+
+.nav-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+  gap: 0.25rem;
+}
+
+.nav-tabs button {
+  flex: 1;
+  background: #1E293B;
+  border: 1px solid #2D3748;
+  color: #fff;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.nav-tabs button:hover {
+  background: #00FFC3;
+  color: #0F172A;
+}
+
+.tab {
+  display: none;
+  text-align: left;
+  background: #1E293B;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.tab.active {
+  display: block;
 }
 
 #gas {
+  font-size: 1.2rem;
   margin-top: 1rem;
-  font-size: 1.5rem;
+}
+
+#wallet-activity ul {
+  padding-left: 1.2rem;
 }
