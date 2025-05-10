@@ -1,4 +1,4 @@
-// === GASPRIS MED NYCKEL DIREKT ===
+// === GASPRIS MED NYCKEL DIREKT (OWLRACLE) ===
 async function updateGas() {
   try {
     const res = await fetch('https://api.owlracle.info/v3/eth/gas?apikey=b9bee1f4421d4eebb170067dc3e2e579');
@@ -11,10 +11,10 @@ async function updateGas() {
   }
 }
 
-// === WALLET-ACTIVITY (BASE) ===
+// === WALLET-ACTIVITY (BASE) – TESTWALLET ===
 async function loadWalletActivity() {
-  const address = '0x541F9BE2e71DA6349dfA665Bb022C5DBA77A58d0';
-  const apiKey = 'CXTB4IUT31N836G93ZI3YQBEWBQEGGH5QS'; // gratis offentligt key
+  const address = '0x7F2443AF93a771b395AB925a6f47c363d93EfA77'; // Testwallet med Base-aktivitet
+  const apiKey = 'CXTB4IUT31N836G93ZI3YQBEWBQEGGH5QS';
   const url = `https://api.basescan.org/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=5&sort=desc&apikey=${apiKey}`;
 
   const activityDiv = document.getElementById('wallet-activity');
