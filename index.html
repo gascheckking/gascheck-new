@@ -1,268 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WarpSocial | Onchain Companion</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #0a0a0a;
-      --surface: #1a1a1a;
-      --accent: #00ffc3;
-      --text: #f1f1f1;
-      --border: #2d2d2d;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 0;
-    }
-
-    .app-container {
-      max-width: 390px;
-      margin: 0 auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .logo {
-      font-size: 1.4rem;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .wallet-status {
-      font-size: 0.85rem;
-    }
-
-    .nav-tabs {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 4px;
-      margin: 16px 0;
-    }
-
-    .nav-item {
-      padding: 12px;
-      text-align: center;
-      background: var(--surface);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .nav-item.active {
-      background: var(--accent);
-      color: #000;
-    }
-
-    .main-content {
-      flex: 1;
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .card {
-      background: var(--surface);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      border: 1px solid var(--border);
-    }
-
-    .card-header {
-      font-size: 1.1rem;
-      margin-bottom: 12px;
-      color: var(--accent);
-    }
-
-    .gas-meter {
-      height: 8px;
-      background: linear-gradient(90deg, var(--success), var(--warning), var(--danger));
-      border-radius: 4px;
-      position: relative;
-      margin: 16px 0;
-    }
-
-    .gas-indicator {
-      width: 3px;
-      height: 16px;
-      background: var(--text);
-      position: absolute;
-      top: -4px;
-      transform: translateX(-50%);
-      transition: left 0.5s ease;
-    }
-
-    .leaderboard-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .wallet-card {
-      text-align: center;
-      padding: 24px;
-    }
-
-    .wallet-address {
-      font-family: monospace;
-      margin: 12px 0;
-      color: var(--accent);
-    }
-
-    .settings-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-    }
-
-    .footer {
-      text-align: center;
-      font-size: 0.75rem;
-      padding: 12px 0 4px;
-      color: #777;
-    }
-
-    @media (max-width: 400px) {
-      .app-container {
-        padding: 8px;
-      }
-
-      .nav-item {
-        font-size: 0.9rem;
-        padding: 8px;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WarpChain | Onchain Companion</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="app-container">
     <header class="header">
-      <div class="logo">🌀 WarpAI</div>
-      <div class="wallet-status" id="walletStatus">Not connected</div>
+      <div class="logo">WarpChain</div>
+      <div id="walletStatus">Not connected</div>
     </header>
 
     <nav class="nav-tabs">
-      <div class="nav-item active" data-tab="overview">Overview</div>
-      <div class="nav-item" data-tab="leaderboard">Leaderboard</div>
-      <div class="nav-item" data-tab="wallet">Wallet</div>
-      <div class="nav-item" data-tab="settings">Settings</div>
+      <button class="nav-item active" data-tab="overview">Overview</button>
+      <button class="nav-item" data-tab="wallet">Wallet</button>
+      <button class="nav-item" data-tab="leaderboard">Leaderboard</button>
+      <button class="nav-item" data-tab="rewards">Rewards</button>
+      <button class="nav-item" data-tab="settings">Settings</button>
     </nav>
 
-    <main class="main-content">
-      <section class="tab-content active" id="overview">
-        <div class="card">
-          <div class="card-header">Live Gas Price</div>
-          <div class="gas-meter">
-            <div class="gas-indicator" id="gasIndicator"></div>
-          </div>
-          <div class="gas-info">
-            <div id="currentGas">Loading...</div>
-          </div>
+    <main class="tab-content" id="overview">
+      <div class="card">
+        <div class="card-header">Live Gas Fee (Base)</div>
+        <div class="gas-meter">
+          <div id="gasFill"></div>
         </div>
-        <div class="card">
-          <div class="card-header">WARP Rewards</div>
-          <div>Points earned: <strong id="rewardPoints">88</strong></div>
-          <div>Streak: <strong>5 days</strong></div>
-        </div>
-      </section>
-
-      <section class="tab-content" id="leaderboard">
-        <div class="card">
-          <div class="card-header">Top 3 Users</div>
-          <div class="leaderboard-item"><span>1. 0xSpawniz</span><span>999 pts</span></div>
-          <div class="leaderboard-item"><span>2. 0xZoraKing</span><span>654 pts</span></div>
-          <div class="leaderboard-item"><span>3. 0xBaseLover</span><span>521 pts</span></div>
-        </div>
-      </section>
-
-      <section class="tab-content" id="wallet">
-        <div class="card wallet-card">
-          <div class="card-header">Your Wallet</div>
-          <button class="connect-btn" id="connectBtn">Connect Wallet</button>
-          <div class="wallet-address" id="walletAddress"></div>
-          <div class="wallet-balance">WAI Balance: <span id="waiBalance">0</span></div>
-        </div>
-      </section>
-
-      <section class="tab-content" id="settings">
-        <div class="card">
-          <div class="card-header">App Settings</div>
-          <div class="settings-item">
-            <span>Language</span>
-            <select>
-              <option value="en">English</option>
-              <option value="sv">Svenska</option>
-            </select>
-          </div>
-        </div>
-      </section>
+        <div id="gasValue">Loading...</div>
+      </div>
     </main>
 
-    <div class="footer">
-      Live Gas Fee (Base Network) — Created by Spawniz — On Base
-    </div>
+    <main class="tab-content hidden" id="wallet">
+      <div class="card">
+        <div class="card-header">Wallet</div>
+        <button id="connectBtn">Connect Wallet</button>
+        <button id="checkBtn">Check Address</button>
+        <div id="walletAddress"></div>
+      </div>
+    </main>
+
+    <main class="tab-content hidden" id="leaderboard">
+      <div class="card">
+        <div class="card-header">Leaderboard</div>
+        <div id="leaderboardList">
+          <p>Top users will appear here.</p>
+        </div>
+      </div>
+    </main>
+
+    <main class="tab-content hidden" id="rewards">
+      <div class="card">
+        <div class="card-header">Your Rewards</div>
+        <p>Daily streaks, gas efficiency bonuses, and more coming soon.</p>
+      </div>
+    </main>
+
+    <main class="tab-content hidden" id="settings">
+      <div class="card">
+        <div class="card-header">Settings</div>
+        <label>Language:
+          <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="sv">Svenska</option>
+            <option value="fr">Français</option>
+            <option value="ru">Русский</option>
+            <option value="zh">中文</option>
+          </select>
+        </label>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>Created by <a href="https://zora.co/spawniz" target="_blank">Spawniz</a> | Token: <a href="https://zora.co/coin/base:0x8ab57bdfc4e900b62f309bfaa6e1802755330ca6" target="_blank">View</a></p>
+    </footer>
   </div>
-
-  <script>
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', function () {
-        document.querySelectorAll('.nav-item, .tab-content').forEach(el => el.classList.remove('active'));
-        this.classList.add('active');
-        document.getElementById(this.dataset.tab).classList.add('active');
-      });
-    });
-
-    // Simulerad gasprisanimation
-    let currentGas = 42;
-    setInterval(() => {
-      currentGas = Math.min(Math.max(currentGas + (Math.random() - 0.5) * 10, 5), 99);
-      document.getElementById('gasIndicator').style.left = `${currentGas}%`;
-      document.getElementById('currentGas').textContent = `${currentGas.toFixed(1)} Gwei`;
-    }, 1400);
-
-    // Mock wallet
-    document.getElementById('connectBtn').addEventListener('click', () => {
-      const connected = document.getElementById('walletStatus').textContent.includes('✅');
-      if (!connected) {
-        document.getElementById('walletStatus').textContent = '✅ Connected';
-        document.getElementById('walletAddress').textContent = '0xSpawniz...1234';
-        document.getElementById('connectBtn').textContent = 'Disconnect';
-        document.getElementById('waiBalance').textContent = '1200';
-      } else {
-        document.getElementById('walletStatus').textContent = '🔴 Not connected';
-        document.getElementById('walletAddress').textContent = '';
-        document.getElementById('connectBtn').textContent = 'Connect Wallet';
-        document.getElementById('waiBalance').textContent = '0';
-      }
-    });
-  </script>
 </body>
 </html>
