@@ -1,7 +1,7 @@
-// === GASPRIS VIA PROXY ===
+// === GASPRIS MED NYCKEL DIREKT ===
 async function updateGas() {
   try {
-    const res = await fetch('/api/gas');
+    const res = await fetch('https://api.owlracle.info/v3/eth/gas?apikey=b9bee1f4421d4eebb170067dc3e2e579');
     const data = await res.json();
     document.getElementById('gas').textContent =
       `Ethereum gas: ${data.speeds[0].gasPrice} Gwei`;
