@@ -8,7 +8,16 @@
 </head>
 <body>
   <div class="warp-container">
-    <h1>WarpAI¹</h1>
+    <header>
+      <h1>WarpAI¹</h1>
+      <button class="settings-btn">⚙️</button>
+    </header>
+
+    <div class="address-check">
+      <input type="text" id="walletInput" placeholder="Enter wallet address" />
+      <button onclick="checkAddress()">Check</button>
+      <button onclick="claimAddress()">Claim</button>
+    </div>
 
     <nav class="nav-tabs">
       <button onclick="showTab('overview')">Overview</button>
@@ -34,10 +43,9 @@
       </div>
 
       <div class="overview-card">
-        <h2>Badges</h2>
-        <p>🎯 Mint Warrior (soon)</p>
-        <p>📈 Flipper Pro (soon)</p>
-        <p>🧠 Long-term Holder (soon)</p>
+        <h2>WarpAI Coin</h2>
+        <p>💰 Balance: <strong>12.5 WAI</strong></p>
+        <button>Boost Someone</button>
       </div>
     </div>
 
@@ -48,11 +56,15 @@
     </div>
 
     <div id="leaderboard" class="tab">
-      <p>🏆 Coming soon: Top wallets, badges, and activity streaks</p>
+      <p>🏆 Coming soon: Top wallets, badges, and streaks</p>
     </div>
 
     <div id="gas" class="tab">
-      <div id="gas">⛽ Fetching gas price…</div>
+      <p>⛽ Live Gas Fee</p>
+      <div class="gas-bar-container">
+        <div id="gas-bar" class="gas-bar"></div>
+      </div>
+      <p id="gas-value">Loading…</p>
     </div>
   </div>
 
@@ -61,6 +73,16 @@
     function showTab(tabId) {
       document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
+    }
+    function checkAddress() {
+      const address = document.getElementById('walletInput').value;
+      localStorage.setItem('warpai_address', address);
+      alert("Address set: " + address);
+      // Trigger reload logic here
+    }
+    function claimAddress() {
+      const address = localStorage.getItem('warpai_address') || "None";
+      alert("Claiming rewards for: " + address);
     }
   </script>
 </body>
