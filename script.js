@@ -14,7 +14,8 @@ async function updateGas() {
 // === WALLET-ACTIVITY (BASE) ===
 async function loadWalletActivity() {
   const address = '0x541F9BE2e71DA6349dfA665Bb022C5DBA77A58d0';
-  const url = `https://api.basescan.org/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=5&sort=desc`;
+  const apiKey = 'CXTB4IUT31N836G93ZI3YQBEWBQEGGH5QS'; // gratis offentligt key
+  const url = `https://api.basescan.org/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=5&sort=desc&apikey=${apiKey}`;
 
   const activityDiv = document.getElementById('wallet-activity');
 
@@ -25,7 +26,9 @@ async function loadWalletActivity() {
     if (data.status === "1") {
       const txs = data.result.map(tx => {
         const valueEth = (Number(tx.value) / 1e18).toFixed(4);
-        return `<li>↳ ${valueEth} ETH to ${tx.to.slice(0, 8)}... (${tx.timeStamp})</li>`;
+        const shortTo = tx.to.slice(0, 6) + '...' + tx.to.slice(-4);
+        const time = new Date(tx.timeStamp * 1000).toLocaleString();
+        return `<li>↳ ${valueEth} ETH → ${shortTo} (${time})</li>`;
       }).join("");
 
       activityDiv.innerHTML = `
