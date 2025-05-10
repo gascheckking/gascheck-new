@@ -2,17 +2,151 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WarpSocial</title>
-  <link rel="stylesheet" href="style.css"/>
-  <script defer src="lang.js"></script>
-  <script defer src="script.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WarpSocial | Onchain Companion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #1a1a1a;
+      --accent: #00FFC3;
+      --text: #f1f1f1;
+      --border: #2d2d2d;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      max-width: 375px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin: 16px 0;
+    }
+
+    .nav-item {
+      padding: 12px;
+      text-align: center;
+      background: var(--surface);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-item.active {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .main-content {
+      margin-top: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .card-header {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .gas-meter {
+      height: 8px;
+      background: linear-gradient(90deg, var(--success) 0%, var(--warning) 50%, var(--danger) 100%);
+      border-radius: 4px;
+      position: relative;
+      margin: 16px 0;
+    }
+
+    .gas-indicator {
+      width: 3px;
+      height: 16px;
+      background: var(--text);
+      position: absolute;
+      top: -4px;
+      transform: translateX(-50%);
+      transition: left 0.5s ease;
+    }
+
+    .leaderboard-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+    }
+
+    .wallet-card {
+      text-align: center;
+      padding: 24px;
+    }
+
+    .wallet-address {
+      font-family: monospace;
+      margin: 12px 0;
+      color: var(--accent);
+    }
+
+    @media (max-width: 400px) {
+      .app-container {
+        padding: 8px;
+      }
+
+      .nav-item {
+        font-size: 0.9rem;
+        padding: 8px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="app-container">
     <header class="header">
       <div class="logo">🌀 WarpSocial</div>
-      <div class="wallet-status" id="walletStatus">Not Connected</div>
+      <div class="wallet-status" id="walletStatus">Not connected</div>
     </header>
 
     <nav class="nav-tabs">
@@ -25,7 +159,7 @@
     <main class="main-content">
       <section class="tab-content active" id="overview">
         <div class="card">
-          <div class="card-header">Live Gas</div>
+          <div class="card-header">Live Gas Price</div>
           <div class="gas-meter">
             <div class="gas-indicator" id="gasIndicator"></div>
           </div>
@@ -35,21 +169,25 @@
         </div>
         <div class="card">
           <div class="card-header">Recent Transactions</div>
-          <div class="tx-list"><div class="tx-item">No activity yet</div></div>
+          <div class="tx-list">
+            <div class="tx-item">No activity yet</div>
+          </div>
         </div>
       </section>
 
       <section class="tab-content" id="leaderboard">
         <div class="card">
           <div class="card-header">Top Users</div>
-          <div class="leaderboard-list" id="leaderboardList"></div>
+          <div class="leaderboard-item"><span>1. 0xZoraMaster</span><span>420 pts</span></div>
+          <div class="leaderboard-item"><span>2. 0xBaseKing</span><span>369 pts</span></div>
+          <div class="leaderboard-item"><span>3. 0xSpawniz</span><span>300 pts</span></div>
         </div>
       </section>
 
       <section class="tab-content" id="wallet">
         <div class="card wallet-card">
           <div class="card-header">Your Wallet</div>
-          <button class="connect-btn" id="connectWallet">Connect Wallet</button>
+          <button class="connect-btn" id="connectBtn">Connect Wallet</button>
           <div class="wallet-address" id="walletAddress"></div>
           <div class="wallet-balance"><span>WAI: </span><span id="waiBalance">0</span></div>
         </div>
@@ -57,21 +195,55 @@
 
       <section class="tab-content" id="settings">
         <div class="card">
-          <div class="card-header">Settings</div>
+          <div class="card-header">App Settings</div>
           <div class="settings-item">
             <span>Dark Mode</span>
-            <input type="checkbox" id="darkModeToggle" checked>
+            <input type="checkbox" id="darkModeToggle" checked />
           </div>
           <div class="settings-item">
             <span>Language</span>
             <select id="languageSelect">
               <option value="en">English</option>
               <option value="sv">Svenska</option>
+              <option value="fr">Français</option>
+              <option value="ru">Русский</option>
+              <option value="zh">中文</option>
             </select>
           </div>
         </div>
       </section>
     </main>
   </div>
+
+  <script>
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', function () {
+        document.querySelectorAll('.nav-item, .tab-content').forEach(el => el.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById(this.dataset.tab).classList.add('active');
+      });
+    });
+
+    let currentGas = 30;
+    setInterval(() => {
+      currentGas = Math.min(Math.max(currentGas + (Math.random() - 0.5) * 10, 10), 100);
+      document.getElementById('gasIndicator').style.left = `${currentGas}%`;
+      document.getElementById('currentGas').textContent = `${currentGas.toFixed(1)} Gwei`;
+    }, 1500);
+
+    document.getElementById('connectBtn').addEventListener('click', () => {
+      const status = document.getElementById('walletStatus');
+      const isConnected = status.textContent.includes('✅');
+      if (!isConnected) {
+        status.textContent = '✅ Connected';
+        document.getElementById('walletAddress').textContent = '0x1234...5678';
+        document.getElementById('connectBtn').textContent = 'Disconnect';
+      } else {
+        status.textContent = '🔴 Not connected';
+        document.getElementById('walletAddress').textContent = '';
+        document.getElementById('connectBtn').textContent = 'Connect Wallet';
+      }
+    });
+  </script>
 </body>
 </html>
