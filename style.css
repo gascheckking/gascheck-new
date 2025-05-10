@@ -1,75 +1,77 @@
-body {
-  font-family: 'Inter', sans-serif;
-  background: #0f172a;
-  color: #f8fafc;
-  margin: 0;
-  padding: 20px;
-  text-align: center;
-}
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-nav {
-  margin: 20px 0;
-}
-nav button {
-  margin: 4px;
-  padding: 10px 15px;
-  background: #1e293b;
-  color: #00ffc3;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.gas-container {
-  margin: 40px auto;
-  width: 100px;
-  position: relative;
-}
-.gas-track {
-  height: 250px;
-  width: 24px;
-  margin: auto;
-  background: linear-gradient(to top, #ef4444, #facc15, #10b981);
-  border-radius: 12px;
-  position: relative;
-  box-shadow: 0 0 15px rgba(0,255,195,0.4);
-}
-.gas-needle {
-  position: absolute;
-  width: 50px;
-  height: 4px;
-  background: #00ffc3;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 2px;
-  box-shadow: 0 0 8px #00ffc3;
-  transition: bottom 0.4s ease;
-}
-.gas-display h2 {
-  margin-top: 20px;
-  color: #00ffc3;
-  text-shadow: 0 0 5px #00ffc3;
-}
-.card {
-  background: #1e293b;
-  margin: 10px;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,255,195,0.1);
-}
-.tab { display: none; }
-.tab.active { display: block; }
-select {
-  background: #1e293b;
-  color: #00ffc3;
-  border: none;
-  padding: 6px;
-  border-radius: 6px;
-}
-body.dark {
-  background: #000;
-  color: #fff;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WarpSocial</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script defer src="lang.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="logo">🌀 WarpSocial</div>
+      <div class="wallet-status" id="walletStatus">Not Connected</div>
+    </header>
+
+    <nav class="nav-tabs">
+      <div class="nav-item active" data-tab="overview">Overview</div>
+      <div class="nav-item" data-tab="leaderboard">Leaderboard</div>
+      <div class="nav-item" data-tab="wallet">Wallet</div>
+      <div class="nav-item" data-tab="settings">Settings</div>
+    </nav>
+
+    <main class="main-content">
+      <section class="tab-content active" id="overview">
+        <div class="card">
+          <div class="card-header">Live Gas</div>
+          <div class="gas-meter">
+            <div class="gas-indicator" id="gasIndicator"></div>
+          </div>
+          <div class="gas-info">
+            <div id="currentGas">Loading...</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">Recent Transactions</div>
+          <div class="tx-list"><div class="tx-item">No activity yet</div></div>
+        </div>
+      </section>
+
+      <section class="tab-content" id="leaderboard">
+        <div class="card">
+          <div class="card-header">Top Users</div>
+          <div class="leaderboard-list" id="leaderboardList"></div>
+        </div>
+      </section>
+
+      <section class="tab-content" id="wallet">
+        <div class="card wallet-card">
+          <div class="card-header">Your Wallet</div>
+          <button class="connect-btn" id="connectWallet">Connect Wallet</button>
+          <div class="wallet-address" id="walletAddress"></div>
+          <div class="wallet-balance"><span>WAI: </span><span id="waiBalance">0</span></div>
+        </div>
+      </section>
+
+      <section class="tab-content" id="settings">
+        <div class="card">
+          <div class="card-header">Settings</div>
+          <div class="settings-item">
+            <span>Dark Mode</span>
+            <input type="checkbox" id="darkModeToggle" checked>
+          </div>
+          <div class="settings-item">
+            <span>Language</span>
+            <select id="languageSelect">
+              <option value="en">English</option>
+              <option value="sv">Svenska</option>
+            </select>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
