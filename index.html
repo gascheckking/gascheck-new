@@ -3,63 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WarpAI – Onchain Gas Meter</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="lang.js" defer></script>
-  <script src="script.js" defer></script>
+  <title>WarpSocial</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script defer src="lang.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <div id="app">
-    <header>
-      <h1>WarpAI</h1>
-      <select id="languageSelect">
-        <option value="en">English</option>
-        <option value="sv">Svenska</option>
-      </select>
+  <div class="app-container">
+    <header class="header">
+      <div class="logo">🌀 WarpSocial</div>
+      <div class="wallet-status" id="walletStatus">Not Connected</div>
     </header>
 
-    <section class="gas-container">
-      <div class="gas-track" id="gasTrack">
-        <div class="gas-needle" id="gasNeedle"></div>
-      </div>
-      <div class="gas-display">
-        <h2 id="currentGas">0 Gwei</h2>
-        <p id="gasTime">--:--:--</p>
-      </div>
-    </section>
-
-    <nav>
-      <button onclick="switchTab('overview')">Overview</button>
-      <button onclick="switchTab('wallet')">Wallet</button>
-      <button onclick="switchTab('leaderboard')">Leaderboard</button>
-      <button onclick="switchTab('settings')">Settings</button>
+    <nav class="nav-tabs">
+      <div class="nav-item active" data-tab="overview">Overview</div>
+      <div class="nav-item" data-tab="leaderboard">Leaderboard</div>
+      <div class="nav-item" data-tab="wallet">Wallet</div>
+      <div class="nav-item" data-tab="settings">Settings</div>
     </nav>
 
-    <main>
-      <section id="overview" class="tab active">
-        <h2 data-key="overviewTitle">Overview</h2>
-        <div class="card">No recent transactions</div>
+    <main class="main-content">
+      <section class="tab-content active" id="overview">
+        <div class="card">
+          <div class="card-header">Live Gas</div>
+          <div class="gas-meter">
+            <div class="gas-indicator" id="gasIndicator"></div>
+          </div>
+          <div class="gas-info">
+            <div id="currentGas">Loading...</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">Recent Transactions</div>
+          <div class="tx-list"><div class="tx-item">No activity yet</div></div>
+        </div>
       </section>
 
-      <section id="wallet" class="tab">
-        <h2 data-key="walletTitle">Wallet</h2>
-        <button onclick="connectWallet()" data-key="connectWallet">Connect Wallet</button>
-        <div id="walletAddress" class="card">Not connected</div>
+      <section class="tab-content" id="leaderboard">
+        <div class="card">
+          <div class="card-header">Top Users</div>
+          <div class="leaderboard-list" id="leaderboardList"></div>
+        </div>
       </section>
 
-      <section id="leaderboard" class="tab">
-        <h2 data-key="leaderboardTitle">Leaderboard</h2>
-        <div class="card">0xZoraMaster — 420 pts</div>
-        <div class="card">0xSpawniz — 300 pts</div>
-        <div class="card">0xBaseKing — 250 pts</div>
+      <section class="tab-content" id="wallet">
+        <div class="card wallet-card">
+          <div class="card-header">Your Wallet</div>
+          <button class="connect-btn" id="connectWallet">Connect Wallet</button>
+          <div class="wallet-address" id="walletAddress"></div>
+          <div class="wallet-balance"><span>WAI: </span><span id="waiBalance">0</span></div>
+        </div>
       </section>
 
-      <section id="settings" class="tab">
-        <h2 data-key="settingsTitle">Settings</h2>
-        <label>
-          <input type="checkbox" id="darkModeToggle" />
-          <span data-key="darkMode">Dark Mode</span>
-        </label>
+      <section class="tab-content" id="settings">
+        <div class="card">
+          <div class="card-header">Settings</div>
+          <div class="settings-item">
+            <span>Dark Mode</span>
+            <input type="checkbox" id="darkModeToggle" checked>
+          </div>
+          <div class="settings-item">
+            <span>Language</span>
+            <select id="languageSelect">
+              <option value="en">English</option>
+              <option value="sv">Svenska</option>
+            </select>
+          </div>
+        </div>
       </section>
     </main>
   </div>
