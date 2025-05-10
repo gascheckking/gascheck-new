@@ -1,89 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WarpAI — Onchain Activity</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WarpAI | Onchain Companion</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <div class="warp-container">
+  <div class="app-container">
+    <!-- Header med wallet-status -->
     <header>
-      <h1>WarpAI¹</h1>
-      <button class="settings-btn">⚙️</button>
+      <div class="header-left">
+        <h1><span class="warp-logo">🌀</span> WarpAI</h1>
+        <div id="wallet-status" class="wallet-disconnected">
+          <i class="fas fa-wallet"></i>
+          <span>Not connected</span>
+        </div>
+      </div>
+      <button id="settings-btn" class="icon-btn">
+        <i class="fas fa-cog"></i>
+      </button>
     </header>
 
-    <div class="address-check">
-      <input type="text" id="walletInput" placeholder="Enter wallet address" />
-      <button onclick="checkAddress()">Check</button>
-      <button onclick="claimAddress()">Claim</button>
-    </div>
+    <!-- Main Content -->
+    <main>
+      <!-- Auto-connect sektion -->
+      <div class="connect-section">
+        <button id="connect-wallet" class="connect-btn">
+          <i class="fas fa-plug"></i> Connect Wallet
+        </button>
+        <div class="or-divider">OR</div>
+      </div>
 
-    <nav class="nav-tabs">
-      <button onclick="showTab('overview')">Overview</button>
-      <button onclick="showTab('wallet')">Wallet</button>
-      <button onclick="showTab('leaderboard')">Leaderboard</button>
-      <button onclick="showTab('gas')">Gas</button>
+      <!-- Manuell adressinput -->
+      <div class="input-card">
+        <input 
+          type="text" 
+          id="wallet-input" 
+          placeholder="Enter any 0x address to check"
+          pattern="^0x[a-fA-F0-9]{40}$"
+        >
+        <button id="check-btn" class="btn secondary">
+          <i class="fas fa-search"></i> Check Address
+        </button>
+      </div>
+
+      <!-- Overview-flik -->
+      <section id="overview-tab" class="tab-content active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3><i class="fas fa-gas-pump"></i> Gas Efficiency</h3>
+            <div class="gas-meter" id="gas-meter"></div>
+            <div class="gas-label" id="gas-label">–</div>
+          </div>
+          <div class="stat-card">
+            <h3><i class="fas fa-coins"></i> WarpAI Coins</h3>
+            <div class="coin-display" id="coin-display">0</div>
+            <button class="small-btn" id="claim-coins-btn">Claim</button>
+          </div>
+        </div>
+
+        <div class="activity-card">
+          <h3><i class="fas fa-bolt"></i> Recent Activity</h3>
+          <div id="activity-list" class="activity-list">
+            <!-- Dynamiskt innehåll -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-tab="overview-tab">
+        <i class="fas fa-home"></i>
+        <span>Overview</span>
+      </button>
+      <button class="nav-btn" data-tab="wallet-tab">
+        <i class="fas fa-wallet"></i>
+        <span>Wallet</span>
+      </button>
+      <button class="nav-btn" data-tab="leaderboard-tab">
+        <i class="fas fa-trophy"></i>
+        <span>Leaderboard</span>
+      </button>
     </nav>
 
-    <div id="overview" class="tab active">
-      <div class="overview-card">
-        <h2>Account Summary</h2>
-        <ul>
-          <li>🔥 Gas Used: <strong>0.0138 ETH</strong></li>
-          <li>💸 ETH Spent: <strong>0.1023 ETH</strong></li>
-          <li>🪙 ETH Earned: <strong>0.2481 ETH</strong></li>
-        </ul>
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3><i class="fas fa-cog"></i> Settings</h3>
+        <div class="setting-item">
+          <label><i class="fas fa-palette"></i> Theme</label>
+          <select id="theme-select">
+            <option value="dark">Dark Mode</option>
+            <option value="light">Light Mode</option>
+          </select>
+        </div>
+        <button id="close-settings" class="btn">Close</button>
       </div>
-
-      <div class="overview-card">
-        <h2>Daily Streak</h2>
-        <div class="streak-circle">3️⃣</div>
-        <p>You’re on a 3-day streak</p>
-      </div>
-
-      <div class="overview-card">
-        <h2>WarpAI Coin</h2>
-        <p>💰 Balance: <strong>12.5 WAI</strong></p>
-        <button>Boost Someone</button>
-      </div>
-    </div>
-
-    <div id="wallet" class="tab">
-      <div id="wallet-activity">
-        <p>🔄 Loading your onchain activity…</p>
-      </div>
-    </div>
-
-    <div id="leaderboard" class="tab">
-      <p>🏆 Coming soon: Top wallets, badges, and streaks</p>
-    </div>
-
-    <div id="gas" class="tab">
-      <p>⛽ Live Gas Fee</p>
-      <div class="gas-bar-container">
-        <div id="gas-bar" class="gas-bar"></div>
-      </div>
-      <p id="gas-value">Loading…</p>
     </div>
   </div>
 
   <script src="script.js"></script>
-  <script>
-    function showTab(tabId) {
-      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-    }
-    function checkAddress() {
-      const address = document.getElementById('walletInput').value;
-      localStorage.setItem('warpai_address', address);
-      alert("Address set: " + address);
-      // Trigger reload logic here
-    }
-    function claimAddress() {
-      const address = localStorage.getItem('warpai_address') || "None";
-      alert("Claiming rewards for: " + address);
-    }
-  </script>
 </body>
 </html>
