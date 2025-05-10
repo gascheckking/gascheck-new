@@ -1,20 +1,28 @@
-document.querySelectorAll('.nav-item').forEach(tab => {
+const tabs = document.querySelectorAll('.nav-item');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tabs.forEach(t => t.classList.remove('active'));
+    contents.forEach(c => c.classList.add('hidden'));
+
     tab.classList.add('active');
-    document.getElementById(tab.dataset.tab).classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.remove('hidden');
   });
 });
 
-document.getElementById('connectWallet').addEventListener('click', () => {
-  const address = "0x1234...abcd";
-  document.getElementById('walletAddress').textContent = address;
-  document.getElementById('walletStatus').textContent = "✅ Connected";
+document.getElementById('connectBtn').addEventListener('click', () => {
+  document.getElementById('walletStatus').textContent = 'Connected';
+  document.getElementById('walletAddress').textContent = '0xSpawniz...';
 });
 
-setInterval(() => {
-  const gas = Math.floor(Math.random() * 100) + 1;
-  document.getElementById('currentGas').textContent = gas + " Gwei";
-  document.getElementById('gasIndicator').style.left = gas + "%";
-}, 2000);
+document.getElementById('checkBtn').addEventListener('click', () => {
+  alert('Checking address…');
+});
+
+function mockGasUpdate() {
+  const gwei = Math.floor(Math.random() * 100);
+  document.getElementById('gasValue').textContent = `${gwei} Gwei`;
+  document.getElementById('gasFill').style.width = `${gwei}%`;
+}
+setInterval(mockGasUpdate, 2000);
