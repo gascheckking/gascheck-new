@@ -1,20 +1,47 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GasCheck New</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WarpAI — Onchain Activity</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>GasCheck New</h1>
+  <div class="warp-container">
+    <h1>WarpAI¹</h1>
 
-  <div id="gas">Laddar gaspris…</div>
+    <nav class="nav-tabs">
+      <button onclick="showTab('overview')">Overview</button>
+      <button onclick="showTab('wallet')">Wallet</button>
+      <button onclick="showTab('leaderboard')">Leaderboard</button>
+      <button onclick="showTab('gas')">Gas</button>
+    </nav>
 
-  <div id="wallet-activity">
-    <p>Laddar din on-chain-aktivitet…</p>
+    <div id="overview" class="tab active">
+      <p>🔍 Kommande: Samlad vy av din aktivitet, streaks & vinster</p>
+    </div>
+
+    <div id="wallet" class="tab">
+      <div id="wallet-activity">
+        <p>🔄 Laddar din on-chain-aktivitet…</p>
+      </div>
+    </div>
+
+    <div id="leaderboard" class="tab">
+      <p>🏆 Kommande: Top wallets, badges, streaks</p>
+    </div>
+
+    <div id="gas" class="tab">
+      <div id="gas">⛽ Laddar gaspris…</div>
+    </div>
   </div>
 
   <script src="script.js"></script>
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    }
+  </script>
 </body>
 </html>
