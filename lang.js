@@ -2,27 +2,44 @@ const translations = {
   sv: {
     overviewTitle: "Översikt",
     recentActivity: "Senaste transaktioner:",
-    noActivity: "Ingen aktivitet än",
+    noActivity: "Ingen aktivitet ännu",
     walletTitle: "Plånbok",
+    connectWallet: "Anslut Plånbok",
+    connected: "Ansluten:",
     leaderboardTitle: "Top 10 Användare",
     gasTitle: "Gas Effektivitet",
-    settingsTitle: "Appinställningar"
+    loadingGas: "Laddar gaspris...",
+    settingsTitle: "Inställningar",
+    darkMode: "Mörkt läge"
   },
   en: {
     overviewTitle: "Overview",
     recentActivity: "Recent transactions:",
     noActivity: "No activity yet",
     walletTitle: "Wallet",
+    connectWallet: "Connect Wallet",
+    connected: "Connected:",
     leaderboardTitle: "Top 10 Users",
     gasTitle: "Gas Efficiency",
-    settingsTitle: "App Settings"
+    loadingGas: "Loading gas price...",
+    settingsTitle: "Settings",
+    darkMode: "Dark Mode"
   }
 };
 
-document.getElementById("languageSelect").addEventListener("change", (e) => {
-  const lang = e.target.value;
+function applyLanguage(lang) {
   document.querySelectorAll("[data-key]").forEach(el => {
     const key = el.getAttribute("data-key");
-    el.textContent = translations[lang][key];
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const langSelect = document.getElementById("languageSelect");
+  applyLanguage(langSelect.value);
+  langSelect.addEventListener("change", (e) => {
+    applyLanguage(e.target.value);
   });
 });
