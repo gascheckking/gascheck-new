@@ -1,77 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WarpSocial</title>
-  <link rel="stylesheet" href="style.css"/>
-  <script defer src="lang.js"></script>
-  <script defer src="script.js"></script>
-</head>
-<body>
-  <div class="app-container">
-    <header class="header">
-      <div class="logo">🌀 WarpSocial</div>
-      <div class="wallet-status" id="walletStatus">Not Connected</div>
-    </header>
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #f1f1f1;
+}
 
-    <nav class="nav-tabs">
-      <div class="nav-item active" data-tab="overview">Overview</div>
-      <div class="nav-item" data-tab="leaderboard">Leaderboard</div>
-      <div class="nav-item" data-tab="wallet">Wallet</div>
-      <div class="nav-item" data-tab="settings">Settings</div>
-    </nav>
+.app-container {
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 16px;
+}
 
-    <main class="main-content">
-      <section class="tab-content active" id="overview">
-        <div class="card">
-          <div class="card-header">Live Gas</div>
-          <div class="gas-meter">
-            <div class="gas-indicator" id="gasIndicator"></div>
-          </div>
-          <div class="gas-info">
-            <div id="currentGas">Loading...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">Recent Transactions</div>
-          <div class="tx-list"><div class="tx-item">No activity yet</div></div>
-        </div>
-      </section>
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2d2d2d;
+}
 
-      <section class="tab-content" id="leaderboard">
-        <div class="card">
-          <div class="card-header">Top Users</div>
-          <div class="leaderboard-list" id="leaderboardList"></div>
-        </div>
-      </section>
+.logo {
+  font-size: 1.5rem;
+  color: #00FFC3;
+}
 
-      <section class="tab-content" id="wallet">
-        <div class="card wallet-card">
-          <div class="card-header">Your Wallet</div>
-          <button class="connect-btn" id="connectWallet">Connect Wallet</button>
-          <div class="wallet-address" id="walletAddress"></div>
-          <div class="wallet-balance"><span>WAI: </span><span id="waiBalance">0</span></div>
-        </div>
-      </section>
+.nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 12px 0;
+  gap: 6px;
+}
 
-      <section class="tab-content" id="settings">
-        <div class="card">
-          <div class="card-header">Settings</div>
-          <div class="settings-item">
-            <span>Dark Mode</span>
-            <input type="checkbox" id="darkModeToggle" checked>
-          </div>
-          <div class="settings-item">
-            <span>Language</span>
-            <select id="languageSelect">
-              <option value="en">English</option>
-              <option value="sv">Svenska</option>
-            </select>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
-</body>
-</html>
+.nav-item {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  background: #1a1a1a;
+  border: none;
+  border-radius: 6px;
+  color: #f1f1f1;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  background: #00FFC3;
+  color: #000;
+}
+
+.card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #2d2d2d;
+}
+
+.card-header {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #00FFC3;
+}
+
+.gas-meter {
+  background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
+  height: 10px;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+#gasFill {
+  height: 100%;
+  background: #f1f1f1;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.hidden {
+  display: none;
+}
+
+button {
+  padding: 10px;
+  margin: 5px 0;
+  width: 100%;
+  background: #00FFC3;
+  border: none;
+  border-radius: 6px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: #888;
+}
