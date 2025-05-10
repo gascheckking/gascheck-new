@@ -1,294 +1,66 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarpAI | Onchain Companion</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0a0a0a;
-      --surface: #1a1a1a;
-      --accent: #00FFC3;
-      --text: #f1f1f1;
-      --border: #2d2d2d;
-      --success: #10B981;
-      --warning: #F59E0B;
-      --danger: #EF4444;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-    }
-
-    .app-container {
-      max-width: 375px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    /* Header */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Navigering */
-    .nav-tabs {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 4px;
-      margin: 16px 0;
-    }
-
-    .nav-item {
-      padding: 12px;
-      text-align: center;
-      background: var(--surface);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .nav-item.active {
-      background: var(--accent);
-      color: #000;
-    }
-
-    /* Huvudinnehåll */
-    .main-content {
-      margin-top: 24px;
-    }
-
-    /* Kortlayouter */
-    .card {
-      background: var(--surface);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      border: 1px solid var(--border);
-    }
-
-    .card-header {
-      font-size: 1.1rem;
-      margin-bottom: 12px;
-      color: var(--accent);
-    }
-
-    /* Gas-mätare */
-    .gas-meter {
-      height: 8px;
-      background: linear-gradient(90deg, 
-        var(--success) 0%, 
-        var(--warning) 50%, 
-        var(--danger) 100%
-      );
-      border-radius: 4px;
-      position: relative;
-      margin: 16px 0;
-    }
-
-    .gas-indicator {
-      width: 3px;
-      height: 16px;
-      background: var(--text);
-      position: absolute;
-      top: -4px;
-      transform: translateX(-50%);
-      transition: left 0.5s ease;
-    }
-
-    /* Leaderboard */
-    .leaderboard-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* Inställningar */
-    .settings-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-    }
-
-    /* Wallet-sektion */
-    .wallet-card {
-      text-align: center;
-      padding: 24px;
-    }
-
-    .wallet-address {
-      font-family: monospace;
-      margin: 12px 0;
-      color: var(--accent);
-    }
-
-    @media (max-width: 400px) {
-      .app-container {
-        padding: 8px;
-      }
-      
-      .nav-item {
-        font-size: 0.9rem;
-        padding: 8px;
-      }
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WarpAI – Onchain Activity Tracker</title>
+  <link href="style.css" rel="stylesheet" />
+  <script src="lang.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Header -->
-    <header class="header">
-      <div class="logo">
-        <span>🌀</span>
-        WarpAI
-      </div>
-      <div class="wallet-status" id="walletStatus">
-        Ej ansluten
-      </div>
+  <div id="app">
+    <header>
+      <h1>WarpAI</h1>
+      <select id="languageSelect">
+        <option value="en">English</option>
+        <option value="sv">Svenska</option>
+      </select>
     </header>
 
-    <!-- Navigering -->
-    <nav class="nav-tabs">
-      <div class="nav-item active" data-tab="overview">Översikt</div>
-      <div class="nav-item" data-tab="leaderboard">Topplistan</div>
-      <div class="nav-item" data-tab="wallet">Plånbok</div>
-      <div class="nav-item" data-tab="settings">Inställningar</div>
+    <nav>
+      <button onclick="switchTab('overview')">Overview</button>
+      <button onclick="switchTab('wallet')">Wallet</button>
+      <button onclick="switchTab('leaderboard')">Leaderboard</button>
+      <button onclick="switchTab('gas')">Gas</button>
+      <button onclick="switchTab('settings')">Settings</button>
     </nav>
 
-    <!-- Huvudinnehåll -->
-    <main class="main-content">
-      <!-- Översikt-flik -->
-      <section class="tab-content active" id="overview">
-        <div class="card">
-          <div class="card-header">Live Gaspris</div>
-          <div class="gas-meter">
-            <div class="gas-indicator" id="gasIndicator"></div>
-          </div>
-          <div class="gas-info">
-            <div id="currentGas">Laddar...</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">Senaste Transaktioner</div>
-          <div class="tx-list">
-            <div class="tx-item">Ingen aktivitet än</div>
-          </div>
-        </div>
+    <main>
+      <section id="overview" class="tab active">
+        <h2 data-key="overviewTitle">Overview</h2>
+        <p data-key="recentActivity">Recent transactions:</p>
+        <p data-key="noActivity">No activity yet</p>
       </section>
 
-      <!-- Topplistan-flik -->
-      <section class="tab-content" id="leaderboard">
-        <div class="card">
-          <div class="card-header">Top 10 Användare</div>
-          <div class="leaderboard-list">
-            <div class="leaderboard-item">
-              <span>1. 0xZoraMaster</span>
-              <span>420 poäng</span>
-            </div>
-            <div class="leaderboard-item">
-              <span>2. 0xBaseKing</span>
-              <span>369 poäng</span>
-            </div>
-            <div class="leaderboard-item">
-              <span>3. 0xSpawniz</span>
-              <span>300 poäng</span>
-            </div>
-          </div>
-        </div>
+      <section id="wallet" class="tab">
+        <h2 data-key="walletTitle">Wallet</h2>
+        <button onclick="connectWallet()" data-key="connectWallet">Connect Wallet</button>
+        <p id="walletAddress">Not connected</p>
       </section>
 
-      <!-- Plånboks-flik -->
-      <section class="tab-content" id="wallet">
-        <div class="card wallet-card">
-          <div class="card-header">Din Plånbok</div>
-          <button class="connect-btn" id="connectBtn">Anslut Plånbok</button>
-          <div class="wallet-address" id="walletAddress"></div>
-          <div class="wallet-balance">
-            <span>WAI: </span>
-            <span id="waiBalance">0</span>
-          </div>
-        </div>
+      <section id="leaderboard" class="tab">
+        <h2 data-key="leaderboardTitle">Top 10 Users</h2>
+        <ol id="topUsers">
+          <li>0xZoraMaster — 420 pts</li>
+          <li>0xBaseKing — 369 pts</li>
+          <li>0xSpawniz — 300 pts</li>
+        </ol>
       </section>
 
-      <!-- Inställningar-flik -->
-      <section class="tab-content" id="settings">
-        <div class="card">
-          <div class="card-header">Appinställningar</div>
-          <div class="settings-item">
-            <span>Mörkt Läge</span>
-            <label class="switch">
-              <input type="checkbox" id="darkModeToggle" checked>
-              <span class="slider"></span>
-            </label>
-          </div>
-          <div class="settings-item">
-            <span>Språk</span>
-            <select id="languageSelect">
-              <option value="sv">Svenska</option>
-              <option value="en">English</option>
-            </select>
-          </div>
-        </div>
+      <section id="gas" class="tab">
+        <h2 data-key="gasTitle">Gas Efficiency</h2>
+        <p id="gasMeter" data-key="loadingGas">Loading gas price...</p>
+      </section>
+
+      <section id="settings" class="tab">
+        <h2 data-key="settingsTitle">Settings</h2>
+        <label>
+          <input type="checkbox" id="darkModeToggle" />
+          <span data-key="darkMode">Dark Mode</span>
+        </label>
       </section>
     </main>
   </div>
-
-  <script>
-    // Grundläggande flikhantering
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', function() {
-        document.querySelectorAll('.nav-item, .tab-content').forEach(el => {
-          el.classList.remove('active');
-        });
-        this.classList.add('active');
-        document.getElementById(this.dataset.tab).classList.add('active');
-      });
-    });
-
-    // Mockad gasprisanimation
-    let currentGas = 30;
-    setInterval(() => {
-      currentGas = Math.min(Math.max(currentGas + (Math.random() - 0.5) * 10, 10), 100);
-      document.getElementById('gasIndicator').style.left = `${currentGas}%`;
-      document.getElementById('currentGas').textContent = `${currentGas.toFixed(1)} Gwei`;
-    }, 1500);
-
-    // Mockad walletanslutning
-    document.getElementById('connectBtn').addEventListener('click', () => {
-      const statusElement = document.getElementById('walletStatus');
-      const isConnected = statusElement.textContent.includes('✅');
-      
-      if (!isConnected) {
-        statusElement.textContent = '✅ Ansluten';
-        document.getElementById('walletAddress').textContent = '0x1234...5678';
-        document.getElementById('connectBtn').textContent = 'Koppla Från';
-      } else {
-        statusElement.textContent = '🔒 Ej ansluten';
-        document.getElementById('walletAddress').textContent = '';
-        document.getElementById('connectBtn').textContent = 'Anslut Plånbok';
-      }
-    });
-  </script>
 </body>
 </html>
