@@ -4,17 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WarpSocial | Onchain Companion</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #0a0a0a;
       --surface: #1a1a1a;
-      --accent: #00FFC3;
+      --accent: #00ffc3;
       --text: #f1f1f1;
       --border: #2d2d2d;
-      --success: #10B981;
-      --warning: #F59E0B;
-      --danger: #EF4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
     }
 
     body {
@@ -23,13 +23,15 @@
       color: var(--text);
       margin: 0;
       padding: 0;
-      min-height: 100vh;
     }
 
     .app-container {
-      max-width: 375px;
+      max-width: 390px;
       margin: 0 auto;
       padding: 16px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     .header {
@@ -41,11 +43,15 @@
     }
 
     .logo {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: var(--accent);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+    }
+
+    .wallet-status {
+      font-size: 0.85rem;
     }
 
     .nav-tabs {
@@ -70,7 +76,15 @@
     }
 
     .main-content {
-      margin-top: 24px;
+      flex: 1;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
     }
 
     .card {
@@ -89,7 +103,7 @@
 
     .gas-meter {
       height: 8px;
-      background: linear-gradient(90deg, var(--success) 0%, var(--warning) 50%, var(--danger) 100%);
+      background: linear-gradient(90deg, var(--success), var(--warning), var(--danger));
       border-radius: 4px;
       position: relative;
       margin: 16px 0;
@@ -112,13 +126,6 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .settings-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-    }
-
     .wallet-card {
       text-align: center;
       padding: 24px;
@@ -128,6 +135,19 @@
       font-family: monospace;
       margin: 12px 0;
       color: var(--accent);
+    }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 12px 0 4px;
+      color: #777;
     }
 
     @media (max-width: 400px) {
@@ -145,7 +165,7 @@
 <body>
   <div class="app-container">
     <header class="header">
-      <div class="logo">🌀 WarpSocial</div>
+      <div class="logo">🌀 WarpAI</div>
       <div class="wallet-status" id="walletStatus">Not connected</div>
     </header>
 
@@ -168,19 +188,18 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-header">Recent Transactions</div>
-          <div class="tx-list">
-            <div class="tx-item">No activity yet</div>
-          </div>
+          <div class="card-header">WARP Rewards</div>
+          <div>Points earned: <strong id="rewardPoints">88</strong></div>
+          <div>Streak: <strong>5 days</strong></div>
         </div>
       </section>
 
       <section class="tab-content" id="leaderboard">
         <div class="card">
-          <div class="card-header">Top Users</div>
-          <div class="leaderboard-item"><span>1. 0xZoraMaster</span><span>420 pts</span></div>
-          <div class="leaderboard-item"><span>2. 0xBaseKing</span><span>369 pts</span></div>
-          <div class="leaderboard-item"><span>3. 0xSpawniz</span><span>300 pts</span></div>
+          <div class="card-header">Top 3 Users</div>
+          <div class="leaderboard-item"><span>1. 0xSpawniz</span><span>999 pts</span></div>
+          <div class="leaderboard-item"><span>2. 0xZoraKing</span><span>654 pts</span></div>
+          <div class="leaderboard-item"><span>3. 0xBaseLover</span><span>521 pts</span></div>
         </div>
       </section>
 
@@ -189,7 +208,7 @@
           <div class="card-header">Your Wallet</div>
           <button class="connect-btn" id="connectBtn">Connect Wallet</button>
           <div class="wallet-address" id="walletAddress"></div>
-          <div class="wallet-balance"><span>WAI: </span><span id="waiBalance">0</span></div>
+          <div class="wallet-balance">WAI Balance: <span id="waiBalance">0</span></div>
         </div>
       </section>
 
@@ -197,22 +216,19 @@
         <div class="card">
           <div class="card-header">App Settings</div>
           <div class="settings-item">
-            <span>Dark Mode</span>
-            <input type="checkbox" id="darkModeToggle" checked />
-          </div>
-          <div class="settings-item">
             <span>Language</span>
-            <select id="languageSelect">
+            <select>
               <option value="en">English</option>
               <option value="sv">Svenska</option>
-              <option value="fr">Français</option>
-              <option value="ru">Русский</option>
-              <option value="zh">中文</option>
             </select>
           </div>
         </div>
       </section>
     </main>
+
+    <div class="footer">
+      Live Gas Fee (Base Network) — Created by Spawniz — On Base
+    </div>
   </div>
 
   <script>
@@ -224,24 +240,27 @@
       });
     });
 
-    let currentGas = 30;
+    // Simulerad gasprisanimation
+    let currentGas = 42;
     setInterval(() => {
-      currentGas = Math.min(Math.max(currentGas + (Math.random() - 0.5) * 10, 10), 100);
+      currentGas = Math.min(Math.max(currentGas + (Math.random() - 0.5) * 10, 5), 99);
       document.getElementById('gasIndicator').style.left = `${currentGas}%`;
       document.getElementById('currentGas').textContent = `${currentGas.toFixed(1)} Gwei`;
-    }, 1500);
+    }, 1400);
 
+    // Mock wallet
     document.getElementById('connectBtn').addEventListener('click', () => {
-      const status = document.getElementById('walletStatus');
-      const isConnected = status.textContent.includes('✅');
-      if (!isConnected) {
-        status.textContent = '✅ Connected';
-        document.getElementById('walletAddress').textContent = '0x1234...5678';
+      const connected = document.getElementById('walletStatus').textContent.includes('✅');
+      if (!connected) {
+        document.getElementById('walletStatus').textContent = '✅ Connected';
+        document.getElementById('walletAddress').textContent = '0xSpawniz...1234';
         document.getElementById('connectBtn').textContent = 'Disconnect';
+        document.getElementById('waiBalance').textContent = '1200';
       } else {
-        status.textContent = '🔴 Not connected';
+        document.getElementById('walletStatus').textContent = '🔴 Not connected';
         document.getElementById('walletAddress').textContent = '';
         document.getElementById('connectBtn').textContent = 'Connect Wallet';
+        document.getElementById('waiBalance').textContent = '0';
       }
     });
   </script>
