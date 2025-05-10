@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WarpAI – Onchain Activity Tracker</title>
+  <title>WarpAI – Gas Tracker</title>
   <link href="style.css" rel="stylesheet" />
   <script src="lang.js" defer></script>
   <script src="script.js" defer></script>
@@ -18,39 +18,40 @@
       </select>
     </header>
 
+    <div class="gas-meter-box">
+      <div class="gas-track">
+        <div class="gas-needle" id="gasNeedle"></div>
+      </div>
+      <div class="gas-info">
+        <p class="gwei" id="currentGas">Loading...</p>
+        <p class="timestamp" id="gasTime"></p>
+      </div>
+    </div>
+
     <nav>
       <button onclick="switchTab('overview')">Overview</button>
       <button onclick="switchTab('wallet')">Wallet</button>
       <button onclick="switchTab('leaderboard')">Leaderboard</button>
-      <button onclick="switchTab('gas')">Gas</button>
       <button onclick="switchTab('settings')">Settings</button>
     </nav>
 
     <main>
       <section id="overview" class="tab active">
         <h2 data-key="overviewTitle">Overview</h2>
-        <p data-key="recentActivity">Recent transactions:</p>
-        <p data-key="noActivity">No activity yet</p>
+        <div class="card">No recent transactions</div>
       </section>
 
       <section id="wallet" class="tab">
         <h2 data-key="walletTitle">Wallet</h2>
         <button onclick="connectWallet()" data-key="connectWallet">Connect Wallet</button>
-        <p id="walletAddress">Not connected</p>
+        <div id="walletAddress" class="card">Not connected</div>
       </section>
 
       <section id="leaderboard" class="tab">
-        <h2 data-key="leaderboardTitle">Top 10 Users</h2>
-        <ol id="topUsers">
-          <li>0xZoraMaster — 420 pts</li>
-          <li>0xBaseKing — 369 pts</li>
-          <li>0xSpawniz — 300 pts</li>
-        </ol>
-      </section>
-
-      <section id="gas" class="tab">
-        <h2 data-key="gasTitle">Gas Efficiency</h2>
-        <p id="gasMeter" data-key="loadingGas">Loading gas price...</p>
+        <h2 data-key="leaderboardTitle">Leaderboard</h2>
+        <div class="card">0xZoraMaster — 420 pts</div>
+        <div class="card">0xSpawniz — 300 pts</div>
+        <div class="card">0xBaseKing — 250 pts</div>
       </section>
 
       <section id="settings" class="tab">
