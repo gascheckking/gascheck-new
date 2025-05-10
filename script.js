@@ -1,27 +1,20 @@
-function switchTab(id) {
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-function connectWallet() {
-  const address = "0x3951...dD4c";
-  document.getElementById("walletAddress").innerText = address;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const needle = document.getElementById("gasNeedle");
-  function updateGas() {
-    const gwei = Math.floor(Math.random() * 120);
-    const max = 120;
-    const percent = (gwei / max) * 100;
-    needle.style.bottom = `${percent}%`;
-    document.getElementById("currentGas").textContent = `${gwei} Gwei`;
-    document.getElementById("gasTime").textContent = new Date().toLocaleTimeString();
-  }
-  updateGas();
-  setInterval(updateGas, 4000);
-
-  document.getElementById("darkModeToggle").addEventListener("change", e => {
-    document.body.classList.toggle("dark", e.target.checked);
+document.querySelectorAll('.nav-item').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
   });
 });
+
+document.getElementById('connectWallet').addEventListener('click', () => {
+  const address = "0x1234...abcd";
+  document.getElementById('walletAddress').textContent = address;
+  document.getElementById('walletStatus').textContent = "✅ Connected";
+});
+
+setInterval(() => {
+  const gas = Math.floor(Math.random() * 100) + 1;
+  document.getElementById('currentGas').textContent = gas + " Gwei";
+  document.getElementById('gasIndicator').style.left = gas + "%";
+}, 2000);
