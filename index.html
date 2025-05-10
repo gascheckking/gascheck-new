@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WarpAI – Gas Tracker</title>
-  <link href="style.css" rel="stylesheet" />
+  <title>WarpAI – Onchain Gas Meter</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="lang.js" defer></script>
   <script src="script.js" defer></script>
 </head>
@@ -18,15 +18,15 @@
       </select>
     </header>
 
-    <div class="gas-meter-box">
-      <div class="gas-track">
+    <section class="gas-container">
+      <div class="gas-track" id="gasTrack">
         <div class="gas-needle" id="gasNeedle"></div>
       </div>
-      <div class="gas-info">
-        <p class="gwei" id="currentGas">Loading...</p>
-        <p class="timestamp" id="gasTime"></p>
+      <div class="gas-display">
+        <h2 id="currentGas">0 Gwei</h2>
+        <p id="gasTime">--:--:--</p>
       </div>
-    </div>
+    </section>
 
     <nav>
       <button onclick="switchTab('overview')">Overview</button>
