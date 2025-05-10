@@ -9,7 +9,18 @@ function connectWallet() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("darkModeToggle").addEventListener("change", (e) => {
+  const needle = document.getElementById("gasNeedle");
+  function updateGas() {
+    const gwei = Math.floor(Math.random() * 100);
+    const percentage = Math.min((gwei / 100) * 100, 100);
+    needle.style.bottom = percentage + "%";
+    document.getElementById("currentGas").textContent = `${gwei} Gwei`;
+    document.getElementById("gasTime").textContent = new Date().toLocaleTimeString();
+  }
+  setInterval(updateGas, 3000);
+  updateGas();
+
+  document.getElementById("darkModeToggle").addEventListener("change", e => {
     document.body.classList.toggle("dark", e.target.checked);
   });
 });
