@@ -1,20 +1,26 @@
-// ===== GAS TRACKER (MOCK DATA) =====
-function updateGasPrice() {
-  const gasPriceElement = document.getElementById('gas-price');
-  const gasLevel = document.querySelector('.gas-level');
-  
-  // Simulerar live-data
-  const randomGas = Math.floor(Math.random() * 100) + 10;
-  gasPriceElement.textContent = `${randomGas} Gwei ${getGasEmoji(randomGas)}`;
-  gasLevel.style.width = `${Math.min(100, randomGas)}%`;
+// ===== FLIKHANTERING =====
+document.querySelectorAll('.nav-item').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
 
-  // Färg baserat på pris
-  if (randomGas > 80) {
-    gasLevel.style.background = '#ff6b6b'; // Röd
-  } else if (randomGas > 50) {
-    gasLevel.style.background = '#ffd166'; // Gul
-  } else {
-    gasLevel.style.background = '#6E6EDE'; // Lila
+// ===== GAS TRACKER (LIVE DATA) =====
+async function fetchGas() {
+  try {
+    const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=demo");
+    const data = await res.json();
+    const gwei = data.speeds[1].estimatedFee.toFixed(1);
+    
+    document.getElementById("gas-status").textContent = `${gwei} Gwei ${getGasEmoji(gwei)}`;
+    document.getElementById("gas-fill").style.width = `${Math.min(gwei, 100)}%`;
+  } catch (error) {
+    console.error("Failed to fetch gas:", error);
+    document.getElementById("gas-status").textContent = "Error loading data";
   }
 }
 
@@ -24,14 +30,18 @@ function getGasEmoji(gwei) {
   return '💀';
 }
 
-// Uppdatera var 15:e sekund
-setInterval(updateGasPrice, 15000);
-updateGasPrice();
-
 // ===== WALLET CONNECT (MOCK) =====
-document.getElementById('connect-wallet').addEventListener('click', () => {
-  alert("WalletConnect kommer här! 🚀");
+document.getElementById("connect-wallet").addEventListener("click", () => {
+  document.getElementById("wallet-status").textContent = "Connected 🟢";
+  alert("WalletConnect integration kommer här!");
 });
 
-// ===== REFRESH KNAPP =====
-document.getElementById('refresh-gas').addEventListener('click', updateGasPrice);
+// ===== CLAIM FUNCTION (MOCK) =====
+document.getElementById("claim-rewards").addEventListener("click", () => {
+  alert("Claim-funktion kopplad till WarpPoints.sol kommer här!");
+});
+
+// ===== INIT =====
+fetchGas();
+setInterval(fetchGas, 30000);
+document.getElementById("refresh-gas").addEventListener("click", fetchGas);
