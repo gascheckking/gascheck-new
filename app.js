@@ -1,8 +1,7 @@
 // app.js
 import { ethers } from "ethers";
-import { getGasDetails } from "./gas.js";
 
-// FLIKHANTERING
+// Flikhantering
 document.querySelectorAll(".nav-item").forEach(tab => {
   tab.addEventListener("click", () => {
     document.querySelectorAll(".nav-item").forEach(t => t.classList.remove("active"));
@@ -12,50 +11,24 @@ document.querySelectorAll(".nav-item").forEach(tab => {
   });
 });
 
-// KONTRAKTINSTÄLLNINGAR
-const contractAddress = "0xDIN_ADRESS_HÄR"; // Ersätt
-const contractABI = [ /* DIN ABI HÄR */ ];  // Ersätt
-
-async function loadContract() {
-  const provider = new ethers.BrowserProvider(window.ethereum);
-  const signer = await provider.getSigner();
-  return new ethers.Contract(contractAddress, contractABI, signer);
-}
-
-// WALLET-ANSLUTNING
-async function connectWallet() {
+// Wallet
+document.getElementById("connect-wallet").addEventListener("click", async () => {
   if (!window.ethereum) return alert("Installera MetaMask!");
   const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
   document.getElementById("wallet-info").textContent = accounts[0];
-}
+});
 
-// HÄMTA BALANS
-async function getBalance() {
-  const contract = await loadContract();
-  const balance = await contract.getBalance(); // om getBalance finns
-  console.log("Balance:", balance.toString());
-}
-
-// GASPRIS + EMOJI
+// Gas
 async function fetchGas() {
   try {
     const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=demo");
     const json = await res.json();
     const gwei = json.speeds[1].estimatedFee.toFixed(1);
-    const meter = document.getElementById("gasValue");
-    const emoji = document.getElementById("gasEmoji");
-
-    meter.textContent = `${gwei} Gwei`;
-    if (gwei < 30) emoji.textContent = "😎";
-    else if (gwei < 100) emoji.textContent = "🔥";
-    else emoji.textContent = "💀";
-  } catch {
-    document.getElementById("gasValue").textContent = "Failed";
+    document.getElementById("gas-status").textContent = `${gwei} Gwei`;
+    document.getElementById("gasFill").style.width = `${Math.min(gwei, 100)}%`;
+  } catch (e) {
+    document.getElementById("gas-status").textContent = "N/A";
   }
 }
-
-// INIT
 fetchGas();
 setInterval(fetchGas, 30000);
-document.getElementById("connectBtn").addEventListener("click", connectWallet);
-document.getElementById("balanceBtn").addEventListener("click", getBalance);
