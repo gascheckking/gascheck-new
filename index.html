@@ -3,152 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarpChain | Onchain Activity</title>
+  <title>WarpAI – Gas Tracker & Social</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #0a0a0a;
-      color: #f1f1f1;
-    }
-
-    .app-container {
-      max-width: 375px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #2d2d2d;
-    }
-
-    .logo {
-      font-size: 1.5rem;
-      color: #00FFC3;
-    }
-
-    .nav-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      margin: 12px 0;
-      gap: 6px;
-    }
-
-    .nav-item {
-      flex: 1;
-      padding: 10px;
-      text-align: center;
-      background: #1a1a1a;
-      border: none;
-      border-radius: 6px;
-      color: #f1f1f1;
-      cursor: pointer;
-    }
-
-    .nav-item.active {
-      background: #00FFC3;
-      color: #000;
-    }
-
-    .card {
-      background: #1a1a1a;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      border: 1px solid #2d2d2d;
-    }
-
-    .card-header {
-      font-size: 1.1rem;
-      margin-bottom: 12px;
-      color: #00FFC3;
-    }
-
-    .gas-meter {
-      background: #444;
-      height: 10px;
-      border-radius: 6px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    #gasFill {
-      height: 100%;
-      background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    button {
-      padding: 10px;
-      margin: 5px 0;
-      width: 100%;
-      background: #00FFC3;
-      border: none;
-      border-radius: 6px;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 0.85rem;
-      color: #888;
-    }
-  </style>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const tabs = document.querySelectorAll(".nav-item");
-      const contents = document.querySelectorAll(".tab-content");
-
-      tabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-          tabs.forEach(t => t.classList.remove("active"));
-          contents.forEach(c => c.classList.add("hidden"));
-
-          tab.classList.add("active");
-          document.getElementById(tab.dataset.tab).classList.remove("hidden");
-        });
-      });
-
-      async function fetchGas() {
-        try {
-          const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=demo");
-          const json = await res.json();
-          const gwei = json.speeds[1].estimatedFee.toFixed(1);
-          document.getElementById("gas-status").textContent = `${gwei} Gwei`;
-          document.getElementById("gasFill").style.width = `${Math.min(gwei, 100)}%`;
-        } catch (e) {
-          document.getElementById("gas-status").textContent = "Failed to load";
-        }
-      }
-
-      fetchGas();
-      setInterval(fetchGas, 30000);
-    });
-
-    function connectWallet() {
-      document.getElementById("wallet-status").textContent = "🔗 Connected";
-    }
-  </script>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="dark">
   <div class="app-container">
     <header class="header">
-      <div class="logo">WarpChain Activity</div>
-      <div id="walletStatus">Not connected</div>
+      <div class="logo">WarpAI</div>
+      <div id="wallet-status">Not connected</div>
     </header>
 
     <nav class="nav-tabs">
@@ -156,75 +19,50 @@
       <button class="nav-item" data-tab="wallet">Wallet</button>
       <button class="nav-item" data-tab="leaderboard">Leaderboard</button>
       <button class="nav-item" data-tab="rewards">Rewards</button>
-      <button class="nav-item" data-tab="settings">Settings</button>
     </nav>
 
     <!-- ✅ ÖVERSIKT -->
-    <main class="tab-content" id="overview">
+    <main class="tab-content active" id="overview">
       <div class="card">
-        <div class="card-header">Live Gas Fee (Base)</div>
+        <h2>Live Gas Fee (Base)</h2>
         <div class="gas-meter">
-          <div id="gasFill"></div>
+          <div id="gas-fill"></div>
         </div>
-        <div id="gas-status">Loading...</div>
-        <button id="fast-trade">🚀 Fast Trade</button>
-        <p>24h Avg: --</p>
+        <p id="gas-status">Loading...</p>
+        <button id="refresh-gas">🔄 Uppdatera</button>
       </div>
     </main>
 
     <!-- ✅ WALLET -->
-    <main class="tab-content hidden" id="wallet">
+    <main class="tab-content" id="wallet">
       <div class="card">
-        <div class="card-header">Wallet</div>
-        <p id="wallet-status">Not connected</p>
-        <button onclick="connectWallet()">Connect Wallet</button>
+        <h2>Wallet</h2>
+        <button id="connect-wallet">Connect Wallet</button>
       </div>
     </main>
 
-    <!-- Leaderboard -->
-    <main class="tab-content hidden" id="leaderboard">
+    <!-- ✅ LEADERBOARD -->
+    <main class="tab-content" id="leaderboard">
       <div class="card">
-        <div class="card-header">Leaderboard</div>
+        <h2>Leaderboard</h2>
         <p>Top users will appear here.</p>
       </div>
     </main>
 
-    <!-- Rewards -->
-    <main class="tab-content hidden" id="rewards">
+    <!-- ✅ REWARDS -->
+    <main class="tab-content" id="rewards">
       <div class="card">
-        <div class="card-header">Your Rewards</div>
-        <p>Daily streaks, gas efficiency bonuses, and more coming soon.</p>
-      </div>
-    </main>
-
-    <!-- Settings -->
-    <main class="tab-content hidden" id="settings">
-      <div class="card">
-        <div class="card-header">Settings</div>
-        <label>Language:
-          <select id="languageSelect">
-            <option value="en">English</option>
-            <option value="sv">Svenska</option>
-            <option value="fr">Français</option>
-            <option value="ru">Русский</option>
-            <option value="zh">中文</option>
-          </select>
-        </label>
+        <h2>Your Rewards</h2>
+        <p>Claim your $WARP tokens here.</p>
+        <button id="claim-rewards">🎁 Claim Daily</button>
       </div>
     </main>
 
     <footer class="footer">
-  <p>
-    Created by 
-    <a href="https://zora.co/0xa8b817f09702c8d77fdb6d7d677a30cba5c9d7b9" target="_blank">WarpAI</a>
-    • Token: 
-    <a href="https://zora.co/coin/base:0x8ab57bdfc4e900b62f309bfaa6e1802755330ca6" target="_blank">
-      <svg xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;" width="16" height="16" viewBox="0 0 24 24" fill="#00FFC3">
-        <path d="M12 0C5.37 0 0 5.373 0 12c0 6.627 5.37 12 12 12 6.63 0 12-5.373 12-12S18.63 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/><path d="M13 7h-2v6h6v-2h-4z"/>
-      </svg> View
-    </a>
-  </p>
-</footer>
+      <p>Powered by <a href="https://base.org" target="_blank">Base</a></p>
+    </footer>
   </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
