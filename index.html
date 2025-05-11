@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WarpAi Onchain App</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="app.js" defer></script>
+  <script type="module" src="app.js"></script>
 </head>
 <body>
   <header>
@@ -24,6 +24,7 @@
     <div class="nav-item" data-tab="rewards">Rewards</div>
     <div class="nav-item" data-tab="history">History</div>
     <div class="nav-item" data-tab="premium">Premium</div>
+    <div class="nav-item" data-tab="feed">Feed</div>
   </nav>
 
   <main>
@@ -51,28 +52,47 @@
 
     <section id="leaderboard" class="tab-content hidden">
       <h2>🏆 Leaderboard</h2>
-      <div id="leaderboard-list">Coming soon...</div>
+      <div id="leaderboard-list">
+        <ul>
+          <li>#1 0xABCD1234 — 3120 WP</li>
+          <li>#2 0xEFGH5678 — 2800 WP</li>
+          <li>#3 0x9876FEDC — 2545 WP</li>
+        </ul>
+      </div>
     </section>
 
     <section id="favorites" class="tab-content hidden">
       <h2>🌟 Favorites</h2>
-      <p>Saved dApps / Frames</p>
+      <div class="favorites-list">
+        <div class="favorite-item">Owlracle</div>
+        <div class="favorite-item">Zora Mint</div>
+        <div class="favorite-item">Base Gas Feed</div>
+      </div>
     </section>
 
     <section id="rewards" class="tab-content hidden">
       <h2>🎁 Rewards</h2>
       <p>Status: 0 claimed, 0 available</p>
+      <button class="button">Claim Now</button>
     </section>
 
     <section id="history" class="tab-content hidden">
       <h2>🧾 Frame History</h2>
-      <p>No history yet</p>
+      <ul>
+        <li>+100 WP – Daily streak – 2025-05-11</li>
+        <li>+50 WP – Gas claim – 2025-05-10</li>
+      </ul>
     </section>
 
     <section id="premium" class="tab-content hidden">
       <h2>💎 Premium</h2>
       <p>Unlock premium tools & analytics for $9/month.</p>
-      <button>Subscribe</button>
+      <button class="button">Subscribe</button>
+    </section>
+
+    <section id="feed" class="tab-content hidden">
+      <h2>🖼️ Zora Feed</h2>
+      <div id="feed-container"></div>
     </section>
   </main>
 
