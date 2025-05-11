@@ -1,108 +1,114 @@
-/* GRUNDLÄGGANDE STIL */
-body {
+/* style.css */
+
+:root {
+  --bg-dark: #0d0d0d;
+  --bg-light: #1a1a1a;
+  --text-light: #ffffff;
+  --accent: #6ee7b7;
+  --danger: #f87171;
+  --font: 'Inter', sans-serif;
+}
+
+html, body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: #0a0a0a;
-  color: #f1f1f1;
+  padding: 0;
+  font-family: var(--font);
+  background: var(--bg-dark);
+  color: var(--text-light);
+  overflow-x: hidden;
 }
 
-.app-container {
-  max-width: 375px;
+.container {
+  max-width: 480px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 1.5rem;
 }
 
-/* HEADER */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #2d2d2d;
-}
-
-.logo {
-  font-size: 1.5rem;
-  color: #00FFC3;
-}
-
-/* NAVIGATION */
-.nav-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 12px 0;
-  gap: 6px;
-}
-
-.nav-item {
-  flex: 1;
-  padding: 10px;
+header {
   text-align: center;
-  background: #1a1a1a;
-  border: none;
-  border-radius: 6px;
-  color: #f1f1f1;
-  cursor: pointer;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #333;
 }
 
-.nav-item.active {
-  background: #00FFC3;
+header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--bg-light);
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+button {
+  display: block;
+  width: 100%;
+  background: var(--accent);
   color: #000;
+  padding: 1rem;
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
-/* KORT */
+button:hover {
+  background: #34d399;
+}
+
 .card {
   background: #1a1a1a;
+  padding: 1rem;
   border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
-  border: 1px solid #2d2d2d;
+  margin-top: 1rem;
+  border: 1px solid #333;
 }
 
-.card-header {
-  font-size: 1.1rem;
-  margin-bottom: 12px;
-  color: #00FFC3;
-}
-
-/* GAS-MÄTARE */
-.gas-meter {
-  background: #444;
-  height: 10px;
-  border-radius: 6px;
-  position: relative;
-  overflow: hidden;
-}
-
-#gasFill {
-  height: 100%;
-  background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
-  width: 0%;
-  transition: width 0.3s ease;
-}
-
-/* KNAPPAR */
-button {
-  padding: 10px;
-  margin: 5px 0;
-  width: 100%;
-  background: #00FFC3;
-  border: none;
-  border-radius: 6px;
-  color: #000;
+.card-title {
   font-weight: bold;
-  cursor: pointer;
+  margin-bottom: 0.5rem;
 }
 
-/* FOOTER */
-.footer {
-  text-align: center;
-  margin-top: 20px;
+.gas-meter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gas-value {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.emoji {
+  font-size: 2rem;
+}
+
+.wallet-address {
   font-size: 0.85rem;
-  color: #888;
+  color: #aaa;
+  word-break: break-all;
 }
 
-/* DOLDA ELEMENT */
-.hidden {
-  display: none;
+.dark-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  color: var(--accent);
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
 }
