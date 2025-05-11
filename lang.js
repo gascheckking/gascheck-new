@@ -1,37 +1,38 @@
+// lang.js
+
 const translations = {
   en: {
-    title: "WarpSocial",
-    liveGas: "Live Gas",
-    currentGas: "Loading...",
-    topUsers: "Top Users",
-    walletHeader: "Your Wallet",
-    connectWallet: "Connect Wallet",
-    settingsTitle: "Settings",
-    darkLabel: "Dark Mode",
-    languageLabel: "Language"
+    title: "WarpAI App",
+    connect: "Connect Wallet",
+    balance: "Get Balance",
+    gas: "Check Gas",
+    welcome: "Welcome to WarpAI",
   },
   sv: {
-    title: "WarpSocial",
-    liveGas: "Live Gaspris",
-    currentGas: "Laddar...",
-    topUsers: "Toppanvändare",
-    walletHeader: "Din Plånbok",
-    connectWallet: "Anslut Plånbok",
-    settingsTitle: "Inställningar",
-    darkLabel: "Mörkt Läge",
-    languageLabel: "Språk"
+    title: "WarpAI App",
+    connect: "Anslut Plånbok",
+    balance: "Hämta Saldo",
+    gas: "Kolla Gas",
+    welcome: "Välkommen till WarpAI",
   }
 };
 
+let currentLang = "en";
+
+export function setLanguage(lang) {
+  currentLang = lang;
+  updateTexts();
+}
+
+function updateTexts() {
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    el.innerText = translations[currentLang][key] || key;
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  const select = document.getElementById("languageSelect");
-  const applyLang = lang => {
-    const t = translations[lang];
-    for (const key in t) {
-      const el = document.getElementById(key);
-      if (el) el.textContent = t[key];
-    }
-  };
-  select.addEventListener("change", () => applyLang(select.value));
-  applyLang(select.value);
+  document.getElementById("lang-en").addEventListener("click", () => setLanguage("en"));
+  document.getElementById("lang-sv").addEventListener("click", () => setLanguage("sv"));
+  updateTexts();
 });
