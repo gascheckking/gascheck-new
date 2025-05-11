@@ -1,75 +1,114 @@
+/* style.css */
+
+:root {
+  --bg: #0e0e10;
+  --panel: #1c1c22;
+  --accent: #66fcf1;
+  --text: #ffffff;
+  --muted: #aaaaaa;
+  --danger: #ff5555;
+  --radius: 16px;
+  --font: 'Inter', sans-serif;
+}
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #0b0c10;
-  color: #ffffff;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
 }
 
 header {
-  background: #1f2833;
-  padding: 20px;
-  text-align: center;
-  font-size: 1.5rem;
-  border-bottom: 1px solid #45a29e;
+  background: #131316;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #333;
 }
 
-nav {
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.settings {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+nav.nav {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin: 20px 0;
+  justify-content: space-around;
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
 }
 
 .nav-item {
-  padding: 10px 20px;
-  background: #1f2833;
-  border-radius: 5px;
+  padding: 1rem;
   cursor: pointer;
-  transition: background 0.2s ease;
+  color: var(--muted);
+  transition: all 0.2s ease-in-out;
 }
-.nav-item:hover,
+
 .nav-item.active {
-  background: #45a29e;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+
+main {
+  max-width: 480px;
+  margin: auto;
+  padding: 1rem;
 }
 
 .tab-content {
-  max-width: 700px;
-  margin: auto;
-  padding: 20px;
   display: none;
 }
 .tab-content:not(.hidden) {
   display: block;
 }
 
-.button {
-  background: #66fcf1;
-  color: #0b0c10;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-.button:hover {
-  background: #45a29e;
+.panel {
+  background: var(--panel);
+  padding: 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
 }
 
-#gas-status {
-  font-size: 1.2rem;
-  margin-top: 10px;
+button {
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin-top: 1rem;
+}
+button:hover {
+  background: #3cf5dd;
 }
 
 .gas-bar {
-  background: #1f2833;
-  border-radius: 10px;
-  height: 20px;
+  background: #111;
+  border-radius: 12px;
   overflow: hidden;
-  margin-top: 10px;
+  height: 16px;
+  margin-top: 0.5rem;
 }
-#gasFill {
+.gas-fill {
   height: 100%;
-  background: #66fcf1;
+  background: var(--accent);
   width: 0%;
   transition: width 0.3s ease;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 2rem 0 1rem;
+  font-size: 0.85rem;
 }
