@@ -1,54 +1,15 @@
 <!DOCTYPE html>
-<html lang="sv" data-theme="dark">
+<html lang="sv">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarpAI | Gas Tracker & Social</title>
-  <meta property="fc:frame" content="vNext">
-  <meta property="fc:frame:image" content="https://your-app.com/api/frame-image">
-  <link rel="stylesheet" href="styles.css">
+  <title>WarpAI | Gas Tracker & Rewards</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <!-- Sticky Header -->
-  <header class="sticky-header">
-    <div class="logo">WarpAI</div>
-    <div class="gas-status">
-      <span id="live-gas">-- Gwei</span>
-      <span id="gas-mood">😎</span>
-    </div>
-    <button id="connect-wallet">Connect</button>
-  </header>
-
-  <!-- Main App -->
+<body class="dark">
   <div class="app-container">
-    <!-- Flikar -->
-    <nav class="nav-tabs">...</nav>
-
-    <!-- Gas Tracker (Chart.js) -->
-    <div class="card">
-      <canvas id="gasChart"></canvas>
-      <div class="gas-controls">
-        <button id="buy-warp">💸 Buy $WARP</button>
-      </div>
-    </div>
-
-    <!-- Claim Section -->
-    <div class="card">
-      <h2>Daily Rewards</h2>
-      <div id="claim-ui">
-        <div class="streak">🔥 7-day streak</div>
-        <button id="claim-btn">🎁 Claim 100 WARP</button>
-      </div>
-    </div>
-
-    <!-- Zora Feed -->
-    <div class="card">
-      <h2>Trending on Zora</h2>
-      <div id="zora-feed"></div>
-    </div>
+    <!-- Din befintliga kod här -->
+    <script src="app.js"></script>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="app.js"></script>
 </body>
 </html>
