@@ -3,14 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarpAI Gas Tracker</title>
+  <title>WarpAI – Gas Tracker & Social</title>
+  <meta property="fc:frame" content="vNext">
+  <meta property="fc:frame:image" content="https://gascheck-new.vercel.app/api/frame-image">
+  <meta property="fc:frame:button:1" content="👀 Visa Gaspris">
+  <meta property="fc:frame:button:2" content="💰 Claim WARP">
+  <meta property="fc:frame:post_url" content="https://gascheck-new.vercel.app/api/frame-action">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark">
   <div class="app-container">
     <header class="header">
       <div class="logo">WarpAI</div>
-      <button id="connect-wallet">Connect</button>
+      <button id="toggle-theme">🌓</button>
     </header>
-    <div class="card">
-      <h2>Live Gas Fee</h2>
+
+    <nav class="nav-tabs">
+      <button class="nav-item active" data-tab="overview">Overview</button>
+      <button class="nav-item" data-tab="wallet">Wallet</button>
+      <button class="nav-item" data-t
