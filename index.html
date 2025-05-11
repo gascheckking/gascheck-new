@@ -107,6 +107,7 @@
       color: #888;
     }
   </style>
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const tabs = document.querySelectorAll(".nav-item");
@@ -127,16 +128,20 @@
           const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=demo");
           const json = await res.json();
           const gwei = json.speeds[1].estimatedFee.toFixed(1);
-          document.getElementById("gasValue").textContent = `${gwei} Gwei`;
+          document.getElementById("gas-status").textContent = `${gwei} Gwei`;
           document.getElementById("gasFill").style.width = `${Math.min(gwei, 100)}%`;
         } catch (e) {
-          document.getElementById("gasValue").textContent = "Failed to load";
+          document.getElementById("gas-status").textContent = "Failed to load";
         }
       }
 
       fetchGas();
       setInterval(fetchGas, 30000);
     });
+
+    function connectWallet() {
+      document.getElementById("wallet-status").textContent = "🔗 Connected";
+    }
   </script>
 </head>
 <body>
@@ -154,36 +159,37 @@
       <button class="nav-item" data-tab="settings">Settings</button>
     </nav>
 
+    <!-- ✅ ÖVERSIKT -->
     <main class="tab-content" id="overview">
       <div class="card">
         <div class="card-header">Live Gas Fee (Base)</div>
         <div class="gas-meter">
           <div id="gasFill"></div>
         </div>
-        <div id="gasValue">Loading...</div>
-        <button>🚀 Fast Trade</button>
+        <div id="gas-status">Loading...</div>
+        <button id="fast-trade">🚀 Fast Trade</button>
         <p>24h Avg: --</p>
       </div>
     </main>
 
+    <!-- ✅ WALLET -->
     <main class="tab-content hidden" id="wallet">
       <div class="card">
         <div class="card-header">Wallet</div>
-        <button id="connectBtn">Connect Wallet</button>
-        <button id="checkBtn">Check Address</button>
-        <div id="walletAddress"></div>
+        <p id="wallet-status">Not connected</p>
+        <button onclick="connectWallet()">Connect Wallet</button>
       </div>
     </main>
 
+    <!-- Leaderboard -->
     <main class="tab-content hidden" id="leaderboard">
       <div class="card">
         <div class="card-header">Leaderboard</div>
-        <div id="leaderboardList">
-          <p>Top users will appear here.</p>
-        </div>
+        <p>Top users will appear here.</p>
       </div>
     </main>
 
+    <!-- Rewards -->
     <main class="tab-content hidden" id="rewards">
       <div class="card">
         <div class="card-header">Your Rewards</div>
@@ -191,6 +197,7 @@
       </div>
     </main>
 
+    <!-- Settings -->
     <main class="tab-content hidden" id="settings">
       <div class="card">
         <div class="card-header">Settings</div>
