@@ -1,40 +1,33 @@
 // SPDX-License-Identifier: MIT
+// ✅ Redo för Base Network (ChainID: 8453)
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract WarpPoints is ERC20, Ownable {
-    // ===== VARIABLER =====
+    // ===== BASE-OPTIMERAD =====
     mapping(address => uint256) public lastClaim;
     mapping(address => uint256) public streaks;
-    uint256 public dailyReward = 100 * 10**18; // 100 WARP per dag
-    address public warpAIAddress; // För framtida migrering
+    uint256 public dailyReward = 100 * 10**18; // 100 WARP
 
-    // ===== KONSTRUKTÖR =====
-    constructor() ERC20("WarpPoints", "WARP") Ownable(msg.sender) {
-        warpAIAddress = msg.sender;
-    }
+    constructor() ERC20("WarpPoints", "WARP") Ownable(msg.sender) {}
 
-    // ===== CLAIM-FUNKTION =====
+    // Daglig claim-funktion
     function claimDaily() external {
-        require(block.timestamp - lastClaim[msg.sender] >= 1 days, "Vänta 24 timmar");
-
-        // Streak-logik
-        if (block.timestamp - lastClaim[msg.sender] <= 2 days) {
-            streaks[msg.sender] += 1;
-        } else {
-            streaks[msg.sender] = 1; // Återställ om mer än 2 dagar
-        }
-
-        // Ge bonus för streaks
-        uint256 reward = dailyReward * streaks[msg.sender];
-        _mint(msg.sender, reward);
+        require(
+            block.timestamp - lastClaim[msg.sender] >= 1 days, 
+            "Vänta 24 timmar"
+        );
+        streaks[msg.sender] = block.timestamp - lastClaim[msg.sender] <= 2 days 
+            ? streaks[msg.sender] + 1 
+            : 1;
+        _mint(msg.sender, dailyReward * streaks[msg.sender]);
         lastClaim[msg.sender] = block.timestamp;
     }
 
-    // ===== ADMIN-FUNKTIONER =====
-    function updateDailyReward(uint256 newReward) external onlyOwner {
+    // Admin-funktion för framtida uppdateringar
+    function updateReward(uint256 newReward) external onlyOwner {
         dailyReward = newReward;
     }
 }
