@@ -1,28 +1,42 @@
-const tabs = document.querySelectorAll('.nav-item');
-const contents = document.querySelectorAll('.tab-content');
+// 🔄 Ny version: script.js – Gas Tracker + Wallet connect
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    contents.forEach(c => c.classList.add('hidden'));
+const GAS_API_URL = "https://api.blocknative.com/gasprices/blockprices";
+const API_KEY = "YOUR_BLOCKNATIVE_KEY_HERE"; // 🔑 Lägg in din riktiga nyckel
 
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.tab).classList.remove('hidden');
-  });
-});
-
-document.getElementById('connectBtn').addEventListener('click', () => {
-  document.getElementById('walletStatus').textContent = 'Connected';
-  document.getElementById('walletAddress').textContent = '0xSpawniz...';
-});
-
-document.getElementById('checkBtn').addEventListener('click', () => {
-  alert('Checking address…');
-});
-
-function mockGasUpdate() {
-  const gwei = Math.floor(Math.random() * 100);
-  document.getElementById('gasValue').textContent = `${gwei} Gwei`;
-  document.getElementById('gasFill').style.width = `${gwei}%`;
+// ===================== GAS ===================== //
+async function fetchGasPrice() {
+  try {
+    const res = await fetch(GAS_API_URL, {
+      headers: { Authorization: API_KEY }
+    });
+    const data = await res.json();
+    const price = Math.floor(data.blockPrices[0].estimatedPrices[0].price);
+    document.getElementById("gas-status").innerText = `${price} Gwei`;
+    document.getElementById("fast-trade").disabled = false;
+  } catch (e) {
+    document.getElementById("gas-status").innerText = "Failed to load";
+    document.getElementById("fast-trade").disabled = true;
+    console.error("Gas API error:", e);
+  }
 }
-setInterval(mockGasUpdate, 2000);
+
+// ===================== WALLET ===================== //
+async function connectWallet() {
+  if (window.ethereum) {
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+      document.getElementById("wallet-status").innerText = `Connected: ${accounts[0]}`;
+    } catch (e) {
+      console.error("Wallet connection failed", e);
+    }
+  } else {
+    alert("MetaMask or compatible wallet not found.");
+  }
+}
+
+// ===================== INIT ===================== //
+window.onload = () => {
+  fetchGasPrice();
+  setInterval(fetchGasPrice, 15000); // 🔄 auto-refresh
+};
