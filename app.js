@@ -1,40 +1,61 @@
+// app.js
+import { ethers } from "ethers";
+import { getGasDetails } from "./gas.js";
+
 // FLIKHANTERING
 document.querySelectorAll(".nav-item").forEach(tab => {
   tab.addEventListener("click", () => {
-    // Ta bort aktiv klass från alla flikar
     document.querySelectorAll(".nav-item").forEach(t => t.classList.remove("active"));
-    
-    // Dölj alla innehållssektioner
     document.querySelectorAll(".tab-content").forEach(c => c.classList.add("hidden"));
-    
-    // Markera vald flik
     tab.classList.add("active");
-    
-    // Visa valt innehåll
     document.getElementById(tab.dataset.tab).classList.remove("hidden");
   });
 });
 
-// GASPRISHÄMTNING
+// KONTRAKTINSTÄLLNINGAR
+const contractAddress = "0xDIN_ADRESS_HÄR"; // Ersätt
+const contractABI = [ /* DIN ABI HÄR */ ];  // Ersätt
+
+async function loadContract() {
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
+  return new ethers.Contract(contractAddress, contractABI, signer);
+}
+
+// WALLET-ANSLUTNING
+async function connectWallet() {
+  if (!window.ethereum) return alert("Installera MetaMask!");
+  const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+  document.getElementById("wallet-info").textContent = accounts[0];
+}
+
+// HÄMTA BALANS
+async function getBalance() {
+  const contract = await loadContract();
+  const balance = await contract.getBalance(); // om getBalance finns
+  console.log("Balance:", balance.toString());
+}
+
+// GASPRIS + EMOJI
 async function fetchGas() {
   try {
     const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=demo");
     const json = await res.json();
     const gwei = json.speeds[1].estimatedFee.toFixed(1);
-    
-    document.getElementById("gas-status").textContent = `${gwei} Gwei`;
-    document.getElementById("gasFill").style.width = `${Math.min(gwei, 100)}%`;
-  } catch (e) {
-    document.getElementById("gas-status").textContent = "Failed to load";
+    const meter = document.getElementById("gasValue");
+    const emoji = document.getElementById("gasEmoji");
+
+    meter.textContent = `${gwei} Gwei`;
+    if (gwei < 30) emoji.textContent = "😎";
+    else if (gwei < 100) emoji.textContent = "🔥";
+    else emoji.textContent = "💀";
+  } catch {
+    document.getElementById("gasValue").textContent = "Failed";
   }
 }
 
-// WALLET-ANSLUTNING
-function connectWallet() {
-  document.getElementById("wallet-info").textContent = "🔗 Connected";
-}
-
-// INITIERING
+// INIT
 fetchGas();
 setInterval(fetchGas, 30000);
-document.getElementById("connect-wallet").addEventListener("click", connectWallet);
+document.getElementById("connectBtn").addEventListener("click", connectWallet);
+document.getElementById("balanceBtn").addEventListener("click", getBalance);
