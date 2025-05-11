@@ -3,53 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarpAI – Gas Tracker & Social</title>
-  <meta property="fc:frame" content="vNext">
-  <meta property="fc:frame:image" content="https://gascheck-new.vercel.app/api/frame-image">
-  <meta property="fc:frame:button:1" content="👀 Visa Gaspris">
-  <meta property="fc:frame:button:2" content="💰 Claim WARP">
-  <meta property="fc:frame:post_url" content="https://gascheck-new.vercel.app/api/frame-action">
+  <title>WarpAI | Onchain Activity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark">
   <div class="app-container">
     <header class="header">
       <div class="logo">WarpAI</div>
-      <button id="toggle-theme">🌓</button>
+      <div id="wallet-status">Not connected</div>
     </header>
 
     <nav class="nav-tabs">
       <button class="nav-item active" data-tab="overview">Overview</button>
       <button class="nav-item" data-tab="wallet">Wallet</button>
+      <button class="nav-item" data-tab="leaderboard">Leaderboard</button>
       <button class="nav-item" data-tab="rewards">Rewards</button>
     </nav>
 
+    <!-- ÖVERSIKT -->
     <main class="tab-content active" id="overview">
       <div class="card">
-        <h2>Live Gas Fee (Base)</h2>
+        <div class="card-header">Live Gas Fee (Base)</div>
         <div class="gas-meter">
-          <div id="gas-fill"></div>
+          <div id="gasFill"></div>
         </div>
-        <p id="gas-status">Loading...</p>
-        <button id="refresh-gas">🔄 Uppdatera</button>
+        <div id="gas-status">Loading...</div>
+        <button id="fast-trade">🚀 Fast Trade</button>
+        <p>24h Avg: --</p>
       </div>
     </main>
 
-    <main class="tab-content" id="wallet">
+    <!-- WALLET -->
+    <main class="tab-content hidden" id="wallet">
       <div class="card">
-        <h2>Wallet</h2>
+        <div class="card-header">Wallet</div>
+        <p id="wallet-info">Not connected</p>
         <button id="connect-wallet">Connect Wallet</button>
-        <div id="wallet-info" class="hidden"></div>
       </div>
     </main>
 
-    <main class="tab-content" id="rewards">
+    <!-- LEADERBOARD -->
+    <main class="tab-content hidden" id="leaderboard">
       <div class="card">
-        <h2>Your Rewards</h2>
-        <div id="rewards-balance">0 WARP</div>
-        <button id="claim-rewards">🎁 Claim Daily</button>
+        <div class="card-header">Leaderboard</div>
+        <p>Top users will appear here.</p>
       </div>
     </main>
+
+    <!-- REWARDS -->
+    <main class="tab-content hidden" id="rewards">
+      <div class="card">
+        <div class="card-header">Your Rewards</div>
+        <p>Daily streaks and bonuses</p>
+        <button id="claim-rewards">🎁 Claim WARP</button>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>Powered by <a href="https://base.org" target="_blank">Base</a></p>
+    </footer>
   </div>
   <script src="app.js"></script>
 </body>
