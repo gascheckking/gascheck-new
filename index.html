@@ -1,11 +1,41 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>WarpPoints App</title>
-    <script src="app.js" type="module"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WarpAI App</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <button id="connectBtn">Anslut MetaMask</button>
-    <button id="balanceBtn">Hämta Saldo</button>
+  <div class="container">
+    <header>
+      <h1 data-i18n="title">WarpAI App</h1>
+      <div style="margin-top: 0.5rem;">
+        <button id="lang-en">EN</button>
+        <button id="lang-sv">SV</button>
+      </div>
+    </header>
+
+    <section>
+      <p data-i18n="welcome">Welcome to WarpAI</p>
+      <button id="connectBtn" data-i18n="connect">Connect Wallet</button>
+      <button id="balanceBtn" data-i18n="balance">Get Balance</button>
+      <button id="gasBtn" data-i18n="gas">Check Gas</button>
+    </section>
+
+    <section class="card">
+      <div class="card-title">Wallet</div>
+      <div id="walletAddress" class="wallet-address">Not connected</div>
+    </section>
+
+    <section class="card gas-meter">
+      <div class="gas-value" id="gasValue">--</div>
+      <div class="emoji" id="gasEmoji">⛽</div>
+    </section>
+  </div>
+
+  <script type="module" src="app.js"></script>
+  <script type="module" src="lang.js"></script>
 </body>
 </html>
