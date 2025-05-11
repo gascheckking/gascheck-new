@@ -62,7 +62,7 @@ body {
 }
 
 .gas-meter {
-  background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
+  background: #ccc;
   height: 10px;
   border-radius: 6px;
   position: relative;
@@ -71,9 +71,31 @@ body {
 
 #gasFill {
   height: 100%;
-  background: #f1f1f1;
   width: 0%;
   transition: width 0.3s ease;
+  background: linear-gradient(to right, #10B981, #F59E0B, #EF4444);
+}
+
+.fast-trade {
+  margin-top: 10px;
+}
+
+.fast-trade button {
+  width: 100%;
+  margin-top: 10px;
+  background: #00FFC3;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.avg-gas {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #aaa;
 }
 
 .hidden {
