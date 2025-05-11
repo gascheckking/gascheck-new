@@ -1,44 +1,57 @@
-/* ===== GRUNDSTIL ===== */
+/* GRUNDSTIL */
+:root {
+  --primary: #6E6EDE;
+  --primary-dark: #5a5ac9;
+  --text-light: #f1f1f1;
+  --text-dark: #1a1a1a;
+  --bg-dark: #0a0a0a;
+  --card-dark: #1a1a1a;
+  --border-dark: #2d2d2d;
+  --bg-light: #f5f5f7;
+  --card-light: white;
+  --border-light: #e0e0e0;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   max-width: 375px;
   margin: 0 auto;
   padding: 16px;
+  transition: all 0.3s ease;
 }
 
-/* ===== MÖRKT TEMA ===== */
+/* MÖRKT TEMA */
 body.dark {
-  background: #0a0a0a;
-  color: #f1f1f1;
+  background: var(--bg-dark);
+  color: var(--text-light);
 }
 
 body.dark .card {
-  background: #1a1a1a;
-  border: 1px solid #2d2d2d;
+  background: var(--card-dark);
+  border: 1px solid var(--border-dark);
 }
 
 body.dark .nav-item {
-  background: #2d2d2d;
-  color: #f1f1f1;
+  background: var(--card-dark);
 }
 
 body.dark .nav-item.active {
-  background: #6E6EDE;
+  background: var(--primary);
 }
 
-/* ===== LJUST TEMA ===== */
+/* LJUST TEMA */
 body.light {
-  background: #f5f5f7;
-  color: #1a1a1a;
+  background: var(--bg-light);
+  color: var(--text-dark);
 }
 
 body.light .card {
-  background: white;
-  border: 1px solid #e0e0e0;
+  background: var(--card-light);
+  border: 1px solid var(--border-light);
 }
 
-/* ===== KOMPONENTER ===== */
+/* KOMPONENTER */
 .header {
   display: flex;
   justify-content: space-between;
@@ -46,10 +59,16 @@ body.light .card {
   margin-bottom: 16px;
 }
 
+.header-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #6E6EDE;
+  color: var(--primary);
 }
 
 .nav-tabs {
@@ -65,6 +84,7 @@ body.light .card {
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
+  transition: all 0.2s ease;
 }
 
 .nav-item.active {
@@ -97,15 +117,21 @@ button {
   width: 100%;
   border: none;
   border-radius: 8px;
-  background: #6E6EDE;
+  background: var(--primary);
   color: white;
   font-weight: 600;
   cursor: pointer;
   margin-top: 8px;
+  transition: all 0.2s ease;
 }
 
 button:hover {
-  opacity: 0.9;
+  background: var(--primary-dark);
+}
+
+#toggle-theme {
+  width: auto;
+  padding: 8px 12px;
 }
 
 .tab-content {
@@ -116,6 +142,10 @@ button:hover {
   display: block;
 }
 
+.hidden {
+  display: none;
+}
+
 .footer {
   text-align: center;
   margin-top: 20px;
@@ -124,5 +154,5 @@ button:hover {
 }
 
 .footer a {
-  color: #6E6EDE;
+  color: var(--primary);
 }
