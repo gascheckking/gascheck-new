@@ -11,7 +11,10 @@
   <div class="app-container">
     <header class="header">
       <div class="logo">WarpAI</div>
-      <div id="wallet-status">Not connected</div>
+      <div class="header-controls">
+        <div id="wallet-status">Not connected</div>
+        <button id="toggle-theme">🌓</button>
+      </div>
     </header>
 
     <nav class="nav-tabs">
@@ -21,7 +24,7 @@
       <button class="nav-item" data-tab="rewards">Rewards</button>
     </nav>
 
-    <!-- ✅ ÖVERSIKT -->
+    <!-- ÖVERSIKT -->
     <main class="tab-content active" id="overview">
       <div class="card">
         <h2>Live Gas Fee (Base)</h2>
@@ -33,27 +36,28 @@
       </div>
     </main>
 
-    <!-- ✅ WALLET -->
+    <!-- WALLET -->
     <main class="tab-content" id="wallet">
       <div class="card">
         <h2>Wallet</h2>
         <button id="connect-wallet">Connect Wallet</button>
+        <div id="wallet-info" class="hidden"></div>
       </div>
     </main>
 
-    <!-- ✅ LEADERBOARD -->
+    <!-- LEADERBOARD -->
     <main class="tab-content" id="leaderboard">
       <div class="card">
         <h2>Leaderboard</h2>
-        <p>Top users will appear here.</p>
+        <div id="leaderboard-content"></div>
       </div>
     </main>
 
-    <!-- ✅ REWARDS -->
+    <!-- REWARDS -->
     <main class="tab-content" id="rewards">
       <div class="card">
         <h2>Your Rewards</h2>
-        <p>Claim your $WARP tokens here.</p>
+        <div id="rewards-balance">0 WARP</div>
         <button id="claim-rewards">🎁 Claim Daily</button>
       </div>
     </main>
