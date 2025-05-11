@@ -1,33 +1,34 @@
-// SPDX-License-Identifier: MIT
-// ✅ Redo för Base Network (ChainID: 8453)
-pragma solidity ^0.8.20;
+// app.js
+import { ethers } from "ethers";
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-contract WarpPoints is ERC20, Ownable {
-    // ===== BASE-OPTIMERAD =====
-    mapping(address => uint256) public lastClaim;
-    mapping(address => uint256) public streaks;
-    uint256 public dailyReward = 100 * 10**18; // 100 WARP
-
-    constructor() ERC20("WarpPoints", "WARP") Ownable(msg.sender) {}
-
-    // Daglig claim-funktion
-    function claimDaily() external {
-        require(
-            block.timestamp - lastClaim[msg.sender] >= 1 days, 
-            "Vänta 24 timmar"
-        );
-        streaks[msg.sender] = block.timestamp - lastClaim[msg.sender] <= 2 days 
-            ? streaks[msg.sender] + 1 
-            : 1;
-        _mint(msg.sender, dailyReward * streaks[msg.sender]);
-        lastClaim[msg.sender] = block.timestamp;
+// 1. Anslut till MetaMask
+async function connectWallet() {
+    if (!window.ethereum) {
+        alert("Installera MetaMask först!");
+        return;
     }
-
-    // Admin-funktion för framtida uppdateringar
-    function updateReward(uint256 newReward) external onlyOwner {
-        dailyReward = newReward;
-    }
+    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    console.log("Ansluten:", accounts[0]);
 }
+
+// 2. Ladda WarpPoints-kontraktet
+const contractAddress = "0x_DITT_KONTRAKTSADRESS_HÄR"; // Ersätt detta
+const contractABI = [ /* Klistra in ABI från WarpPoints.sol här */ ];
+
+async function loadContract() {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const warpPoints = new ethers.Contract(contractAddress, contractABI, signer);
+    return warpPoints;
+}
+
+// 3. Exempel: Anropa en funktion i kontraktet
+async function getBalance() {
+    const contract = await loadContract();
+    const balance = await contract.getBalance(); // Anta att getBalance finns i WarpPoints
+    console.log("Balance:", balance.toString());
+}
+
+// Kör funktioner när knappar klickas
+document.getElementById("connectBtn").addEventListener("click", connectWallet);
+document.getElementById("balanceBtn").addEventListener("click", getBalance);
