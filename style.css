@@ -1,41 +1,42 @@
-body.dark {
-  background: #0a0a0a;
-  color: white;
-  max-width: 375px;
-  margin: 0 auto;
-  padding: 16px;
-  font-family: 'Inter', sans-serif;
+/* Lägg till dessa klasser */
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
 }
-.logo {
-  color: #6E6EDE;
-  font-weight: bold;
-  font-size: 1.5rem;
-}
-.card {
-  background: #1a1a1a;
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: 16px;
-}
-.gas-meter {
-  background: #444;
-  height: 10px;
-  border-radius: 10px;
-  margin: 12px 0;
-}
-#gas-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #10B981, #F59E0B);
-  border-radius: 10px;
-  width: 0%;
-}
-button {
-  background: #6E6EDE;
-  color: white;
+
+.nav-item {
+  padding: 10px;
+  background: #2d2d2d;
   border: none;
-  padding: 12px;
   border-radius: 8px;
-  width: 100%;
   cursor: pointer;
-  font-weight: 600;
+  flex: 1;
+  text-align: center;
+}
+
+.nav-item.active {
+  background: #6E6EDE;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+body.light {
+  background: #f5f5f7;
+  color: #1a1a1a;
+}
+
+body.light .card {
+  background: white;
+  border: 1px solid #e0e0e0;
 }
