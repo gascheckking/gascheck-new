@@ -21,4 +21,36 @@
     <nav class="nav-tabs">
       <button class="nav-item active" data-tab="overview">Overview</button>
       <button class="nav-item" data-tab="wallet">Wallet</button>
-      <button class="nav-item" data-t
+      <button class="nav-item" data-tab="rewards">Rewards</button>
+    </nav>
+
+    <main class="tab-content active" id="overview">
+      <div class="card">
+        <h2>Live Gas Fee (Base)</h2>
+        <div class="gas-meter">
+          <div id="gas-fill"></div>
+        </div>
+        <p id="gas-status">Loading...</p>
+        <button id="refresh-gas">🔄 Uppdatera</button>
+      </div>
+    </main>
+
+    <main class="tab-content" id="wallet">
+      <div class="card">
+        <h2>Wallet</h2>
+        <button id="connect-wallet">Connect Wallet</button>
+        <div id="wallet-info" class="hidden"></div>
+      </div>
+    </main>
+
+    <main class="tab-content" id="rewards">
+      <div class="card">
+        <h2>Your Rewards</h2>
+        <div id="rewards-balance">0 WARP</div>
+        <button id="claim-rewards">🎁 Claim Daily</button>
+      </div>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
