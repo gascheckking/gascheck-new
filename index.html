@@ -1,84 +1,213 @@
 <!DOCTYPE html>
-<html lang=""sv"">
+<html lang="sv">
 <head>
-  <meta charset=""UTF-8"">
-  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-  <title>WarpChain | Onchain Companion</title>
-  <link rel=""stylesheet"" href=""style.css"">
-  <script defer src=""script.js""></script>
-  <link href=""https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"" rel=""stylesheet"">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WarpChain | Onchain Activity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #f1f1f1;
+    }
+
+    .app-container {
+      max-width: 375px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #2d2d2d;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      color: #00FFC3;
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 12px 0;
+      gap: 6px;
+    }
+
+    .nav-item {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      background: #1a1a1a;
+      border: none;
+      border-radius: 6px;
+      color: #f1f1f1;
+      cursor: pointer;
+    }
+
+    .nav-item.active {
+      background: #00FFC3;
+      color: #000;
+    }
+
+    .card {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid #2d2d2d;
+    }
+
+    .card-header {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: #00FFC3;
+    }
+
+    .gas-meter {
+      background: #444;
+      height: 10px;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #gasFill {
+      height: 100%;
+      background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      background: #00FFC3;
+      border: none;
+      border-radius: 6px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: #888;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const tabs = document.querySelectorAll(".nav-item");
+      const contents = document.querySelectorAll(".tab-content");
+
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("active"));
+          contents.forEach(c => c.classList.add("hidden"));
+
+          tab.classList.add("active");
+          document.getElementById(tab.dataset.tab).classList.remove("hidden");
+        });
+      });
+
+      async function fetchGas() {
+        try {
+          const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=demo");
+          const json = await res.json();
+          const gwei = json.speeds[1].estimatedFee.toFixed(1);
+          document.getElementById("gasValue").textContent = `${gwei} Gwei`;
+          document.getElementById("gasFill").style.width = `${Math.min(gwei, 100)}%`;
+        } catch (e) {
+          document.getElementById("gasValue").textContent = "Failed to load";
+        }
+      }
+
+      fetchGas();
+      setInterval(fetchGas, 30000);
+    });
+  </script>
 </head>
 <body>
-  <div class=""app-container"">
-    <header class=""header"">
-      <div class=""logo"">WarpChain</div>
-      <div id=""walletStatus"">Not connected</div>
+  <div class="app-container">
+    <header class="header">
+      <div class="logo">WarpChain Activity</div>
+      <div id="walletStatus">Not connected</div>
     </header>
 
-    <nav class=""nav-tabs"">
-      <button class=""nav-item active"" data-tab=""overview"">Overview</button>
-      <button class=""nav-item"" data-tab=""wallet"">Wallet</button>
-      <button class=""nav-item"" data-tab=""leaderboard"">Leaderboard</button>
-      <button class=""nav-item"" data-tab=""rewards"">Rewards</button>
-      <button class=""nav-item"" data-tab=""settings"">Settings</button>
+    <nav class="nav-tabs">
+      <button class="nav-item active" data-tab="overview">Overview</button>
+      <button class="nav-item" data-tab="wallet">Wallet</button>
+      <button class="nav-item" data-tab="leaderboard">Leaderboard</button>
+      <button class="nav-item" data-tab="rewards">Rewards</button>
+      <button class="nav-item" data-tab="settings">Settings</button>
     </nav>
 
-    <main class=""tab-content"" id=""overview"">
-      <div class=""card"">
-        <div class=""card-header"">Live Gas Fee (Base)</div>
-        <div class=""gas-meter"">
-          <div id=""gasFill"" class=""gas-indicator""></div>
+    <main class="tab-content" id="overview">
+      <div class="card">
+        <div class="card-header">Live Gas Fee (Base)</div>
+        <div class="gas-meter">
+          <div id="gasFill"></div>
         </div>
-        <div id=""gasValue"">Loading...</div>
-        <div class=""fast-trade"">
-          <button id=""tradeBtn"">Fast Trade</button>
-          <p class=""avg-gas"">24h Avg: <span id=""avgGas"">--</span></p>
-        </div>
+        <div id="gasValue">Loading...</div>
+        <button>🚀 Fast Trade</button>
+        <p>24h Avg: --</p>
       </div>
     </main>
 
-    <main class=""tab-content hidden"" id=""wallet"">
-      <div class=""card"">
-        <div class=""card-header"">Wallet</div>
-        <button id=""connectBtn"">Connect Wallet</button>
-        <button id=""checkBtn"">Check Address</button>
-        <div id=""walletAddress""></div>
+    <main class="tab-content hidden" id="wallet">
+      <div class="card">
+        <div class="card-header">Wallet</div>
+        <button id="connectBtn">Connect Wallet</button>
+        <button id="checkBtn">Check Address</button>
+        <div id="walletAddress"></div>
       </div>
+    </main>
 
-
-    <main class=""tab-content hidden"" id=""leaderboard"">
-      <div class=""card"">
-        <div class=""card-header"">Leaderboard</div>
-        <div id=""leaderboardList"">
+    <main class="tab-content hidden" id="leaderboard">
+      <div class="card">
+        <div class="card-header">Leaderboard</div>
+        <div id="leaderboardList">
           <p>Top users will appear here.</p>
         </div>
       </div>
     </main>
 
-    <main class=""tab-content hidden"" id=""rewards"">
-      <div class=""card"">
-        <div class=""card-header"">Your Rewards</div>
+    <main class="tab-content hidden" id="rewards">
+      <div class="card">
+        <div class="card-header">Your Rewards</div>
         <p>Daily streaks, gas efficiency bonuses, and more coming soon.</p>
       </div>
     </main>
 
-    <main class=""tab-content hidden"" id=""settings"">
-      <div class=""card"">
-        <div class=""card-header"">Settings</div>
+    <main class="tab-content hidden" id="settings">
+      <div class="card">
+        <div class="card-header">Settings</div>
         <label>Language:
-          <select id=""languageSelect"">
-            <option value=""en"">English</option>
-            <option value=""sv"">Svenska</option>
-            <option value=""fr"">Français</option>
-            <option value=""ru"">Русский</option>
-            <option value=""zh"">中文</option>
+          <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="sv">Svenska</option>
+            <option value="fr">Français</option>
+            <option value="ru">Русский</option>
+            <option value="zh">中文</option>
           </select>
         </label>
       </div>
     </main>
 
-    <footer class=""footer"">
-      <p>Created by <a href=""https://zora.co/spawniz"" target=""_blank"">Spawniz</a> | Token: <a href=""https://zora.co/coin/base:0x8ab57bdfc4e900b62f309bfaa6e1802755330ca6"" target=""_blank"">View</a></p>
+    <footer class="footer">
+      <p>Created by <a href="https://zora.co/spawniz" target="_blank">Spawniz</a> | Token: <a href="https://zora.co/coin/base:0x8ab57bdfc4e900b62f309bfaa6e1802755330ca6" target="_blank">View</a></p>
     </footer>
   </div>
 </body>
