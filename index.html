@@ -1,69 +1,54 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="sv" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarpAI | Onchain Activity</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>WarpAI | Gas Tracker & Social</title>
+  <meta property="fc:frame" content="vNext">
+  <meta property="fc:frame:image" content="https://your-app.com/api/frame-image">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="dark">
+<body>
+  <!-- Sticky Header -->
+  <header class="sticky-header">
+    <div class="logo">WarpAI</div>
+    <div class="gas-status">
+      <span id="live-gas">-- Gwei</span>
+      <span id="gas-mood">😎</span>
+    </div>
+    <button id="connect-wallet">Connect</button>
+  </header>
+
+  <!-- Main App -->
   <div class="app-container">
-    <header class="header">
-      <div class="logo">WarpAI</div>
-      <div id="wallet-status">Not connected</div>
-    </header>
+    <!-- Flikar -->
+    <nav class="nav-tabs">...</nav>
 
-    <nav class="nav-tabs">
-      <button class="nav-item active" data-tab="overview">Overview</button>
-      <button class="nav-item" data-tab="wallet">Wallet</button>
-      <button class="nav-item" data-tab="leaderboard">Leaderboard</button>
-      <button class="nav-item" data-tab="rewards">Rewards</button>
-    </nav>
-
-    <!-- ÖVERSIKT -->
-    <main class="tab-content active" id="overview">
-      <div class="card">
-        <div class="card-header">Live Gas Fee (Base)</div>
-        <div class="gas-meter">
-          <div id="gasFill"></div>
-        </div>
-        <div id="gas-status">Loading...</div>
-        <button id="fast-trade">🚀 Fast Trade</button>
-        <p>24h Avg: --</p>
+    <!-- Gas Tracker (Chart.js) -->
+    <div class="card">
+      <canvas id="gasChart"></canvas>
+      <div class="gas-controls">
+        <button id="buy-warp">💸 Buy $WARP</button>
       </div>
-    </main>
+    </div>
 
-    <!-- WALLET -->
-    <main class="tab-content hidden" id="wallet">
-      <div class="card">
-        <div class="card-header">Wallet</div>
-        <p id="wallet-info">Not connected</p>
-        <button id="connect-wallet">Connect Wallet</button>
+    <!-- Claim Section -->
+    <div class="card">
+      <h2>Daily Rewards</h2>
+      <div id="claim-ui">
+        <div class="streak">🔥 7-day streak</div>
+        <button id="claim-btn">🎁 Claim 100 WARP</button>
       </div>
-    </main>
+    </div>
 
-    <!-- LEADERBOARD -->
-    <main class="tab-content hidden" id="leaderboard">
-      <div class="card">
-        <div class="card-header">Leaderboard</div>
-        <p>Top users will appear here.</p>
-      </div>
-    </main>
-
-    <!-- REWARDS -->
-    <main class="tab-content hidden" id="rewards">
-      <div class="card">
-        <div class="card-header">Your Rewards</div>
-        <p>Daily streaks and bonuses</p>
-        <button id="claim-rewards">🎁 Claim WARP</button>
-      </div>
-    </main>
-
-    <footer class="footer">
-      <p>Powered by <a href="https://base.org" target="_blank">Base</a></p>
-    </footer>
+    <!-- Zora Feed -->
+    <div class="card">
+      <h2>Trending on Zora</h2>
+      <div id="zora-feed"></div>
+    </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
