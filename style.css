@@ -1,42 +1,108 @@
-/* Lägg till dessa klasser */
+/* GRUNDLÄGGANDE STIL */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #f1f1f1;
+}
+
+.app-container {
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2d2d2d;
+}
+
+.logo {
+  font-size: 1.5rem;
+  color: #00FFC3;
+}
+
+/* NAVIGATION */
 .nav-tabs {
   display: flex;
-  gap: 8px;
-  margin: 16px 0;
+  flex-wrap: wrap;
+  margin: 12px 0;
+  gap: 6px;
 }
 
 .nav-item {
-  padding: 10px;
-  background: #2d2d2d;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
   flex: 1;
+  padding: 10px;
   text-align: center;
+  background: #1a1a1a;
+  border: none;
+  border-radius: 6px;
+  color: #f1f1f1;
+  cursor: pointer;
 }
 
 .nav-item.active {
-  background: #6E6EDE;
+  background: #00FFC3;
+  color: #000;
 }
 
-.tab-content {
-  display: none;
+/* KORT */
+.card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #2d2d2d;
 }
 
-.tab-content.active {
-  display: block;
+.card-header {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #00FFC3;
 }
 
+/* GAS-MÄTARE */
+.gas-meter {
+  background: #444;
+  height: 10px;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+#gasFill {
+  height: 100%;
+  background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/* KNAPPAR */
+button {
+  padding: 10px;
+  margin: 5px 0;
+  width: 100%;
+  background: #00FFC3;
+  border: none;
+  border-radius: 6px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* DOLDA ELEMENT */
 .hidden {
   display: none;
-}
-
-body.light {
-  background: #f5f5f7;
-  color: #1a1a1a;
-}
-
-body.light .card {
-  background: white;
-  border: 1px solid #e0e0e0;
 }
