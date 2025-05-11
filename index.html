@@ -1,41 +1,83 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WarpAI App</title>
+  <title>WarpAi Onchain App</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1 data-i18n="title">WarpAI App</h1>
-      <div style="margin-top: 0.5rem;">
-        <button id="lang-en">EN</button>
-        <button id="lang-sv">SV</button>
+  <header>
+    <div class="topbar">
+      <div class="logo">WarpAi<span>App</span></div>
+      <button id="connect-wallet">🔗 Connect Wallet</button>
+      <div id="wallet-info">Not connected</div>
+      <div class="settings">⚙️</div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <div class="nav-item active" data-tab="overview">Overview</div>
+    <div class="nav-item" data-tab="leaderboard">Leaderboard</div>
+    <div class="nav-item" data-tab="favorites">Favorites</div>
+    <div class="nav-item" data-tab="rewards">Rewards</div>
+    <div class="nav-item" data-tab="history">History</div>
+    <div class="nav-item" data-tab="premium">Premium</div>
+  </nav>
+
+  <main>
+    <section id="overview" class="tab-content">
+      <div class="panel">
+        <h2>Total WarpPoints</h2>
+        <div id="points-display">0 WP</div>
       </div>
-    </header>
 
-    <section>
-      <p data-i18n="welcome">Welcome to WarpAI</p>
-      <button id="connectBtn" data-i18n="connect">Connect Wallet</button>
-      <button id="balanceBtn" data-i18n="balance">Get Balance</button>
-      <button id="gasBtn" data-i18n="gas">Check Gas</button>
+      <div class="panel gas">
+        <h2>⛽ Gas Meter</h2>
+        <div class="gas-bar">
+          <div id="gasFill" class="gas-fill"></div>
+        </div>
+        <p id="gas-status">Loading...</p>
+      </div>
+
+      <div class="panel quickbuy">
+        <h2>💰 Quick Buy</h2>
+        <button>Zora</button>
+        <button>ETH</button>
+        <button>USDC</button>
+      </div>
     </section>
 
-    <section class="card">
-      <div class="card-title">Wallet</div>
-      <div id="walletAddress" class="wallet-address">Not connected</div>
+    <section id="leaderboard" class="tab-content hidden">
+      <h2>🏆 Leaderboard</h2>
+      <div id="leaderboard-list">Coming soon...</div>
     </section>
 
-    <section class="card gas-meter">
-      <div class="gas-value" id="gasValue">--</div>
-      <div class="emoji" id="gasEmoji">⛽</div>
+    <section id="favorites" class="tab-content hidden">
+      <h2>🌟 Favorites</h2>
+      <p>Saved dApps / Frames</p>
     </section>
-  </div>
 
-  <script type="module" src="app.js"></script>
-  <script type="module" src="lang.js"></script>
+    <section id="rewards" class="tab-content hidden">
+      <h2>🎁 Rewards</h2>
+      <p>Status: 0 claimed, 0 available</p>
+    </section>
+
+    <section id="history" class="tab-content hidden">
+      <h2>🧾 Frame History</h2>
+      <p>No history yet</p>
+    </section>
+
+    <section id="premium" class="tab-content hidden">
+      <h2>💎 Premium</h2>
+      <p>Unlock premium tools & analytics for $9/month.</p>
+      <button>Subscribe</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>Developed by Spawniz ⚙️ for Base WarpPoints 2025</p>
+  </footer>
 </body>
 </html>
