@@ -1,53 +1,46 @@
 // feed.js
 
-const mockFeed = [
-  {
-    id: 1,
-    creator: "spawniz.eth",
-    img: "https://zora.co/content/media/preview/bafkreia4kz6zdm42yyzpkl36chj7ab6cpxx4z23d6fgjwfap6fg6t3hvse",
-    title: "WarpBase Drop 01",
-    gas: "0.004",
-    favorited: false,
-  },
-  {
-    id: 2,
-    creator: "anon.lens",
-    img: "https://zora.co/content/media/preview/bafkreidov22u4kfqobnzd3f3qbvevbp3mnnqffasdwvydpahkyicv4jrcq",
-    title: "Zora Moments",
-    gas: "0.006",
-    favorited: false,
-  }
-];
+export function renderFeed() {
+  const container = document.getElementById("feed-container");
+  container.innerHTML = ""; // Rensa gammalt
 
-// Ritar ut kort
-export function renderFeed(containerId = "feed") {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+  const dummyFeed = [
+    {
+      username: "spawniz",
+      action: "minted",
+      platform: "Zora",
+      token: "GASCHECK",
+      image: "https://source.unsplash.com/random/400x300?blockchain",
+      timestamp: "2 min ago"
+    },
+    {
+      username: "elyxr",
+      action: "followed",
+      platform: "Warpcast",
+      token: "base.gas",
+      image: "https://source.unsplash.com/random/400x300?network",
+      timestamp: "7 min ago"
+    },
+    {
+      username: "warpaiapp",
+      action: "airdropped",
+      platform: "WarpPoints",
+      token: "250 POINTS",
+      image: "https://source.unsplash.com/random/400x300?web3",
+      timestamp: "15 min ago"
+    }
+  ];
 
-  container.innerHTML = ""; // rensa
-
-  mockFeed.forEach(item => {
+  for (const post of dummyFeed) {
     const card = document.createElement("div");
     card.className = "feed-card";
-
     card.innerHTML = `
-      <img src="${item.img}" class="feed-img" />
+      <img src="${post.image}" alt="Post image" class="feed-img">
       <div class="feed-info">
-        <h3>${item.title}</h3>
-        <p>👤 ${item.creator}</p>
-        <p>⛽ ${item.gas} ETH</p>
-        <button class="fav-btn" data-id="${item.id}">
-          ${item.favorited ? "💖 Favorited" : "🤍 Favorite"}
-        </button>
+        <div><b>${post.username}</b> ${post.action} <span class="token">${post.token}</span></div>
+        <div class="feed-meta">${post.platform} · ${post.timestamp}</div>
       </div>
     `;
-
     container.appendChild(card);
-  });
-
-  document.querySelectorAll(".fav-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      btn.textContent = btn.textContent.includes("💖") ? "🤍 Favorite" : "💖 Favorited";
-    });
-  });
+  }
 }
