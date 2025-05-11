@@ -1,16 +1,26 @@
-// Hantera knapptryckningar i Frame
+// Hanterar knapptryckningar från Farcaster Frames
 module.exports = (req, res) => {
-  const { buttonIndex } = req.body.untrustedData;
+  const { untrustedData } = req.body;
   
-  if (buttonIndex === 1) {
-    res.json({ 
-      type: 'redirect', 
-      url: 'https://gascheck-new.vercel.app' 
+  // Knapp 1: Visa gaspris
+  if (untrustedData.buttonIndex === 1) {
+    return res.json({
+      type: 'redirect',
+      url: 'https://gascheck-new.vercel.app/'
     });
-  } else if (buttonIndex === 2) {
-    res.json({ 
+  }
+
+  // Knapp 2: Claim WARP
+  if (untrustedData.buttonIndex === 2) {
+    return res.json({
       type: 'tx',
-      txUrl: 'https://gascheck-new.vercel.app/api/claim-tx' 
+      chainId: 'eip155:8453', // Base Network
+      method: 'eth_sendTransaction',
+      params: {
+        abi: [], // Ersätt med ABI från WarpPoints.sol
+        to: '0x...', // Ersätt med din kontraktsadress
+        functionName: 'claimDaily'
+      }
     });
   }
 };
