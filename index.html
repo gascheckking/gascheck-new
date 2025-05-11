@@ -1,80 +1,84 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang=""sv"">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset=""UTF-8"">
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
   <title>WarpChain | Onchain Companion</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel=""stylesheet"" href=""style.css"">
+  <script defer src=""script.js""></script>
+  <link href=""https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"" rel=""stylesheet"">
 </head>
 <body>
-  <div class="app-container">
-    <header class="header">
-      <div class="logo">WarpChain</div>
-      <div id="walletStatus">Not connected</div>
+  <div class=""app-container"">
+    <header class=""header"">
+      <div class=""logo"">WarpChain</div>
+      <div id=""walletStatus"">Not connected</div>
     </header>
 
-    <nav class="nav-tabs">
-      <button class="nav-item active" data-tab="overview">Overview</button>
-      <button class="nav-item" data-tab="wallet">Wallet</button>
-      <button class="nav-item" data-tab="leaderboard">Leaderboard</button>
-      <button class="nav-item" data-tab="rewards">Rewards</button>
-      <button class="nav-item" data-tab="settings">Settings</button>
+    <nav class=""nav-tabs"">
+      <button class=""nav-item active"" data-tab=""overview"">Overview</button>
+      <button class=""nav-item"" data-tab=""wallet"">Wallet</button>
+      <button class=""nav-item"" data-tab=""leaderboard"">Leaderboard</button>
+      <button class=""nav-item"" data-tab=""rewards"">Rewards</button>
+      <button class=""nav-item"" data-tab=""settings"">Settings</button>
     </nav>
 
-    <main class="tab-content" id="overview">
-      <div class="card">
-        <div class="card-header">Live Gas Fee (Base)</div>
-        <div class="gas-meter">
-          <div id="gasFill"></div>
+    <main class=""tab-content"" id=""overview"">
+      <div class=""card"">
+        <div class=""card-header"">Live Gas Fee (Base)</div>
+        <div class=""gas-meter"">
+          <div id=""gasFill"" class=""gas-indicator""></div>
         </div>
-        <div id="gasValue">Loading...</div>
+        <div id=""gasValue"">Loading...</div>
+        <div class=""fast-trade"">
+          <button id=""tradeBtn"">Fast Trade</button>
+          <p class=""avg-gas"">24h Avg: <span id=""avgGas"">--</span></p>
+        </div>
       </div>
     </main>
 
-    <main class="tab-content hidden" id="wallet">
-      <div class="card">
-        <div class="card-header">Wallet</div>
-        <button id="connectBtn">Connect Wallet</button>
-        <button id="checkBtn">Check Address</button>
-        <div id="walletAddress"></div>
+    <main class=""tab-content hidden"" id=""wallet"">
+      <div class=""card"">
+        <div class=""card-header"">Wallet</div>
+        <button id=""connectBtn"">Connect Wallet</button>
+        <button id=""checkBtn"">Check Address</button>
+        <div id=""walletAddress""></div>
       </div>
-    </main>
 
-    <main class="tab-content hidden" id="leaderboard">
-      <div class="card">
-        <div class="card-header">Leaderboard</div>
-        <div id="leaderboardList">
+
+    <main class=""tab-content hidden"" id=""leaderboard"">
+      <div class=""card"">
+        <div class=""card-header"">Leaderboard</div>
+        <div id=""leaderboardList"">
           <p>Top users will appear here.</p>
         </div>
       </div>
     </main>
 
-    <main class="tab-content hidden" id="rewards">
-      <div class="card">
-        <div class="card-header">Your Rewards</div>
+    <main class=""tab-content hidden"" id=""rewards"">
+      <div class=""card"">
+        <div class=""card-header"">Your Rewards</div>
         <p>Daily streaks, gas efficiency bonuses, and more coming soon.</p>
       </div>
     </main>
 
-    <main class="tab-content hidden" id="settings">
-      <div class="card">
-        <div class="card-header">Settings</div>
+    <main class=""tab-content hidden"" id=""settings"">
+      <div class=""card"">
+        <div class=""card-header"">Settings</div>
         <label>Language:
-          <select id="languageSelect">
-            <option value="en">English</option>
-            <option value="sv">Svenska</option>
-            <option value="fr">Français</option>
-            <option value="ru">Русский</option>
-            <option value="zh">中文</option>
+          <select id=""languageSelect"">
+            <option value=""en"">English</option>
+            <option value=""sv"">Svenska</option>
+            <option value=""fr"">Français</option>
+            <option value=""ru"">Русский</option>
+            <option value=""zh"">中文</option>
           </select>
         </label>
       </div>
     </main>
 
-    <footer class="footer">
-      <p>Created by <a href="https://zora.co/spawniz" target="_blank">Spawniz</a> | Token: <a href="https://zora.co/coin/base:0x8ab57bdfc4e900b62f309bfaa6e1802755330ca6" target="_blank">View</a></p>
+    <footer class=""footer"">
+      <p>Created by <a href=""https://zora.co/spawniz"" target=""_blank"">Spawniz</a> | Token: <a href=""https://zora.co/coin/base:0x8ab57bdfc4e900b62f309bfaa6e1802755330ca6"" target=""_blank"">View</a></p>
     </footer>
   </div>
 </body>
