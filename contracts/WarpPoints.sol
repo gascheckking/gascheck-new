@@ -1,34 +1,55 @@
-// app.js
-import { ethers } from "ethers";
+// contracts/WarpPoints.sol
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
 
-// 1. Anslut till MetaMask
-async function connectWallet() {
-    if (!window.ethereum) {
-        alert("Installera MetaMask först!");
-        return;
+contract WarpPoints {
+    string public name = "WarpPoints";
+    string public symbol = "WARP";
+    uint8 public decimals = 18;
+    uint256 public totalSupply;
+
+    mapping(address => uint256) public balanceOf;
+    mapping(address => mapping(address => uint256)) public allowance;
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+
+    constructor() {
+        _mint(msg.sender, 1000000 * 10**decimals);
     }
-    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-    console.log("Ansluten:", accounts[0]);
+
+    function _mint(address account, uint256 amount) internal {
+        require(account != address(0), "Mint to zero address");
+        totalSupply += amount;
+        balanceOf[account] += amount;
+        emit Transfer(address(0), account, amount);
+    }
+
+    function transfer(address to, uint256 value) public returns (bool) {
+        require(balanceOf[msg.sender] >= value, "Insufficient balance");
+        balanceOf[msg.sender] -= value;
+        balanceOf[to] += value;
+        emit Transfer(msg.sender, to, value);
+        return true;
+    }
+
+    function approve(address spender, uint256 value) public returns (bool) {
+        allowance[msg.sender][spender] = value;
+        emit Approval(msg.sender, spender, value);
+        return true;
+    }
+
+    function transferFrom(address from, address to, uint256 value) public returns (bool) {
+        require(balanceOf[from] >= value, "Insufficient balance");
+        require(allowance[from][msg.sender] >= value, "Allowance exceeded");
+        balanceOf[from] -= value;
+        balanceOf[to] += value;
+        allowance[from][msg.sender] -= value;
+        emit Transfer(from, to, value);
+        return true;
+    }
+
+    function getBalance() public view returns (uint256) {
+        return balanceOf[msg.sender];
+    }
 }
-
-// 2. Ladda WarpPoints-kontraktet
-const contractAddress = "0x_DITT_KONTRAKTSADRESS_HÄR"; // Ersätt detta
-const contractABI = [ /* Klistra in ABI från WarpPoints.sol här */ ];
-
-async function loadContract() {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-    const warpPoints = new ethers.Contract(contractAddress, contractABI, signer);
-    return warpPoints;
-}
-
-// 3. Exempel: Anropa en funktion i kontraktet
-async function getBalance() {
-    const contract = await loadContract();
-    const balance = await contract.getBalance(); // Anta att getBalance finns i WarpPoints
-    console.log("Balance:", balance.toString());
-}
-
-// Kör funktioner när knappar klickas
-document.getElementById("connectBtn").addEventListener("click", connectWallet);
-document.getElementById("balanceBtn").addEventListener("click", getBalance);
