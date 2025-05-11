@@ -1,11 +1,16 @@
-body.dark { 
-  background: #0a0a0a; 
+body.dark {
+  background: #0a0a0a;
   color: white;
   max-width: 375px;
   margin: 0 auto;
   padding: 16px;
+  font-family: 'Inter', sans-serif;
 }
-.logo { color: #6E6EDE; font-weight: bold; }
+.logo {
+  color: #6E6EDE;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
 .card {
   background: #1a1a1a;
   border-radius: 12px;
@@ -22,6 +27,7 @@ body.dark {
   height: 100%;
   background: linear-gradient(90deg, #10B981, #F59E0B);
   border-radius: 10px;
+  width: 0%;
 }
 button {
   background: #6E6EDE;
@@ -31,4 +37,5 @@ button {
   border-radius: 8px;
   width: 100%;
   cursor: pointer;
+  font-weight: 600;
 }
