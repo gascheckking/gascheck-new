@@ -1,29 +1,24 @@
-// ===== FARCASTER FRAME-HANTERING =====
-async function handleFrameAction() {
-  const res = await fetch('/api/frame-action', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(window.frameData)
-  });
-  return await res.json();
-}
-
-// ===== WALLET CONNECT (ENKEL IMPLEMENTATION) =====
+// Anslut plånbok
 document.getElementById('connect-wallet').addEventListener('click', async () => {
   if (window.ethereum) {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    alert(`Ansluten: ${accounts[0]}`);
+    alert(`Ansluten: ${accounts[0].slice(0, 6)}...`);
   } else {
     alert("Installera MetaMask/Rabby först!");
   }
 });
 
-// ===== GAS TRACKER (SOM TIDIGARE) =====
+// Hämta gaspriser
 async function fetchGas() {
-  const res = await fetch('https://api.owlracle.info/v4/base/gas?apikey=demo');
-  const data = await res.json();
-  document.getElementById('gas-status').textContent = `${data.speeds[1].estimatedFee.toFixed(1)} Gwei`;
-  document.getElementById('gas-fill').style.width = `${Math.min(data.speeds[1].estimatedFee, 100)}%`;
+  try {
+    const res = await fetch('https://api.owlracle.info/v4/base/gas?apikey=demo');
+    const data = await res.json();
+    const gwei = data.speeds[1].estimatedFee.toFixed(1);
+    document.getElementById('gas-status').textContent = `${gwei} Gwei ${gwei < 30 ? '😎' : '🔥'}`;
+    document.getElementById('gas-fill').style.width = `${Math.min(gwei, 100)}%`;
+  } catch (error) {
+    console.error("Kunde inte hämta gaspris:", error);
+  }
 }
 fetchGas();
 setInterval(fetchGas, 30000);
