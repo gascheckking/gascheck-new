@@ -1,11 +1,7 @@
-export const getGasDetails = async () => {
-  const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=demo");
-  const json = await res.json();
-  const gwei = json.speeds[1].estimatedFee.toFixed(1);
+// gas.js
 
-  document.getElementById("gas-status").textContent = `${gwei} Gwei`;
-  document.getElementById("gasFill").style.width = `${Math.min(gwei, 100)}%`;
+export const getGas = async (contract, method, params) => {
+  const gasLimit = await contract[method].estimateGas(...params);
+  const gasPrice = await contract.provider.getGasPrice();
+  return { gasLimit: gasLimit.toString(), gasPrice: gasPrice.toString() };
 };
-
-getGasDetails();
-setInterval(getGasDetails, 30000);
