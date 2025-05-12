@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warp.ai: Onchain Activities</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Farcaster Frame Metadata -->
+  <meta property="fc:frame" content="vNext">
+  <meta property="fc:frame:image" content="https://gascheck-new.vercel.app/public/og-warp.html">
+  <meta property="fc:frame:button:1" content="Check My Onchain XP">
+  <meta property="fc:frame:post_url" content="https://gascheck-new.vercel.app/api/frame">
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="logo">Warp.ai<span class="beta-tag">Beta</span></div>
+      <div class="wallet-group">
+        <button id="connect-wallet" class="pulse">🔗 Connect Wallet</button>
+        <div id="wallet-section" class="hidden">
+          <span id="wallet-address" class="address-badge"></span>
+          <div class="xp-display">
+            <span id="xp-counter">0</span> XP 
+            <span id="streak-counter" class="streak">0 🔥</span>
+          </div>
+        </div>
+      </div>
+      <div class="settings">⚙️</div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <div class="nav-item active" data-tab="overview">🏠 Overview</div>
+    <div class="nav-item" data-tab="leaderboard">🏆 Leaderboard</div>
+    <div class="nav-item" data-tab="favorites">⭐ Favorites</div>
+    <div class="nav-item" data-tab="rewards">🎁 Rewards</div>
+    <div class="nav-item" data-tab="history">📜 History</div>
+    <div class="nav-item premium-tag" data-tab="premium">💎 Premium</div>
+    <div class="nav-item" data-tab="feed">🔄 Live Feed</div>
+  </nav>
+
+  <main>
+    <section id="overview" class="tab-content active">
+      <div class="dashboard-grid">
+        <div class="card points-card">
+          <h2>Total WarpPoints</h2>
+          <div class="points-display">0 WP</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 30%"></div>
+          </div>
+        </div>
+
+        <div class="card gas-card">
+          <h2>⛽ Real-Time Gas Meter</h2>
+          <div class="gas-meter">
+            <div class="gas-bar">
+              <div id="gasFill" class="gas-fill"></div>
+            </div>
+            <div class="gas-labels">
+              <span>Low</span>
+              <span>Avg</span>
+              <span>High</span>
+            </div>
+          </div>
+          <p id="gas-status" class="gas-update">Updating...</p>
+        </div>
+
+        <div class="card quickbuy-card">
+          <h2>🚀 Quick Actions</h2>
+          <div class="button-group">
+            <button class="action-btn zora">Mint on Zora</button>
+            <button class="action-btn eth">Bridge ETH</button>
+            <button class="action-btn points">Buy WP</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="leaderboard" class="tab-content">
+      <h2 class="section-title">🏆 Global Leaderboard</h2>
+      <div id="leaderboard" class="leaderboard-container"></div>
+    </section>
+
+    <section id="feed" class="tab-content">
+      <h2 class="section-title">🔔 Live Onchain Activity</h2>
+      <div id="feed-container" class="feed-items"></div>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
