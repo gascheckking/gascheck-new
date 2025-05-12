@@ -1,12 +1,14 @@
 import Web3 from 'web3';
-import WarpXPABI from './WarpXP.abi.json'; // se till att du har rätt ABI-fil
+import WarpXPABI from './WarpXP.abi.json';
 import { renderFavorites } from './favorites.js';
+import { renderFeed } from './feed.js';
+import { getGas } from './gas.js';
 
 let web3;
 let contract;
 let userAddress;
 
-const CONTRACT_ADDRESS = "0xYOUR_WARPXP_ADDRESS_HERE"; // ← byt ut
+const CONTRACT_ADDRESS = "0xYOUR_WARPXP_ADDRESS_HERE"; // byt till riktig address
 
 // Wallet connect
 const connectBtn = document.getElementById('connect-wallet');
@@ -72,7 +74,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
   });
 });
 
-// Leaderboard mock (eventuellt ersätt med API)
+// Leaderboard mock
 const leaderboardData = [
   { name: 'vitalik.eth', xp: 5800, activity: '1000+ TX' },
   { name: 'spawniz.warp', xp: 4200, activity: '500+ Mints' },
@@ -90,21 +92,9 @@ function renderLeaderboard() {
   document.getElementById('leaderboard').innerHTML = leaderboardHTML;
 }
 
-// Gas fetch
-async function fetchGas() {
-  try {
-    const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=demo");
-    const json = await res.json();
-    const gwei = json.speeds[1].estimatedFee.toFixed(1);
-    document.getElementById("gas-status").textContent = `${gwei} Gwei`;
-    document.getElementById("gasFill").style.width = `${Math.min(gwei, 100)}%`;
-  } catch {
-    document.getElementById("gas-status").textContent = "Failed to load";
-  }
-}
-
 // INIT
 renderLeaderboard();
 renderFavorites();
-fetchGas();
-setInterval(fetchGas, 30000);
+renderFeed();
+getGas();
+setInterval(getGas, 30000);
