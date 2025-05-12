@@ -1,28 +1,19 @@
-// feed.js
-export function loadZoraFeed() {
-  const feedContainer = document.getElementById("feed-container");
-  const mockFeed = [
-    {
-      user: "spawniz",
-      image: "https://source.unsplash.com/400x200/?crypto",
-      caption: "Just minted new zora 🌐"
-    },
-    {
-      user: "0xabc123",
-      image: "https://source.unsplash.com/400x200/?nft",
-      caption: "Claimed gas +250WP 🔥"
-    }
-  ];
-
-  feedContainer.innerHTML = mockFeed.map(post => `
+document.addEventListener("DOMContentLoaded", () => {
+  const feed = document.getElementById("feed-container");
+  feed.innerHTML = `
     <div class="feed-card">
-      <img src="${post.image}" alt="${post.caption}" />
+      <img src="https://source.unsplash.com/400x200/?crypto" alt="Zora" />
       <div class="feed-meta">
-        <strong>@${post.user}</strong>
-        <p>${post.caption}</p>
+        <strong>@spawniz</strong>
+        <p>Just minted a new drop on Zora</p>
       </div>
     </div>
-  `).join('');
-}
-
-document.addEventListener("DOMContentLoaded", loadZoraFeed);
+    <div class="feed-card">
+      <img src="https://source.unsplash.com/400x200/?nft" alt="NFT" />
+      <div class="feed-meta">
+        <strong>@0xabc123</strong>
+        <p>Claimed 250 WP from activity</p>
+      </div>
+    </div>
+  `;
+});
