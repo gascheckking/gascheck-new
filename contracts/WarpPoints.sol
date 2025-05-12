@@ -1,55 +1,35 @@
 // contracts/WarpPoints.sol
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.0;
 
 contract WarpPoints {
-    string public name = "WarpPoints";
-    string public symbol = "WARP";
-    uint8 public decimals = 18;
-    uint256 public totalSupply;
-
+    address public owner;
     mapping(address => uint256) public balanceOf;
-    mapping(address => mapping(address => uint256)) public allowance;
 
-    event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event PointsAwarded(address indexed user, uint256 amount);
+    event PointsSpent(address indexed user, uint256 amount);
 
     constructor() {
-        _mint(msg.sender, 1000000 * 10**decimals);
+        owner = msg.sender;
     }
 
-    function _mint(address account, uint256 amount) internal {
-        require(account != address(0), "Mint to zero address");
-        totalSupply += amount;
-        balanceOf[account] += amount;
-        emit Transfer(address(0), account, amount);
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not authorized");
+        _;
     }
 
-    function transfer(address to, uint256 value) public returns (bool) {
-        require(balanceOf[msg.sender] >= value, "Insufficient balance");
-        balanceOf[msg.sender] -= value;
-        balanceOf[to] += value;
-        emit Transfer(msg.sender, to, value);
-        return true;
+    function awardPoints(address user, uint256 amount) external onlyOwner {
+        balanceOf[user] += amount;
+        emit PointsAwarded(user, amount);
     }
 
-    function approve(address spender, uint256 value) public returns (bool) {
-        allowance[msg.sender][spender] = value;
-        emit Approval(msg.sender, spender, value);
-        return true;
+    function spendPoints(uint256 amount) external {
+        require(balanceOf[msg.sender] >= amount, "Not enough WP");
+        balanceOf[msg.sender] -= amount;
+        emit PointsSpent(msg.sender, amount);
     }
 
-    function transferFrom(address from, address to, uint256 value) public returns (bool) {
-        require(balanceOf[from] >= value, "Insufficient balance");
-        require(allowance[from][msg.sender] >= value, "Allowance exceeded");
-        balanceOf[from] -= value;
-        balanceOf[to] += value;
-        allowance[from][msg.sender] -= value;
-        emit Transfer(from, to, value);
-        return true;
-    }
-
-    function getBalance() public view returns (uint256) {
-        return balanceOf[msg.sender];
+    function getBalance(address user) external view returns (uint256) {
+        return balanceOf[user];
     }
 }
