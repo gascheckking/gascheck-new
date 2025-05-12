@@ -1,5 +1,3 @@
-// favorites.js
-
 const FAVORITE_KEY = "warpai_favorites";
 
 export function getFavorites() {
@@ -36,6 +34,4 @@ export function renderFavorites() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  renderFavorites();
-});o
+document.addEventListener("DOMContentLoaded", renderFavorites);
