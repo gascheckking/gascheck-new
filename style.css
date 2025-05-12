@@ -1,104 +1,203 @@
 /* style.css */
+
+:root {
+  --primary: #00ccff;
+  --background: #0d0d0d;
+  --surface: #1a1a1a;
+  --border: #222;
+  --highlight: #00ffcc;
+}
+
 body {
-  font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  background: #111;
-  color: #fff;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background);
+  color: #f5f5f5;
+  font-feature-settings: "tnum" 1;
 }
 
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background: #1e1e1e;
+  padding: 12px 20px;
+  background: #111;
+  border-bottom: 1px solid var(--border);
 }
 
-.logo span {
-  color: #7af;
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--primary), var(--highlight));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .nav {
   display: flex;
-  justify-content: space-around;
-  background: #222;
+  overflow-x: auto;
+  background-color: #111;
+  border-bottom: 1px solid var(--border);
 }
 
 .nav-item {
-  padding: 0.5rem 1rem;
+  padding: 10px 16px;
   cursor: pointer;
+  flex: 1;
+  text-align: center;
+  color: #aaa;
+  transition: background 0.2s;
 }
 
 .nav-item.active {
-  background: #333;
-  border-bottom: 2px solid #7af;
+  color: #fff;
+  background-color: #1e1e1e;
+  border-bottom: 2px solid var(--primary);
+}
+
+main {
+  padding: 20px;
 }
 
 .tab-content {
   display: none;
-  padding: 1rem;
 }
 
-.tab-content:not(.hidden) {
+.tab-content.active {
   display: block;
 }
 
-.panel {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: #1c1c1c;
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.card {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px -6px rgba(0, 204, 255, 0.15);
+}
+
+.gas-bar, .progress-bar {
+  background-color: #333;
+  height: 12px;
   border-radius: 8px;
-}
-
-.gas-bar {
-  background: #444;
-  height: 10px;
-  border-radius: 10px;
   overflow: hidden;
+  margin-top: 10px;
 }
 
-.gas-fill {
+.gas-fill, .progress-fill {
   height: 100%;
-  background: #7af;
+  background: linear-gradient(90deg, var(--highlight), var(--primary));
   width: 0%;
-  transition: width 0.3s ease-in-out;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-footer {
-  padding: 1rem;
-  text-align: center;
-  font-size: 0.9em;
-  background: #1e1e1e;
+.button-group, .favorites-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
-.favorite-item {
-  background: #2a2a2a;
-  margin: 0.5rem;
-  padding: 0.5rem;
+.action-btn, .button, .claim-btn {
+  padding: 8px 16px;
+  border: none;
   border-radius: 6px;
-  display: inline-block;
+  background-color: var(--primary);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.action-btn:hover, .button:hover, .claim-btn:hover {
+  background-color: #0099cc;
+}
+
+.feed-items, .leaderboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.leaderboard-item, .favorite-item {
+  background-color: #222;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.leaderboard-item:first-child::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(var(--primary), var(--highlight));
+}
+
+.section-title {
+  margin-bottom: 12px;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings {
   cursor: pointer;
 }
 
-.favorite-item.selected {
-  background: #4a4aff;
+.hidden {
+  display: none !important;
 }
 
-.feed-item, .feed-card {
+.beta-tag {
+  background: var(--primary);
+  color: #000;
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  margin-left: 8px;
+  border-radius: 4px;
+  vertical-align: top;
+}
+
+.wallet-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.address-badge {
   background: #222;
-  padding: 1rem;
-  margin: 1rem 0;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
 }
 
-.feed-card img {
-  width: 100%;
-  border-radius: 8px;
+.xp-display {
+  font-size: 0.9rem;
 }
 
-.feed-meta {
-  margin-top: 0.5rem;
-  font-size: 0.9em;
-  color: #ccc;
+.streak {
+  margin-left: 10px;
+  color: #ffcc00;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .nav {
+    overflow-x: visible;
+    justify-content: center;
+  }
 }
