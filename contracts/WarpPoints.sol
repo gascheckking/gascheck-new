@@ -1,20 +1,17 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT  
+pragma solidity ^0.8.0;  
 
-contract WarpXP {
-    mapping(address => uint256) public xp;
-    mapping(address => bool) public premiumUsers;
-    
-    function claimDaily() external {
-        xp[msg.sender] += 100;
-    }
+contract WarpPoints {  
+    mapping(address => uint256) public warpPoints;  
 
-    function checkPremiumAccess() external view returns (bool) {
-        return premiumUsers[msg.sender];
-    }
+    event PointsMinted(address indexed user, uint256 amount);  
 
-    function purchasePremium() external payable {
-        require(msg.value == 0.009 ether, "Incorrect ETH amount");
-        premiumUsers[msg.sender] = true;
-    }
-}
+    function mintPoints(uint256 _amount) external {  
+        warpPoints[msg.sender] += _amount;  
+        emit PointsMinted(msg.sender, _amount);  
+    }  
+
+    function getPoints(address _user) external view returns (uint256) {  
+        return warpPoints[_user];  
+    }  
+}  
