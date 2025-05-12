@@ -1,28 +1,23 @@
 // api/frame-action.js
-
 export async function POST(req) {
   const body = await req.json();
-  const { trustedData } = body;
 
-  const fid = trustedData?.fid;
-  const action = body.untrustedData?.buttonIndex;
-
-  if (!fid || action === undefined) {
-    return new Response("Invalid input", { status: 400 });
-  }
-
-  // Exempel: logga frame-interaktion
-  console.log(`User with FID ${fid} clicked button ${action}`);
-
-  // Skicka tillbaka Farcaster Frame response
-  return Response.json({
+  const frameResponse = {
     type: "frame",
-    frames: [
-      {
-        image: "https://source.unsplash.com/random/1200x630/?success",
-        postUrl: "https://gascheck-new.vercel.app/api/frame-action",
-        buttons: [{ label: "🔁 Back", action: "post" }],
-      },
-    ],
+    version: "vNext",
+    content: {
+      message: "🧠 WarpAi Frame Engaged!",
+      account: "0xa42b8c353b938e5efd41501e3472bc65e520bb52",
+      zoraLinked: "0xa8b817f09702c8d77fdb6d7d677a30cba5c9d7b9",
+      reward: "+50 WP",
+      timestamp: new Date().toISOString()
+    }
+  };
+
+  return new Response(JSON.stringify(frameResponse), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json"
+    }
   });
 }
