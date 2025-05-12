@@ -1,5 +1,3 @@
-// api/frame-action.js
-
 import { validateFrameAction } from "./frame-validator.js";
 
 export async function POST(req) {
@@ -16,11 +14,11 @@ export async function POST(req) {
     JSON.stringify({
       status: "success",
       frame: {
-        image: "https://gascheck-new.vercel.app/og-warp.png",
+        image: "https://gascheck-new.vercel.app/api/og",
         post_url: "https://gascheck-new.vercel.app/api/frame",
         buttons: [
           { label: "Check My Onchain XP" },
-          { label: "Share My Stats" }
+          { label: "Share My Stats", action: "post_redirect" }
         ]
       }
     }),
