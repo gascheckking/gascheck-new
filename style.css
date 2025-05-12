@@ -1,297 +1,118 @@
-:root {
-  --primary: #00ceff;
-  --background: #040000;
-  --surface: #1a1a1a;
-  --text: #fff;
-  --muted: #888;
-  --border: #222;
-  --success: #001fcc;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warp.ai: Onchain Activities</title>
+  <link rel="stylesheet" href="/style.css" />
 
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: var(--background);
-  color: var(--text);
-  font-feature-settings: "tnum";
-}
+  <!-- Farcaster Frame Metadata -->
+  <meta property="fc:frame" content="vNext">
+  <meta property="fc:frame:image" content="https://gascheck-new.vercel.app/api/og">
+  <meta property="fc:frame:button:1" content="Check My Onchain XP">
+  <meta property="fc:frame:post_url" content="https://gascheck-new.vercel.app/api/frame">
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="logo">Warp.ai<span class="beta-tag">Beta</span></div>
+      <div class="wallet-group">
+        <button id="connect-wallet" class="pulse">🔗 Connect Wallet</button>
+        <div id="wallet-section" class="hidden">
+          <span id="wallet-address" class="address-badge"></span>
+          <div class="xp-display">
+            <span id="xp-counter">0</span> XP 
+            <span id="streak-counter" class="streak">0 🔥</span>
+          </div>
+        </div>
+        <div class="lang-menu">
+          <button class="lang-btn active" data-lang="en">🇬🇧</button>
+          <button class="lang-btn" data-lang="sv">🇸🇪</button>
+        </div>
+        <div class="settings">⚙️</div>
+      </div>
+    </div>
+  </header>
 
-header, nav, footer {
-  padding: 1rem;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
+  <nav class="nav">
+    <div class="nav-item active" data-tab="overview" data-icon="🏠" data-label="Overview"></div>
+    <div class="nav-item" data-tab="leaderboard" data-icon="🏆" data-label="Leaderboard"></div>
+    <div class="nav-item" data-tab="favorites" data-icon="⭐" data-label="Favorites"></div>
+    <div class="nav-item" data-tab="rewards" data-icon="🎁" data-label="Rewards"></div>
+    <div class="nav-item" data-tab="history" data-icon="📜" data-label="History"></div>
+    <div class="nav-item premium-tag" data-tab="premium" data-icon="💎" data-label="Premium"></div>
+    <div class="nav-item" data-tab="feed" data-icon="🔄" data-label="Live Feed"></div>
+  </nav>
 
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  <main>
+    <section id="overview" class="tab-content active">
+      <div class="dashboard-grid">
+        <div class="card points-card">
+          <h2>Total WarpPoints</h2>
+          <div class="points-display">0 WP</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 30%"></div>
+          </div>
+        </div>
 
-.logo {
-  font-weight: bold;
-  font-size: 1.5rem;
-  background: linear-gradient(45deg, #00ccff, #00ffcc);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+        <div class="card gas-card">
+          <h2>⛽ Real-Time Gas Meter</h2>
+          <div class="gas-meter">
+            <div class="gas-bar">
+              <div id="gasFill" class="gas-fill"></div>
+            </div>
+            <div class="gas-labels">
+              <span>Low</span>
+              <span>Avg</span>
+              <span>High</span>
+            </div>
+          </div>
+          <p id="gas-status" class="gas-update">Updating...</p>
+        </div>
 
-.nav {
-  display: flex;
-  overflow-x: auto;
-  gap: 0.5rem;
-}
+        <div class="card quickbuy-card">
+          <h2>🚀 Quick Actions</h2>
+          <div class="button-group">
+            <button class="action-btn zora">Mint on Zora</button>
+            <button class="action-btn eth">Bridge ETH</button>
+            <button class="action-btn points">Buy WP</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-.nav-item {
-  padding: 0.6rem 1rem;
-  border-radius: 999px;
-  background: var(--surface);
-  cursor: pointer;
-  border: 1px solid var(--border);
-  transition: background 0.2s;
-}
+    <section id="leaderboard" class="tab-content">
+      <h2 class="section-title">🏆 Global Leaderboard</h2>
+      <div id="leaderboard" class="leaderboard-container"></div>
+    </section>
 
-.nav-item.active {
-  background: var(--primary);
-  color: black;
-  font-weight: bold;
-}
+    <section id="favorites" class="tab-content">
+      <h2 class="section-title">⭐ Favorite Contracts</h2>
+      <div class="favorites-list"></div>
+    </section>
 
-.tab-content {
-  display: none;
-  padding: 1rem;
-}
+    <section id="rewards" class="tab-content">
+      <h2 class="section-title">🎁 XP Rewards</h2>
+      <button class="claim-btn" id="claim-xp">Claim 100 XP</button>
+    </section>
 
-.tab-content.active {
-  display: block;
-}
+    <section id="history" class="tab-content">
+      <h2 class="section-title">📜 History</h2>
+      <p>Coming soon...</p>
+    </section>
 
-.card {
-  background: var(--surface);
-  border-radius: 16px;
-  padding: 1rem;
-  box-shadow: 0 4px 24px -6px rgba(0,204,255,0.15);
-  margin-bottom: 1.5rem;
-}
+    <section id="premium" class="tab-content">
+      <h2 class="section-title">💎 Premium Access</h2>
+      <p>Access exclusive perks, gas rebates, and drops</p>
+    </section>
 
-.dashboard-grid {
-  display: grid;
-  gap: 1rem;
-}
+    <section id="feed" class="tab-content">
+      <h2 class="section-title">🔔 Live Onchain Activity</h2>
+      <div id="feed-container" class="feed-items"></div>
+    </section>
+  </main>
 
-.gas-bar {
-  height: 12px;
-  background: #222;
-  border-radius: 6px;
-  overflow: hidden;
-  margin: 0.5rem 0;
-}
-
-.gas-fill {
-  height: 100%;
-  background: linear-gradient(to right, #00ffcc, #00ccff);
-  transition: width 0.8s ease-in-out;
-}
-
-.progress-bar {
-  height: 10px;
-  background: #222;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-top: 0.5rem;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--primary);
-  transition: width 0.8s ease-in-out;
-}
-
-.action-btn {
-  padding: 12px 24px;
-  min-width: 44px;
-  border-radius: 8px;
-  border: none;
-  background: var(--primary);
-  color: black;
-  cursor: pointer;
-  margin-right: 0.5rem;
-}
-
-.claim-btn {
-  padding: 0.75rem 1.25rem;
-  font-weight: bold;
-  border-radius: 8px;
-  background: var(--primary);
-  border: none;
-  color: #000;
-  cursor: pointer;
-}
-
-.leaderboard-item {
-  display: flex;
-  justify-content: space-between;
-  background: #111;
-  padding: 0.75rem;
-  border-radius: 10px;
-  margin-bottom: 0.5rem;
-  border-left: 3px solid var(--primary);
-}
-
-.favorites-list, .feed-items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.favorite-item, .feed-item {
-  background: #1a1a1a;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.favorite-item:hover, .feed-item:hover {
-  background: #222;
-}
-
-.footer {
-  font-size: 0.85rem;
-  text-align: center;
-  padding: 1rem;
-  color: var(--muted);
-}
-
-.beta-tag {
-  background: var(--primary);
-  color: #000;
-  font-size: 0.6rem;
-  padding: 2px 6px;
-  margin-left: 8px;
-  border-radius: 4px;
-  vertical-align: top;
-}
-
-.wallet-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.address-badge {
-  background: #222;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
-
-.xp-display {
-  font-size: 0.9rem;
-}
-
-.streak {
-  margin-left: 10px;
-  color: #ffcc00;
-}
-
-@media (min-width: 768px) {
-  .dashboard-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .nav {
-    overflow-x: visible;
-    justify-content: center;
-    position: static;
-    border-top: none;
-  }
-
-  .nav-item {
-    border-radius: 999px;
-    border: 1px solid var(--border);
-  }
-}
-
-@media (max-width: 767px) {
-  .nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 0 12px;
-    gap: 8px;
-    z-index: 1000;
-  }
-
-  .nav::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 40px;
-    background: linear-gradient(90deg, transparent 0%, var(--surface) 80%);
-    pointer-events: none;
-  }
-
-  .nav-item {
-    flex: 0 0 60px;
-    scroll-snap-align: start;
-    font-size: 0;
-    padding: 8px;
-    position: relative;
-    border: none;
-    border-radius: 12px;
-    background: transparent !important;
-  }
-
-  .nav-item::before {
-    content: attr(data-icon);
-    font-size: 24px;
-    display: block;
-    text-align: center;
-    line-height: 1;
-  }
-
-  .nav-item.active {
-    background: transparent !important;
-  }
-
-  .nav-item.active::after {
-    content: attr(data-label);
-    position: absolute;
-    top: -28px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--primary);
-    color: black;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
-
-  main {
-    margin-bottom: 80px;
-  }
-
-  .lang-switch {
-    display: none;
-  }
-}
-
-@media (min-width: 768px) {
-  .nav-item[data-icon]::before {
-    display: none;
-  }
-}
+  <script type="module" src="/app.js"></script>
+  <script type="module" src="/lang.js"></script>
+</body>
+</html>
