@@ -26,6 +26,8 @@ header, nav, footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .logo {
@@ -40,6 +42,7 @@ header, nav, footer {
   display: flex;
   overflow-x: auto;
   gap: 0.5rem;
+  background-color: var(--surface);
 }
 
 .nav-item {
@@ -49,6 +52,7 @@ header, nav, footer {
   cursor: pointer;
   border: 1px solid var(--border);
   transition: background 0.2s;
+  white-space: nowrap;
 }
 
 .nav-item.active {
@@ -70,7 +74,7 @@ header, nav, footer {
   background: var(--surface);
   border-radius: 16px;
   padding: 1rem;
-  box-shadow: 0 4px 24px -6px rgba(0,204,255,0.15);
+  box-shadow: 0 4px 24px -6px rgba(0, 204, 255, 0.15);
   margin-bottom: 1.5rem;
 }
 
@@ -107,25 +111,20 @@ header, nav, footer {
   transition: width 0.8s ease-in-out;
 }
 
-.action-btn {
+.action-btn, .claim-btn {
   padding: 12px 24px;
   min-width: 44px;
   border-radius: 8px;
   border: none;
   background: var(--primary);
   color: black;
+  font-weight: bold;
   cursor: pointer;
-  margin-right: 0.5rem;
+  transition: background 0.2s;
 }
 
-.claim-btn {
-  padding: 0.75rem 1.25rem;
-  font-weight: bold;
-  border-radius: 8px;
-  background: var(--primary);
-  border: none;
-  color: #000;
-  cursor: pointer;
+.claim-btn:hover, .action-btn:hover {
+  background: #00bbee;
 }
 
 .leaderboard-item {
@@ -203,5 +202,15 @@ header, nav, footer {
   .nav {
     overflow-x: visible;
     justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav {
+    justify-content: flex-start;
   }
 }
