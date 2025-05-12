@@ -1,5 +1,3 @@
-// gas.js
-
 export const getGasDetails = async () => {
   const res = await fetch("https://api.owlracle.info/v4/base/gas?apikey=demo");
   const json = await res.json();
