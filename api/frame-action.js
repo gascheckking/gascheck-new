@@ -1,4 +1,3 @@
-// api/frame-action.js
 export async function POST(req) {
   const body = await req.json();
 
