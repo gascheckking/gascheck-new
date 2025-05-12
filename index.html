@@ -4,15 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Warp.ai: Onchain Activities</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/style.css" />
 
   <!-- Farcaster Frame Metadata -->
   <meta property="fc:frame" content="vNext">
-  <meta property="fc:frame:image" content="https://gascheck-new.vercel.app/og-warp.png">
+  <meta property="fc:frame:image" content="https://gascheck-new.vercel.app/api/og">
   <meta property="fc:frame:button:1" content="Check My Onchain XP">
   <meta property="fc:frame:post_url" content="https://gascheck-new.vercel.app/api/frame">
 </head>
-
 <body>
   <header>
     <div class="topbar">
@@ -83,32 +82,32 @@
       <div id="leaderboard" class="leaderboard-container"></div>
     </section>
 
-    <section id="feed" class="tab-content">
-      <h2 class="section-title">🔔 Live Onchain Activity</h2>
-      <div id="feed-container" class="feed-items"></div>
-    </section>
-
     <section id="favorites" class="tab-content">
-      <h2 class="section-title">⭐ Dina Favoriter</h2>
+      <h2 class="section-title">⭐ Favorite Contracts</h2>
       <div class="favorites-list"></div>
     </section>
 
     <section id="rewards" class="tab-content">
-      <h2 class="section-title">🎁 Belöningar</h2>
-      <div class="card">Belöningar aktiveras snart...</div>
+      <h2 class="section-title">🎁 XP Rewards</h2>
+      <button class="claim-btn" id="claim-xp">Claim 100 XP</button>
     </section>
 
     <section id="history" class="tab-content">
-      <h2 class="section-title">📜 Historik</h2>
-      <div class="card">Din transaktionshistorik kommer här.</div>
+      <h2 class="section-title">📜 History</h2>
+      <p>Coming soon...</p>
     </section>
 
     <section id="premium" class="tab-content">
-      <h2 class="section-title">💎 Premium Stats</h2>
-      <div class="card">Exklusiva funktioner låses upp vid 5000 XP.</div>
+      <h2 class="section-title">💎 Premium Access</h2>
+      <p>Access exclusive perks, gas rebates, and drops</p>
+    </section>
+
+    <section id="feed" class="tab-content">
+      <h2 class="section-title">🔔 Live Onchain Activity</h2>
+      <div id="feed-container" class="feed-items"></div>
     </section>
   </main>
 
-  <script type="module" src="app.js"></script>
+  <script type="module" src="/app.js"></script>
 </body>
 </html>
