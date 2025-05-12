@@ -9,13 +9,9 @@ export function getFavorites() {
 
 export function toggleFavorite(name) {
   const current = getFavorites();
-  let updated;
-
-  if (current.includes(name)) {
-    updated = current.filter(fav => fav !== name);
-  } else {
-    updated = [...current, name];
-  }
+  const updated = current.includes(name)
+    ? current.filter(fav => fav !== name)
+    : [...current, name];
 
   localStorage.setItem(FAVORITE_KEY, JSON.stringify(updated));
   renderFavorites();
@@ -27,7 +23,7 @@ export function renderFavorites() {
 
   container.innerHTML = "";
   if (favorites.length === 0) {
-    container.innerHTML = "<p>No favorites yet</p>";
+    container.innerHTML = "<p>Inga favoriter ännu</p>";
     return;
   }
 
@@ -42,4 +38,4 @@ export function renderFavorites() {
 
 document.addEventListener("DOMContentLoaded", () => {
   renderFavorites();
-});
+});o
