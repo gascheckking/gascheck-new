@@ -1,8 +1,6 @@
-// api/frame-validator.js
-
 import { NeynarAPIClient } from "@neynar/nodejs-sdk";
 
-const client = new NeynarAPIClient(process.env.NEYNAR_API_KEY); // Lägg till denna env i Netlify/Vercel
+const client = new NeynarAPIClient(process.env.NEYNAR_API_KEY);
 
 export async function validateFrameAction(req) {
   try {
