@@ -1,11 +1,13 @@
 // api/frame-image.js
-export async function GET(req) {
-  const imageUrl = "https://source.unsplash.com/random/1200x630/?ai,gas";
-  
-  return new Response(null, {
-    status: 302,
+export async function GET() {
+  const imageUrl = "https://warpcast.com/~/welcome.png"; // Tillfällig placeholder
+  const response = await fetch(imageUrl);
+  const imageBuffer = await response.arrayBuffer();
+
+  return new Response(imageBuffer, {
     headers: {
-      Location: imageUrl,
-    },
+      "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=31536000, immutable"
+    }
   });
 }
