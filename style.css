@@ -1,62 +1,77 @@
 /* style.css */
+
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
   background: #111;
   color: #fff;
 }
-header .topbar {
+
+.topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
   background: #1e1e1e;
 }
+
 .logo span {
   color: #7af;
 }
+
 .nav {
   display: flex;
   justify-content: space-around;
   background: #222;
 }
+
 .nav-item {
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
+
 .nav-item.active {
   background: #333;
   border-bottom: 2px solid #7af;
 }
+
 .tab-content {
   display: none;
   padding: 1rem;
 }
+
 .tab-content:not(.hidden) {
   display: block;
 }
+
 .panel {
   margin-bottom: 1.5rem;
   padding: 1rem;
   background: #1c1c1c;
   border-radius: 8px;
 }
+
 .gas-bar {
   background: #444;
   height: 10px;
   border-radius: 10px;
+  overflow: hidden;
 }
+
 .gas-fill {
   height: 100%;
   background: #7af;
   width: 0%;
+  transition: width 0.3s ease-in-out;
 }
+
 footer {
   padding: 1rem;
   text-align: center;
   font-size: 0.9em;
   background: #1e1e1e;
 }
+
 .favorite-item {
   background: #2a2a2a;
   margin: 0.5rem;
@@ -65,6 +80,26 @@ footer {
   display: inline-block;
   cursor: pointer;
 }
+
 .favorite-item.selected {
   background: #4a4aff;
+}
+
+.feed-item, .feed-card {
+  background: #222;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.feed-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.feed-meta {
+  margin-top: 0.5rem;
+  font-size: 0.9em;
+  color: #ccc;
 }
