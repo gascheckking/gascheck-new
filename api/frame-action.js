@@ -1,41 +1,32 @@
 // api/frame-action.js
 
-import { NeynarAPIClient } from "@neynar/nodejs-sdk";
-
-const client = new NeynarAPIClient(process.env.NEYNAR_API_KEY);
+import { validateFrameAction } from "./frame-validator.js";
 
 export async function POST(req) {
-  const body = await req.json();
+  const fid = await validateFrameAction(req);
 
-  const { trustedData } = body;
-  if (!trustedData || !trustedData.messageBytes) {
-    return new Response("Missing trustedData", { status: 400 });
+  if (!fid) {
+    return new Response(JSON.stringify({ error: "Invalid Frame request" }), {
+      status: 403,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
-  try {
-    const { isValid, fid } = await client.validateFrameAction(body);
-    if (!isValid) throw new Error("Invalid frame request");
-
-    // Optional: Interact with WarpXP contract here (if deployed)
-    console.log("Validated FID:", fid);
-
-    return new Response(
-      JSON.stringify({
-        status: "success",
-        frame: {
-          image: "https://gascheck-new.vercel.app/og-warp.png",
-          post_url: "https://gascheck-new.vercel.app/api/frame",
-          buttons: [{ label: "Check My Onchain XP" }]
-        }
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json"
-        }
+  return new Response(
+    JSON.stringify({
+      status: "success",
+      frame: {
+        image: "https://gascheck-new.vercel.app/og-warp.png",
+        post_url: "https://gascheck-new.vercel.app/api/frame",
+        buttons: [
+          { label: "Check My Onchain XP" },
+          { label: "Share My Stats" }
+        ]
       }
-    );
-  } catch (e) {
-    return new Response(`Error: ${e.message}`, { status: 401 });
-  }
+    }),
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 }
