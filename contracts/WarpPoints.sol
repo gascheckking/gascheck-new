@@ -1,17 +1,22 @@
-// SPDX-License-Identifier: MIT  
-pragma solidity ^0.8.0;  
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-contract WarpPoints {  
-    mapping(address => uint256) public warpPoints;  
+contract WarpPoints {
+    mapping(address => uint256) public pointsBalance;
+    address public owner;
 
-    event PointsMinted(address indexed user, uint256 amount);  
+    constructor() {
+        owner = msg.sender;
+    }
 
-    function mintPoints(uint256 _amount) external {  
-        warpPoints[msg.sender] += _amount;  
-        emit PointsMinted(msg.sender, _amount);  
-    }  
+    function mintPoints(address _user, uint256 _amount) external {
+        require(msg.sender == owner, "Endast ägare");
+        pointsBalance[_user] += _amount;
+    }
 
-    function getPoints(address _user) external view returns (uint256) {  
-        return warpPoints[_user];  
-    }  
-}  
+    function transferPoints(address _to, uint256 _amount) external {
+        require(pointsBalance[msg.sender] >= _amount, "För lite poäng");
+        pointsBalance[msg.sender] -= _amount;
+        pointsBalance[_to] += _amount;
+    }
+}
