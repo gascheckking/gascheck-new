@@ -3,108 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WarpAi Onchain App</title>
+  <title>Warp.ai: Onchain Activities</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Farcaster Frame Metadata -->
+  <meta property="fc:frame" content="vNext">
+  <meta property="fc:frame:image" content="https://your-deploy-url.com/og-warp.png">
+  <meta property="fc:frame:button:1" content="Check My Onchain XP">
+  <meta property="fc:frame:post_url" content="https://your-deploy-url.com/api/frame">
 </head>
 <body>
   <header>
     <div class="topbar">
-      <div class="logo">WarpAi<span>App</span></div>
-      <button id="connect-wallet">🔗 Connect Wallet</button>
-      <div id="wallet-info">Not connected</div>
+      <div class="logo">Warp.ai<span class="beta-tag">Beta</span></div>
+      <div class="wallet-group">
+        <button id="connect-wallet" class="pulse">🔗 Connect Wallet</button>
+        <div id="wallet-section" class="hidden">
+          <span id="wallet-address" class="address-badge"></span>
+          <div class="xp-display">
+            <span id="xp-counter">0</span> XP 
+            <span id="streak-counter" class="streak">0 🔥</span>
+          </div>
+        </div>
+      </div>
       <div class="settings">⚙️</div>
     </div>
   </header>
 
   <nav class="nav">
-    <div class="nav-item active" data-tab="overview">Overview</div>
-    <div class="nav-item" data-tab="leaderboard">Leaderboard</div>
-    <div class="nav-item" data-tab="favorites">Favorites</div>
-    <div class="nav-item" data-tab="rewards">Rewards</div>
-    <div class="nav-item" data-tab="history">History</div>
-    <div class="nav-item" data-tab="premium">Premium</div>
-    <div class="nav-item" data-tab="feed">Feed</div>
+    <div class="nav-item active" data-tab="overview">🏠 Overview</div>
+    <div class="nav-item" data-tab="leaderboard">🏆 Leaderboard</div>
+    <div class="nav-item" data-tab="favorites">⭐ Favorites</div>
+    <div class="nav-item" data-tab="rewards">🎁 Rewards</div>
+    <div class="nav-item" data-tab="history">📜 History</div>
+    <div class="nav-item premium-tag" data-tab="premium">💎 Premium</div>
+    <div class="nav-item" data-tab="feed">🔄 Live Feed</div>
   </nav>
 
   <main>
-    <section id="overview" class="tab-content">
-      <div class="panel">
-        <h2>Total WarpPoints</h2>
-        <div id="points-display">0 WP</div>
-      </div>
-
-      <div class="panel gas">
-        <h2>⛽ Gas Meter</h2>
-        <div class="gas-bar">
-          <div id="gasFill" class="gas-fill"></div>
+    <!-- Overview Tab -->
+    <section id="overview" class="tab-content active">
+      <div class="dashboard-grid">
+        <div class="card points-card">
+          <h2>Total WarpPoints</h2>
+          <div class="points-display">0 WP</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 30%"></div>
+          </div>
         </div>
-        <p id="gas-status">Loading...</p>
-      </div>
 
-      <div class="panel quickbuy">
-        <h2>💰 Quick Buy</h2>
-        <button>Zora</button>
-        <button>ETH</button>
-        <button>USDC</button>
-      </div>
-    </section>
+        <div class="card gas-card">
+          <h2>⛽ Real-Time Gas Meter</h2>
+          <div class="gas-meter">
+            <div class="gas-bar">
+              <div id="gasFill" class="gas-fill"></div>
+            </div>
+            <div class="gas-labels">
+              <span>Low</span>
+              <span>Avg</span>
+              <span>High</span>
+            </div>
+          </div>
+          <p id="gas-status" class="gas-update">Updating...</p>
+        </div>
 
-    <section id="leaderboard" class="tab-content hidden">
-      <h2>🏆 Leaderboard</h2>
-      <div id="leaderboard-list">
-        <ul>
-          <li>#1 0xABCD1234 — 3120 WP</li>
-          <li>#2 0xEFGH5678 — 2800 WP</li>
-          <li>#3 0x9876FEDC — 2545 WP</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="favorites" class="tab-content hidden">
-      <h2>🌟 Favorites</h2>
-      <div class="favorites-list">
-        <div class="favorite-item">Owlracle</div>
-        <div class="favorite-item">Zora Mint</div>
-        <div class="favorite-item">Base Gas Feed</div>
+        <div class="card quickbuy-card">
+          <h2>🚀 Quick Actions</h2>
+          <div class="button-group">
+            <button class="action-btn zora">Mint on Zora</button>
+            <button class="action-btn eth">Bridge ETH</button>
+            <button class="action-btn points">Buy WP</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="rewards" class="tab-content hidden">
-      <h2>🎁 Rewards</h2>
-      <p>Status: 0 claimed, 0 available</p>
-      <button class="button">Claim Now</button>
+    <!-- Leaderboard Section -->
+    <section id="leaderboard" class="tab-content">
+      <h2 class="section-title">🏆 Global Leaderboard</h2>
+      <div id="leaderboard" class="leaderboard-container"></div>
     </section>
 
-    <section id="history" class="tab-content hidden">
-      <h2>🧾 Frame History</h2>
+    <!-- Feed Section -->
+    <section id="feed" class="tab-content">
+      <h2 class="section-title">🔔 Live Onchain Activity</h2>
+      <div id="feed-container" class="feed-items"></div>
+    </section>
+
+    <!-- Favorites Section -->
+    <section id="favorites" class="tab-content">
+      <h2 class="section-title">⭐ Favorites</h2>
+      <div class="favorites-list"></div>
+    </section>
+
+    <!-- Rewards Section -->
+    <section id="rewards" class="tab-content">
+      <h2 class="section-title">🎁 Rewards</h2>
+      <button id="claim-xp" class="claim-btn">Claim Daily XP</button>
+    </section>
+
+    <!-- History Section -->
+    <section id="history" class="tab-content">
+      <h2 class="section-title">📜 Claim History</h2>
       <ul>
-        <li>+100 WP – Daily streak – 2025-05-11</li>
-        <li>+50 WP – Gas claim – 2025-05-10</li>
+        <li>+100 XP — Daily streak — 2025-05-13</li>
+        <li>+50 XP — Gas claim — 2025-05-12</li>
       </ul>
     </section>
 
-    <section id="premium" class="tab-content hidden">
-      <h2>💎 Premium</h2>
-      <p>Unlock premium tools & analytics for $9/month.</p>
-      <button class="button">Subscribe</button>
-    </section>
-
-    <section id="feed" class="tab-content hidden">
-      <h2>🖼️ Zora Feed</h2>
-      <div id="feed-container"></div>
+    <!-- Premium Section -->
+    <section id="premium" class="tab-content">
+      <h2 class="section-title">💎 Premium</h2>
+      <p>Track other wallets, unlock pro analytics, access private feeds.</p>
+      <button class="button">Subscribe – $9/mo</button>
     </section>
   </main>
 
   <footer>
-    <p>Developed by Spawniz ⚙️ for Base WarpPoints 2025</p>
+    <p>Created by Spawniz for Warp.ai – Powered by Base</p>
   </footer>
 
   <script type="module">
     import './app.js';
     import './feed.js';
     import './favorites.js';
-    import './lang.js';
-    import './gas.js';
   </script>
 </body>
 </html>
