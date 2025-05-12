@@ -1,31 +1,33 @@
-import Web3 from 'web3';
-import { getGas } from './gas.js';
-import { renderFavorites } from './favorites.js';
-import { renderFeed } from './feed.js';
-
-const web3 = new Web3(window.ethereum);
-document.getElementById('connect-wallet').addEventListener('click', async () => {
-  try {
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    const address = accounts[0];
-    document.getElementById('wallet-address').textContent = `${address.slice(0,6)}...${address.slice(-4)}`;
-    document.getElementById('wallet-section').classList.remove('hidden');
-  } catch (error) {
-    alert("Plånboksfel: " + error.message);
-  }
-});
-
-// Flikhantering
+// Initiera fliksystem
 document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    document.querySelectorAll('.nav-item, .tab-content').forEach(el => el.classList.remove('active'));
-    item.classList.add('active');
-    document.getElementById(item.dataset.tab).classList.add('active');
+  item.addEventListener('click', function() {
+    // Ta bort aktiv klass från alla
+    document.querySelectorAll('.nav-item, .tab-content').forEach(el => {
+      el.classList.remove('active');
+    });
+    
+    // Aktivera vald flik
+    this.classList.add('active');
+    document.getElementById(this.dataset.tab).classList.add('active');
   });
 });
 
-// Initiera
-getGas();
-setInterval(getGas, 30000);
-renderFavorites();
-renderFeed();
+// Simulera realtidsgaspris
+function updateGas() {
+  const gasFill = document.querySelector('.gas-fill');
+  const gweiDisplay = document.querySelector('.gwei');
+  const usdDisplay = document.querySelector('.usd');
+  
+  fetch('https://api.owlracle.info/v4/base/gas?apikey=demo')
+    .then(response => response.json())
+    .then(data => {
+      const gwei = data.speeds[1].estimatedFee.toFixed(1);
+      gasFill.style.width = `${Math.min(gwei, 100)}%`;
+      gweiDisplay.textContent = `${gwei} Gwei`;
+      usdDisplay.textContent = `≈ $${(gwei * 0.027).toFixed(2)}`; // Simulerad konvertering
+    });
+}
+
+// Uppdatera var 30:e sekund
+setInterval(updateGas, 30000);
+updateGas(); // Initial update
