@@ -1,19 +1,24 @@
-// api/frame-action.js (uppdaterad med Neynar validering)
+// api/frame-action.js
 
 import { NeynarAPIClient } from "@neynar/nodejs-sdk";
 
 const client = new NeynarAPIClient(process.env.NEYNAR_API_KEY);
 
 export async function POST(req) {
-  try {
-    const body = await req.json();
-    const { valid, fid } = await client.validateFrameAction(body);
-    
-    if (!valid) {
-      return new Response(JSON.stringify({ error: "Invalid Frame Action" }), { status: 403 });
-    }
+  const body = await req.json();
 
-    // Simulerad interaktion, t.ex. XP-claim
+  const { trustedData } = body;
+  if (!trustedData || !trustedData.messageBytes) {
+    return new Response("Missing trustedData", { status: 400 });
+  }
+
+  try {
+    const { isValid, fid } = await client.validateFrameAction(body);
+    if (!isValid) throw new Error("Invalid frame request");
+
+    // Optional: Interact with WarpXP contract here (if deployed)
+    console.log("Validated FID:", fid);
+
     return new Response(
       JSON.stringify({
         status: "success",
@@ -25,10 +30,12 @@ export async function POST(req) {
       }),
       {
         status: 200,
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
     );
-  } catch (err) {
-    return new Response(JSON.stringify({ error: "Internal Error" }), { status: 500 });
+  } catch (e) {
+    return new Response(`Error: ${e.message}`, { status: 401 });
   }
 }
