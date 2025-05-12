@@ -1,8 +1,22 @@
-// api/frame-image.js
+import { ImageResponse } from "@vercel/og";
 
-export default function handler(req, res) {
-  const imageUrl = "https://your-app-url.com/og-warp.png";
+export const config = { runtime: "edge" };
 
-  res.setHeader("Content-Type", "image/png");
-  res.redirect(imageUrl);
+export default function () {
+  return new ImageResponse(
+    (
+      <div style={{
+        background: "#0d0d0d",
+        color: "#00ccff",
+        fontSize: 64,
+        width: "1200px",
+        height: "630px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }}>
+        <h1>🛸 Warp.ai: Onchain Activity</h1>
+      </div>
+    )
+  );
 }
