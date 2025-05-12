@@ -19,12 +19,15 @@ const languages = {
   }
 };
 
-document.querySelectorAll(".lang-switch").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const lang = btn.dataset.lang;
-    const labels = languages[lang];
-    for (const key in labels) {
-      document.querySelector(`[data-tab="${key}"]`).textContent = labels[key];
-    }
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".lang-switch").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const lang = btn.dataset.lang;
+      const labels = languages[lang];
+      for (const key in labels) {
+        const el = document.querySelector(`[data-tab="${key}"]`);
+        if (el) el.textContent = labels[key];
+      }
+    });
   });
 });
