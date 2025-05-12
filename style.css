@@ -1,36 +1,70 @@
-/* style.css – FEED CARDS */
-
-.feed-card {
-  background: #1a1a1e;
-  border: 1px solid #333;
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+/* style.css */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #111;
+  color: #fff;
 }
-
-.feed-img {
-  width: 100%;
-  height: auto;
+header .topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #1e1e1e;
+}
+.logo span {
+  color: #7af;
+}
+.nav {
+  display: flex;
+  justify-content: space-around;
+  background: #222;
+}
+.nav-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.nav-item.active {
+  background: #333;
+  border-bottom: 2px solid #7af;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+}
+.tab-content:not(.hidden) {
   display: block;
 }
-
-.feed-info {
+.panel {
+  margin-bottom: 1.5rem;
   padding: 1rem;
-  color: #eee;
+  background: #1c1c1c;
+  border-radius: 8px;
 }
-
-.feed-info b {
-  color: #66fcf1;
+.gas-bar {
+  background: #444;
+  height: 10px;
+  border-radius: 10px;
 }
-
-.feed-meta {
-  font-size: 0.85rem;
-  color: #888;
-  margin-top: 0.5rem;
+.gas-fill {
+  height: 100%;
+  background: #7af;
+  width: 0%;
 }
-
-.token {
-  color: #fff200;
-  font-weight: bold;
+footer {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9em;
+  background: #1e1e1e;
+}
+.favorite-item {
+  background: #2a2a2a;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: inline-block;
+  cursor: pointer;
+}
+.favorite-item.selected {
+  background: #4a4aff;
 }
