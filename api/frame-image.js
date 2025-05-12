@@ -1,12 +1,10 @@
 export async function GET() {
-  const imageUrl = "https://warpcast.com/~/welcome.png";
-  const response = await fetch(imageUrl);
-  const imageBuffer = await response.arrayBuffer();
-
-  return new Response(imageBuffer, {
+  const image = await fetch("https://your-deploy-url.com/og-warp.png");
+  const blob = await image.blob();
+  return new Response(blob, {
     headers: {
       "Content-Type": "image/png",
-      "Cache-Control": "public, max-age=31536000, immutable"
+      "Cache-Control": "public, max-age=86400"
     }
   });
 }
