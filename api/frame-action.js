@@ -1,10 +1,10 @@
-import { validateFrameAction } from "./frame-validator.js";
+import { validateFrameAction } from './frame-validator.js';
 
 export async function POST(req) {
   const fid = await validateFrameAction(req);
-
+  
   if (!fid) {
-    return new Response(JSON.stringify({ error: "Invalid Frame request" }), {
+    return new Response(JSON.stringify({ error: "Ogiltig Frame-förfrågan" }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
     });
@@ -15,16 +15,13 @@ export async function POST(req) {
       status: "success",
       frame: {
         image: "https://gascheck-new.vercel.app/api/og",
-        post_url: "https://gascheck-new.vercel.app/api/frame",
         buttons: [
-          { label: "Check My Onchain XP" },
-          { label: "Share My Stats", action: "post_redirect" }
-        ]
+          { label: "Visa min XP", action: "post" },
+          { label: "Dela statistik", action: "post_redirect" }
+        ],
+        post_url: "https://gascheck-new.vercel.app/api/frame"
       }
     }),
-    {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    }
+    { status: 200, headers: { "Content-Type": "application/json" } }
   );
 }
