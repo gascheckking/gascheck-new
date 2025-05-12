@@ -1,7 +1,5 @@
-// app.js
 import { ethers } from "ethers";
 
-// Flikhantering
 const tabs = document.querySelectorAll(".nav-item");
 const sections = document.querySelectorAll(".tab-content");
 
@@ -14,7 +12,6 @@ tabs.forEach(tab => {
   });
 });
 
-// Wallet-anslutning
 async function connectWallet() {
   if (!window.ethereum) {
     alert("Installera MetaMask eller Rabby!");
