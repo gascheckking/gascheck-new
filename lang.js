@@ -1,4 +1,3 @@
-// lang.js
 const languages = {
   en: {
     overview: "Overview",
