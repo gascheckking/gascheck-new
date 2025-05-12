@@ -1,132 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Warp.ai: Onchain Activities</title>
-  <link rel="stylesheet" href="style.css" />
+/* style.css */
 
-  <!-- Farcaster Frame Metadata -->
-  <meta property="fc:frame" content="vNext">
-  <meta property="fc:frame:image" content="https://your-deploy-url.com/og-warp.png">
-  <meta property="fc:frame:button:1" content="Check My Onchain XP">
-  <meta property="fc:frame:post_url" content="https://your-deploy-url.com/api/frame">
-</head>
-<body>
-  <header>
-    <div class="topbar">
-      <div class="logo">Warp.ai<span class="beta-tag">Beta</span></div>
-      <div class="wallet-group">
-        <button id="connect-wallet" class="pulse">🔗 Connect Wallet</button>
-        <div id="wallet-section" class="hidden">
-          <span id="wallet-address" class="address-badge"></span>
-          <div class="xp-display">
-            <span id="xp-counter">0</span> XP 
-            <span id="streak-counter" class="streak">0 🔥</span>
-          </div>
-        </div>
-      </div>
-      <div class="settings">⚙️</div>
-    </div>
-  </header>
+:root {
+  --primary: #00ccff;
+  --background: #0d0d0d;
+  --surface: #1a1a1a;
+  --text: #fff;
+  --muted: #888;
+  --border: #222;
+  --success: #00ffcc;
+}
 
-  <nav class="nav">
-    <div class="nav-item active" data-tab="overview">🏠 Overview</div>
-    <div class="nav-item" data-tab="leaderboard">🏆 Leaderboard</div>
-    <div class="nav-item" data-tab="favorites">⭐ Favorites</div>
-    <div class="nav-item" data-tab="rewards">🎁 Rewards</div>
-    <div class="nav-item" data-tab="history">📜 History</div>
-    <div class="nav-item premium-tag" data-tab="premium">💎 Premium</div>
-    <div class="nav-item" data-tab="feed">🔄 Live Feed</div>
-  </nav>
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--background);
+  color: var(--text);
+  font-feature-settings: "tnum" 1;
+}
 
-  <main>
-    <!-- Overview Tab -->
-    <section id="overview" class="tab-content active">
-      <div class="dashboard-grid">
-        <div class="card points-card">
-          <h2>Total WarpPoints</h2>
-          <div class="points-display">0 WP</div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 30%"></div>
-          </div>
-        </div>
+header, nav, footer {
+  padding: 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
 
-        <div class="card gas-card">
-          <h2>⛽ Real-Time Gas Meter</h2>
-          <div class="gas-meter">
-            <div class="gas-bar">
-              <div id="gasFill" class="gas-fill"></div>
-            </div>
-            <div class="gas-labels">
-              <span>Low</span>
-              <span>Avg</span>
-              <span>High</span>
-            </div>
-          </div>
-          <p id="gas-status" class="gas-update">Updating...</p>
-        </div>
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-        <div class="card quickbuy-card">
-          <h2>🚀 Quick Actions</h2>
-          <div class="button-group">
-            <button class="action-btn zora">Mint on Zora</button>
-            <button class="action-btn eth">Bridge ETH</button>
-            <button class="action-btn points">Buy WP</button>
-          </div>
-        </div>
-      </div>
-    </section>
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  background: linear-gradient(45deg, #00ccff, #00ffcc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-    <!-- Leaderboard Section -->
-    <section id="leaderboard" class="tab-content">
-      <h2 class="section-title">🏆 Global Leaderboard</h2>
-      <div id="leaderboard" class="leaderboard-container"></div>
-    </section>
+.nav {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.5rem;
+}
 
-    <!-- Feed Section -->
-    <section id="feed" class="tab-content">
-      <h2 class="section-title">🔔 Live Onchain Activity</h2>
-      <div id="feed-container" class="feed-items"></div>
-    </section>
+.nav-item {
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: background 0.2s;
+}
 
-    <!-- Favorites Section -->
-    <section id="favorites" class="tab-content">
-      <h2 class="section-title">⭐ Favorites</h2>
-      <div class="favorites-list"></div>
-    </section>
+.nav-item.active {
+  background: var(--primary);
+  color: black;
+  font-weight: bold;
+}
 
-    <!-- Rewards Section -->
-    <section id="rewards" class="tab-content">
-      <h2 class="section-title">🎁 Rewards</h2>
-      <button id="claim-xp" class="claim-btn">Claim Daily XP</button>
-    </section>
+.tab-content {
+  display: none;
+  padding: 1rem;
+}
 
-    <!-- History Section -->
-    <section id="history" class="tab-content">
-      <h2 class="section-title">📜 Claim History</h2>
-      <ul>
-        <li>+100 XP — Daily streak — 2025-05-13</li>
-        <li>+50 XP — Gas claim — 2025-05-12</li>
-      </ul>
-    </section>
+.tab-content.active {
+  display: block;
+}
 
-    <!-- Premium Section -->
-    <section id="premium" class="tab-content">
-      <h2 class="section-title">💎 Premium</h2>
-      <p>Track other wallets, unlock pro analytics, access private feeds.</p>
-      <button class="button">Subscribe – $9/mo</button>
-    </section>
-  </main>
+.card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 24px -6px rgba(0,204,255,0.15);
+  margin-bottom: 1.5rem;
+}
 
-  <footer>
-    <p>Created by Spawniz for Warp.ai – Powered by Base</p>
-  </footer>
+.dashboard-grid {
+  display: grid;
+  gap: 1rem;
+}
 
-  <script type="module">
-    import './app.js';
-    import './feed.js';
-    import './favorites.js';
-  </script>
-</body>
-</html>
+.gas-bar {
+  height: 12px;
+  background: #222;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.gas-fill {
+  height: 100%;
+  background: linear-gradient(to right, #00ffcc, #00ccff);
+  transition: width 0.8s ease-in-out;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #222;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--primary);
+  transition: width 0.8s ease-in-out;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary);
+  color: black;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.claim-btn {
+  padding: 0.75rem 1.25rem;
+  font-weight: bold;
+  border-radius: 8px;
+  background: var(--primary);
+  border: none;
+  color: #000;
+  cursor: pointer;
+}
+
+.leaderboard-item {
+  display: flex;
+  justify-content: space-between;
+  background: #111;
+  padding: 0.75rem;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  border-left: 3px solid var(--primary);
+}
+
+.favorites-list, .feed-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.favorite-item, .feed-item {
+  background: #1a1a1a;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.favorite-item:hover, .feed-item:hover {
+  background: #222;
+}
+
+.footer {
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1rem;
+  color: var(--muted);
+}
