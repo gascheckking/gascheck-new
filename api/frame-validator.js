@@ -6,9 +6,9 @@ export async function validateFrameAction(req) {
     const body = await req.json();
     const { trustedData } = body;
     const result = await client.validateFrameAction(trustedData.messageBytes);
-    return result.valid && result.action?.fid;
-  } catch (err) {
-    console.error("Validator error:", err);
+    return result.valid ? result.action.fid : null;
+  } catch (error) {
+    console.error("Valideringsfel:", error);
     return null;
   }
 }
