@@ -1,6 +1,5 @@
-// api/frame-image.js
 export async function GET() {
-  const imageUrl = "https://warpcast.com/~/welcome.png"; // Tillfällig placeholder
+  const imageUrl = "https://warpcast.com/~/welcome.png";
   const response = await fetch(imageUrl);
   const imageBuffer = await response.arrayBuffer();
 
