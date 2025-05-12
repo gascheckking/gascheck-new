@@ -1,4 +1,5 @@
 // favorites.js
+
 const FAVORITE_KEY = "warpai_favorites";
 
 export function getFavorites() {
@@ -26,7 +27,7 @@ export function renderFavorites() {
 
   container.innerHTML = "";
   if (favorites.length === 0) {
-    container.innerHTML = "<p>Inga favoriter ännu</p>";
+    container.innerHTML = "<p>No favorites yet</p>";
     return;
   }
 
