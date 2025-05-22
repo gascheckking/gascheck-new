@@ -1,197 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WarpAI | Onchain Companion</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #00ff88;
-      --secondary: #00a3ff;
-      --bg: #0f0f0f;
-      --card-bg: #1a1a1a;
-      --text: #ffffff;
-      --error: #ff465c;
-      --success: #00ff88;
-      --warning: #ffc300;
-      --border: #2d2d2d;
-    }
-
-    [data-theme="light"] {
-      --bg: #f0f0f0;
-      --card-bg: #ffffff;
-      --text: #1a1a1a;
-      --border: #d0d0d0;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 0;
-      transition: all 0.3s ease;
-    }
-
-    .app-container {
-      max-width: 420px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      border: 1px solid var(--border);
-    }
-
-    /* Gas Meter Styles */
-    .gas-meter {
-      margin: 12px 0;
-    }
-    .gas-progress {
-      height: 8px;
-      background: linear-gradient(90deg, var(--success), var(--warning), var(--error));
-      border-radius: 4px;
-      width: 100%;
-    }
-
-    /* Activity Feed */
-    .activity-item {
-      display: flex;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .activity-icon {
-      margin-right: 12px;
-      font-size: 20px;
-    }
-
-    /* Premium Badge */
-    .premium-badge {
-      background: linear-gradient(45deg, #ffd700, #ff9500);
-      color: #000;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-weight: bold;
-      display: inline-block;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WarpAI Onchain Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body data-theme="dark">
-  <div class="app-container">
-    <!-- Header -->
-    <div class="card" style="text-align: center; padding: 12px;">
-      <h1 style="margin: 0;">✨ WarpAI</h1>
-      <p style="margin: 4px 0 0; font-size: 14px; color: var(--secondary);">Your Onchain Companion</p>
-    </div>
-
-    <!-- Wallet Activity Dashboard -->
-    <div class="card">
-      <h2 style="margin-top: 0;"><i class="fas fa-wallet"></i> Wallet Activity</h2>
-      
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+<body>
+  <div class="container">
+    <header>
+      <div class="profile">
+        <img src="https://via.placeholder.com/40" alt="Avatar" class="avatar">
         <div>
-          <small>Total Earned</small>
-          <p style="color: var(--success); font-size: 18px; margin: 4px 0;">+0.42 ETH</p>
+          <div id="short-address">0x…</div>
+          <div class="xp-streak">XP: <span id="xp-count">0</span> | Streak: <span id="streak-count">0</span>d</div>
         </div>
-        <div>
-          <small>Total Spent</small>
-          <p style="color: var(--error); font-size: 18px; margin: 4px 0;">-0.15 ETH</p>
+        <button id="settings-btn" class="icon-btn">⚙️</button>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab"      data-tab="gas">Gas</button>
+      <button class="tab"      data-tab="feed">Feed</button>
+      <button class="tab"      data-tab="quickbuy">QuickBuy</button>
+      <button class="tab"      data-tab="leaderboard">Leaderboard</button>
+    </nav>
+
+    <main>
+      <!-- Overview -->
+      <section class="tab-content active" id="overview">
+        <h2>Onchain Activity</h2>
+        <div class="activity-summary">
+          <div>Earnings: <span id="summary-earn">–</span> USD</div>
+          <div>Fees paid: <span id="summary-fees">–</span> ETH</div>
+          <div>Last TX: <span id="summary-last">–</span></div>
         </div>
-      </div>
+      </section>
 
-      <div class="activity-item">
-        <div class="activity-icon">🔄</div>
-        <div>
-          <strong>Last TX:</strong> Minted #123 on Zora
-          <div style="font-size: 12px; color: #aaa;">2 mins ago</div>
+      <!-- Gas -->
+      <section class="tab-content" id="gas">
+        <h2>Live GasMeter</h2>
+        <div class="gas-bar">
+          <div id="gas-fill"></div>
         </div>
-      </div>
+        <div id="gas-info">Loading…</div>
+      </section>
 
-      <div style="display: flex; justify-content: space-between; margin-top: 12px;">
-        <button style="background: var(--primary); color: #000; border: none; padding: 8px 12px; border-radius: 8px;">
-          <i class="fas fa-bolt"></i> Claim XP
-        </button>
-        <div style="text-align: right;">
-          <div>🔥 7 day streak</div>
-          <small>+50 XP tomorrow</small>
-        </div>
-      </div>
-    </div>
+      <!-- Feed -->
+      <section class="tab-content" id="feed">
+        <h2>Trending Mints</h2>
+        <div id="activityFeed" class="feed-list">Loading…</div>
+      </section>
 
-    <!-- Gas Meter -->
-    <div class="card">
-      <h2 style="margin-top: 0;"><i class="fas fa-gas-pump"></i> Base Gas</h2>
-      <div class="gas-meter">
-        <div class="gas-progress" style="width: 45%;"></div>
-      </div>
-      <div style="display: flex; justify-content: space-between; font-size: 14px;">
-        <span>Low</span>
-        <span>Avg</span>
-        <span>High</span>
-      </div>
-      <p style="text-align: center; font-size: 24px; margin: 8px 0;">27 Gwei</p>
-      <small style="display: block; text-align: center; color: #aaa;">Updated: 12:45:23</small>
-    </div>
+      <!-- QuickBuy -->
+      <section class="tab-content" id="quickbuy">
+        <h2>QuickBuy & Mint</h2>
+        <button class="action-btn" id="mint-warpai">🪙 Mint WarpAI Coin</button>
+        <button class="action-btn" id="mint-zora">✨ Buy Zora Token</button>
+      </section>
 
-    <!-- Quick Actions -->
-    <div class="card">
-      <h2 style="margin-top: 0;"><i class="fas fa-bolt"></i> Quick Actions</h2>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-        <button style="background: var(--secondary); color: #fff; border: none; padding: 12px; border-radius: 8px;">
-          Mint WarpAI Coin
-        </button>
-        <button style="background: var(--secondary); color: #fff; border: none; padding: 12px; border-radius: 8px;">
-          Buy Trending
-        </button>
-      </div>
-    </div>
+      <!-- Leaderboard -->
+      <section class="tab-content" id="leaderboard">
+        <h2>Leaderboard</h2>
+        <div id="leaderboard-list">Loading…</div>
+      </section>
+    </main>
 
-    <!-- Profile Section -->
-    <div class="card">
-      <div style="display: flex; align-items: center;">
-        <img src="https://i.imgur.com/placeholder.jpg" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 12px;">
-        <div>
-          <h3 style="margin: 0;">spawniz.eth</h3>
-          <span class="premium-badge" style="font-size: 12px;">PREMIUM</span>
-        </div>
+    <footer>
+      <button id="connect-wallet" class="connect-btn">Connect Wallet</button>
+      <div class="footer-links">
+        <a href="https://zora.co/coin/base:0x8ab57bdfc4e900b62f309bfaa6e1802755330ca6" target="_blank">WarpAI Token</a> |
+        <a href="https://gascheck-new.vercel.app" target="_blank">Demo</a>
       </div>
-      
-      <div style="margin-top: 12px;">
-        <button style="background: var(--primary); color: #000; border: none; padding: 8px; border-radius: 8px; width: 100%;">
-          Share My Stats
-        </button>
-      </div>
-    </div>
+    </footer>
   </div>
 
-  <script>
-    // Theme Toggle
-    function toggleTheme() {
-      const currentTheme = document.body.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.body.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-    }
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      // Load saved theme
-      const savedTheme = localStorage.getItem('theme') || 'dark';
-      document.body.setAttribute('data-theme', savedTheme);
-
-      // Mock gas data updates
-      setInterval(() => {
-        const randomGas = Math.floor(Math.random() * 100);
-        document.querySelector('.gas-progress').style.width = `${randomGas}%`;
-        document.querySelector('.gas-progress').nextElementSibling.textContent = `${randomGas} Gwei`;
-      }, 30000);
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
