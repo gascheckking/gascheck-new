@@ -1,4 +1,4 @@
-import { ImageResponse } from '@vercel/og';
+import { ImageResponse } from 'mock';
 
 export const config = { runtime: 'edge' };
 
